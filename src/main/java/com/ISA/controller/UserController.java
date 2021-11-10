@@ -29,4 +29,16 @@ public class UserController {
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @RequestMapping(path = "/owner/register", method = RequestMethod.POST)
+    public ResponseEntity<?> registerOwner(@RequestBody RegistrationDTO registrationDTO) {
+
+        User user = userService.ownerRegistration(registrationDTO);
+
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }

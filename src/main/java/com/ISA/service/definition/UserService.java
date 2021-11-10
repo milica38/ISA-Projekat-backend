@@ -6,4 +6,5 @@ import com.ISA.domain.model.User;
 public interface UserService {
 
     User clientRegistration(RegistrationDTO registrationDTO);
+    User ownerRegistration(RegistrationDTO registrationDTO);
 }

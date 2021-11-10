@@ -37,4 +37,27 @@ public class UserServiceImpl implements UserService {
         
         return userRepository.save(user);
     }
+
+    public User ownerRegistration(RegistrationDTO registrationDTO) {
+
+        Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
+
+        if(!optionalUser.isEmpty()) {
+            return null;
+        }
+
+        User user = new User();
+        user.setEmail(registrationDTO.getEmail());
+        user.setAddress(registrationDTO.getAddress());
+        user.setCity(registrationDTO.getCity());
+        user.setCountry(registrationDTO.getCountry());
+        user.setDescription(registrationDTO.getDescription());
+        user.setName(registrationDTO.getName());
+        user.setSurname(registrationDTO.getSurname());
+        user.setPhoneNumber(registrationDTO.getPhoneNumber());
+        user.setDescription(registrationDTO.getDescription());
+        user.setType("OWNER");
+
+        return userRepository.save(user);
+    }
 }
