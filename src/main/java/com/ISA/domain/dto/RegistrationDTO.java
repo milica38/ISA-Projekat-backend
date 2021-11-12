@@ -10,6 +10,8 @@ public class RegistrationDTO {
     private String country;
     private String phoneNumber;
     private String description;
+    private String type;
+    private String ownerType;
 
     public String getName(){
         return name;
@@ -58,5 +60,11 @@ public class RegistrationDTO {
     }
     public void setDescription(String description){
         this.description = description;
+    }
+    public String getOwnerType(){
+        return  ownerType;
+    }
+    public void setOwnerType(String ownerType){
+        this.ownerType = ownerType;
     }
 }

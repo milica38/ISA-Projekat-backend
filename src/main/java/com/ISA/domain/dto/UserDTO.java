@@ -11,6 +11,7 @@ public class UserDTO {
     private String phoneNumber;
     private String description;
     private String type;
+    private String ownerType;
 
     public Long getId(){
         return id;
@@ -71,6 +72,12 @@ public class UserDTO {
     }
     public void setType(String type){
         this.type = type;
+    }
+    public String getOwnerType(){
+        return  ownerType;
+    }
+    public void setOwnerType(String ownerType){
+        this.ownerType = ownerType;
     }
 
 }

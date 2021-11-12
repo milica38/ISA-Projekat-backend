@@ -7,4 +7,5 @@ public interface UserService {
 
     User clientRegistration(RegistrationDTO registrationDTO);
     User ownerRegistration(RegistrationDTO registrationDTO);
+    User getCurrentUser();
 }

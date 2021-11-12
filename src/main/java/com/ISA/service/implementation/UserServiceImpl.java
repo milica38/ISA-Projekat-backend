@@ -1,9 +1,11 @@
 package com.ISA.service.implementation;
 
+import com.ISA.config.SecurityUtils;
 import com.ISA.domain.dto.RegistrationDTO;
 import com.ISA.domain.model.User;
 import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.UserService;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +61,13 @@ public class UserServiceImpl implements UserService {
         user.setType("OWNER");
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public User getCurrentUser() {
+
+        String email = SecurityUtils.getCurrentUserLogin().get();
+
+        return userRepository.getByEmail(email);
     }
 }
