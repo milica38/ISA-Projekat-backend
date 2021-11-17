@@ -41,4 +41,16 @@ public class UserController {
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @RequestMapping(path = "/instructor/register", method = RequestMethod.POST)
+    public ResponseEntity<?> registerInstructor(@RequestBody RegistrationDTO registrationDTO) {
+
+        User user = userService.instructorRegistration(registrationDTO);
+
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }
