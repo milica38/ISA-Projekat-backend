@@ -80,6 +80,6 @@ public class User {
     public void setType(String type){
         this.type = type;
     }
-
+    public String getRole() {return type;}
 
 }
