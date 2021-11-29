@@ -2,31 +2,58 @@ package com.ISA.domain.dto;
 
 import java.util.Date;
 
-public class HomeProfileDTO {
-
+public class BoatProfileDTO {
+    
     private Long id;
     private String name;
+    private String type;
+    private int length;
+    private int engineNumber;
+    private int enginePower;
+    private  int maxSpeed;
+    private String navEquipment;
     private String address;
     private String promoDescription;
-    private int numberOfRooms;
-    private int numberOfBeds;
+    private String interiorImage;
+    private String exteriorImage;
+    private String capacity;
     private Date freeTerms;
     private String behaviourRules;
     private double pricelist;
     private String extraService;
-    private String interiorImage;
-    private String exteriorImage;
+    private String fishingEquipment;
+    private String cancelConditions;
 
     private double latitude;
     private double longitude;
 
+    public int getMaxSpeed() { return  maxSpeed; }
+    public void setMaxSpeed(int maxSpeed) { this.maxSpeed = maxSpeed; }
+    public int getEnginePower() { return  enginePower; }
+    public void setEnginePower(int enginePower) { this.enginePower = enginePower; }
+    public int getEngineNumber() { return  engineNumber; }
+    public void setEngineNumber(int engineNumber) { this.engineNumber = engineNumber; }
+    public String getType() { return  type; }
+    public void setType(String type) { this.type = type; }
+    public int getLength() { return  length; }
+    public void setLength(int length) { this.length = length; }
+    public String getFishingEquipment() { return fishingEquipment; }
+    public void  setFishingEquipment(String fishingEquipment) { this.fishingEquipment = fishingEquipment; }
+    public String getCancelConditions() { return  cancelConditions; }
+    public void  setCancelConditions(String cancelConditions) { this.cancelConditions = cancelConditions; }
+    public String getCapacity() { return  capacity; }
+    public void setCapacity(String capacity) { this.capacity = capacity; }
+    public String getNavEquipment() { return navEquipment; }
+    public void setNavEquipment(String navEquipment) { this.navEquipment = navEquipment; }
     public Long getId(){
         return id;
     }
     public void setId(Long id){
         this.id = id;
     }
-    public String getName(){ return name; }
+    public String getName(){
+        return name;
+    }
     public void setName(String name){
         this.name = name;
     }
@@ -78,18 +105,6 @@ public class HomeProfileDTO {
     public void setExtraService(String extraService){
         this.extraService = extraService;
     }
-    public int getNumberOfRooms(){
-        return numberOfRooms;
-    }
-    public void setNumberOfRooms(int numberOfRooms){
-        this.numberOfRooms = numberOfRooms;
-    }
-    public int getNumberOfBeds(){
-        return numberOfBeds;
-    }
-    public void setNumberOfBeds(int numberOfBeds){
-        this.numberOfBeds = numberOfBeds;
-    }
     public String getInteriorImage(){
         return interiorImage;
     }
@@ -102,4 +117,5 @@ public class HomeProfileDTO {
     public void setExteriorImage(String exteriorImage){
         this.exteriorImage = exteriorImage;
     }
+
 }
