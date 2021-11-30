@@ -16,7 +16,6 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     @Autowired
     private HomeProfileRepository homeProfileRepository;
 
-
     @Override
     public List<HomeProfile> getAll() {
         return homeProfileRepository.findAll();
