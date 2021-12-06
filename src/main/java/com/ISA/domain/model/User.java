@@ -1,7 +1,15 @@
 package com.ISA.domain.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "user_table")
 public class User {
 
+    @Id
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
     private Long id;
     private String name;
     private String surname;
@@ -14,6 +22,7 @@ public class User {
     private String description;
     private String type;
     private String ownerType;
+    private String status;
 
     public Long getId(){
         return id;
@@ -90,4 +99,8 @@ public class User {
 
     public String getRole() { return type.toString(); }
 
+    public String getStatus() {return status;}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
