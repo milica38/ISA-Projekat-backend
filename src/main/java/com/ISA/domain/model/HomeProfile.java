@@ -1,8 +1,17 @@
 package com.ISA.domain.model;
+import javax.persistence.*;
+
 
 import java.util.Date;
 
+@Entity
+@Table(name = "boat_profile")
+
 public class HomeProfile {
+    @Id
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
 
     private Long id;
     private String name;
