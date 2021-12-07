@@ -42,10 +42,23 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(path = "/owner/register", method = RequestMethod.POST)
-    public ResponseEntity<?> registerOwner(@RequestBody RegistrationDTO registrationDTO) {
+    @RequestMapping(path = "/house-owner/register", method = RequestMethod.POST)
+    public ResponseEntity<?> registerHouseOwner(@RequestBody RegistrationDTO registrationDTO) {
 
-        User user = userService.ownerRegistration(registrationDTO);
+        User user = userService.houseOwnerRegistration(registrationDTO);
+
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+
+    @RequestMapping(path = "/boat-owner/register", method = RequestMethod.POST)
+    public ResponseEntity<?> registerBoatOwner(@RequestBody RegistrationDTO registrationDTO) {
+
+        User user = userService.boatOwnerRegistration(registrationDTO);
 
         if(user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -21,7 +21,6 @@ public class User {
     private String phoneNumber;
     private String description;
     private String type;
-    private String ownerType;
     private String status;
 
     public Long getId(){
@@ -90,12 +89,7 @@ public class User {
     public void setType(String type){
         this.type = type;
     }
-    public String getOwnerType(){
-        return  ownerType;
-    }
-    public void setOwnerType(String ownerType){
-        this.ownerType = ownerType;
-    }
+
 
     public String getRole() { return type.toString(); }
 

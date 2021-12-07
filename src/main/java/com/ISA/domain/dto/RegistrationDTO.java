@@ -66,10 +66,5 @@ public class RegistrationDTO {
     public void setDescription(String description){
         this.description = description;
     }
-    public String getOwnerType(){
-        return  ownerType;
-    }
-    public void setOwnerType(String ownerType){
-        this.ownerType = ownerType;
-    }
+
 }

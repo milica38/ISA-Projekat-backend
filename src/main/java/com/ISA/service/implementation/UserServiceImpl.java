@@ -35,12 +35,12 @@ public class UserServiceImpl implements UserService {
         user.setName(registrationDTO.getName());
         user.setSurname(registrationDTO.getSurname());
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
-        user.setType("CLIENT");
+        user.setType("Client");
         
         return userRepository.save(user);
     }
 
-    public User ownerRegistration(RegistrationDTO registrationDTO) {
+    public User houseOwnerRegistration(RegistrationDTO registrationDTO) {
 
         Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
 
@@ -58,7 +58,30 @@ public class UserServiceImpl implements UserService {
         user.setSurname(registrationDTO.getSurname());
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setDescription(registrationDTO.getDescription());
-        user.setType("OWNER");
+        user.setType("House owner");
+
+        return userRepository.save(user);
+    }
+
+    public User boatOwnerRegistration(RegistrationDTO registrationDTO) {
+
+        Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
+
+        if(!optionalUser.isEmpty()) {
+            return null;
+        }
+
+        User user = new User();
+        user.setEmail(registrationDTO.getEmail());
+        user.setAddress(registrationDTO.getAddress());
+        user.setCity(registrationDTO.getCity());
+        user.setCountry(registrationDTO.getCountry());
+        user.setDescription(registrationDTO.getDescription());
+        user.setName(registrationDTO.getName());
+        user.setSurname(registrationDTO.getSurname());
+        user.setPhoneNumber(registrationDTO.getPhoneNumber());
+        user.setDescription(registrationDTO.getDescription());
+        user.setType("Boat owner");
 
         return userRepository.save(user);
     }
