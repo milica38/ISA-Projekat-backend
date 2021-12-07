@@ -1,7 +1,5 @@
 package com.ISA.domain.model;
 import javax.persistence.*;
-
-
 import java.util.Date;
 
 @Entity
@@ -12,7 +10,6 @@ public class HomeProfile {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
-
     private Long id;
     private String name;
     private String address;

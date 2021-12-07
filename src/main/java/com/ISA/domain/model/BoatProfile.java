@@ -2,12 +2,9 @@ package com.ISA.domain.model;
 import javax.persistence.*;
 import java.util.Date;
 
-
 @Entity
 @Table(name = "boat_profile")
-
 public class BoatProfile {
-
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
