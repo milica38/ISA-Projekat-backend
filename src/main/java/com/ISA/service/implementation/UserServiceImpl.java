@@ -7,6 +7,7 @@ import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.UserService;
 import org.apache.catalina.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,6 +17,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     @Override
     public User clientRegistration(RegistrationDTO registrationDTO) {
@@ -27,6 +31,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = new User();
+        user.setPassword(encoder.encode(registrationDTO.getPassword()));
         user.setEmail(registrationDTO.getEmail());
         user.setAddress(registrationDTO.getAddress());
         user.setCity(registrationDTO.getCity());
@@ -49,6 +54,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = new User();
+        user.setPassword(encoder.encode(registrationDTO.getPassword()));
         user.setEmail(registrationDTO.getEmail());
         user.setAddress(registrationDTO.getAddress());
         user.setCity(registrationDTO.getCity());
@@ -72,6 +78,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = new User();
+        user.setPassword(encoder.encode(registrationDTO.getPassword()));
         user.setEmail(registrationDTO.getEmail());
         user.setAddress(registrationDTO.getAddress());
         user.setCity(registrationDTO.getCity());
