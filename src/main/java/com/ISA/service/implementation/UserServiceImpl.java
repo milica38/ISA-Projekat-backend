@@ -97,7 +97,6 @@ public class UserServiceImpl implements UserService {
     public User getCurrentUser() {
 
         String email = SecurityUtils.getCurrentUserLogin().get();
-
-        return userRepository.getByEmail(email);
+        return userRepository.findOneByEmail(email).get();
     }
 }

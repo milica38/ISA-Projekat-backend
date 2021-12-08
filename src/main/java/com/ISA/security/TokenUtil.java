@@ -53,29 +53,6 @@ public class TokenUtil {
         return new Date(new Date().getTime() + EXPIRES_IN);
     }
 
-    // Funkcija za refresh JWT tokena
-    public String refreshToken(String token) {
-        String refreshedToken;
-        try {
-            final Claims claims = this.getAllClaimsFromToken(token);
-            claims.setIssuedAt(new Date());
-            refreshedToken = Jwts.builder()
-                    .setClaims(claims)
-                    .setExpiration(generateExpirationDate())
-                    .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
-        } catch (Exception e) {
-            refreshedToken = null;
-        }
-        return refreshedToken;
-    }
-
-    public boolean canTokenBeRefreshed(String token, Timestamp lastPasswordReset) {
-        final Date created = this.getIssuedAtDateFromToken(token);
-        return (!(this.isCreatedBeforeLastPasswordReset(created, lastPasswordReset))
-                && (!(this.isTokenExpired(token)) || this.ignoreTokenExpiration(token)));
-    }
-
-    // Funkcija za validaciju JWT tokena
     public Boolean validateToken(String token, UserDetails userDetails) {
         UserDetails user = (UserDetails) userDetails;
         final String email = getEmailFromToken(token);
