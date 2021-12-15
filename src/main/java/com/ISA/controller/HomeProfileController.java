@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("api/homes")
 public class HomeProfileController {
 
     @Autowired
     private HomeProfileService homeProfileService;
 
-    @GetMapping
+    @GetMapping(path = "/home-profiles")
     public ResponseEntity<?> getAll() {
         List<HomeProfile> homeProfiles = homeProfileService.getAll();
 

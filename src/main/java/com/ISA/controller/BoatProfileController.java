@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("api/boats")
 public class BoatProfileController {
 
     @Autowired
     private BoatProfileService boatProfileService;
 
-    @GetMapping
+    @GetMapping(path = "/boat-profiles")
     public ResponseEntity<?> getAll() {
         List<BoatProfile> boatProfiles = boatProfileService.getAll();
 
