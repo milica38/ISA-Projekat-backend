@@ -3,7 +3,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "boat_profile")
+@Table(name = "home_profile")
 
 public class HomeProfile {
     @Id
@@ -22,9 +22,8 @@ public class HomeProfile {
     private String extraService;
     private String interiorImage;
     private String exteriorImage;
+    private Long ownerId;
 
-    private double latitude;
-    private double longitude;
     private boolean deleted;
 
     public Long getId(){
@@ -42,20 +41,10 @@ public class HomeProfile {
     public String getAddress(){
         return address;
     }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public double getLatitude(){
-        return latitude;
-    }
-    public void setLatitude(double latitude){
-        this.latitude = latitude;
-    }
-    public double getLongitude(){
-        return longitude;
-    }
-    public void setLongitude(double longitude){
-        this.longitude = longitude;
+    public void setAddress(String address) { this.address = address; }
+    public Long getownerId(){ return ownerId; }
+    public void setOwnerId(Long id){
+        this.ownerId = ownerId;
     }
     public String getPromoDescription(){
         return promoDescription;

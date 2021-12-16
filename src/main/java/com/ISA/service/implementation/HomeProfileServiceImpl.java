@@ -34,8 +34,6 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         hp.setId(homeProfileDTO.getId());
         hp.setName(homeProfileDTO.getName());
         hp.setAddress(homeProfileDTO.getAddress());
-        hp.setLatitude(homeProfileDTO.getLatitude());
-        hp.setLongitude(homeProfileDTO.getLongitude());
         hp.setExtraService(homeProfileDTO.getExtraService());
         hp.setBehaviourRules(homeProfileDTO.getBehaviourRules());
         hp.setExteriorImage(homeProfileDTO.getExteriorImage());
@@ -45,7 +43,7 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         hp.setNumberOfBeds(homeProfileDTO.getNumberOfBeds());
         hp.setNumberOfRooms(homeProfileDTO.getNumberOfRooms());
         hp.setPriceList(homeProfileDTO.getPricelist());
-
+        hp.setOwnerId(homeProfileDTO.getownerId());
         return homeProfileRepository.save(hp);
     }
 
@@ -66,8 +64,7 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         optionalHomeProfile.get().setInteriorImage(homeProfileDTO.getInteriorImage());
         optionalHomeProfile.get().setExteriorImage(homeProfileDTO.getExteriorImage());
         optionalHomeProfile.get().setBehaviourRules(homeProfileDTO.getBehaviourRules());
-        optionalHomeProfile.get().setLatitude(homeProfileDTO.getLatitude());
-        optionalHomeProfile.get().setLongitude(homeProfileDTO.getLongitude());
+        optionalHomeProfile.get().setOwnerId(homeProfileDTO.getownerId());
 
         return homeProfileRepository.save(optionalHomeProfile.get());
     }

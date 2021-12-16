@@ -16,10 +16,12 @@ public class HomeProfileDTO {
     private String extraService;
     private String interiorImage;
     private String exteriorImage;
+    private Long ownerId;
 
-    private double latitude;
-    private double longitude;
-
+    public Long getownerId(){ return ownerId; }
+    public void setOwnerId(Long id){
+        this.ownerId = ownerId;
+    }
     public Long getId(){
         return id;
     }
@@ -35,18 +37,6 @@ public class HomeProfileDTO {
     }
     public void setAddress(String address) {
         this.address = address;
-    }
-    public double getLatitude(){
-        return latitude;
-    }
-    public void setLatitude(double latitude){
-        this.latitude = latitude;
-    }
-    public double getLongitude(){
-        return longitude;
-    }
-    public void setLongitude(double longitude){
-        this.longitude = longitude;
     }
     public String getPromoDescription(){
         return promoDescription;
