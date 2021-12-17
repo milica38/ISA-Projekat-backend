@@ -1,9 +1,8 @@
 package com.ISA.controller;
 
 import com.ISA.config.CustomUserDetailsService;
-import com.ISA.domain.dto.LoginDTO;
-import com.ISA.domain.dto.LoginResponseDTO;
-import com.ISA.domain.dto.RegistrationDTO;
+import com.ISA.domain.dto.*;
+import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.User;
 import com.ISA.security.TokenUtil;
 import com.ISA.service.definition.UserService;
@@ -85,5 +84,12 @@ public class UserController {
     @GetMapping(path = "/current")
     public ResponseEntity<?> getCurrentUser() {
         return new ResponseEntity<>(userService.getCurrentUser(), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody UserDTO dto) {
+        User user = userService.edit(dto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
