@@ -4,7 +4,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "home_profile")
-
 public class HomeProfile {
     @Id
     @GeneratedValue(
