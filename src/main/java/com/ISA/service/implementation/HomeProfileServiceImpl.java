@@ -1,9 +1,12 @@
 package com.ISA.service.implementation;
 
+import com.ISA.config.SecurityUtils;
 import com.ISA.domain.dto.HomeProfileDTO;
 import com.ISA.domain.model.HomeProfile;
+import com.ISA.domain.model.User;
 import com.ISA.repository.HomeProfileRepository;
 import com.ISA.service.definition.HomeProfileService;
+import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,9 @@ public class HomeProfileServiceImpl implements HomeProfileService {
 
     @Autowired
     private HomeProfileRepository homeProfileRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<HomeProfile> getAll() {
@@ -29,21 +35,20 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     @Override
     public HomeProfile add(HomeProfileDTO homeProfileDTO) {
 
+
         HomeProfile hp = new HomeProfile();
 
-        hp.setId(homeProfileDTO.getId());
+        hp.setOwnerId(userService.getCurrentUser().getId());
         hp.setName(homeProfileDTO.getName());
         hp.setAddress(homeProfileDTO.getAddress());
         hp.setExtraService(homeProfileDTO.getExtraService());
         hp.setBehaviourRules(homeProfileDTO.getBehaviourRules());
         hp.setExteriorImage(homeProfileDTO.getExteriorImage());
         hp.setInteriorImage(homeProfileDTO.getInteriorImage());
-        hp.setFreeTerms(homeProfileDTO.getFreeTerms());
         hp.setPromoDescription(homeProfileDTO.getPromoDescription());
         hp.setNumberOfBeds(homeProfileDTO.getNumberOfBeds());
         hp.setNumberOfRooms(homeProfileDTO.getNumberOfRooms());
-        hp.setPriceList(homeProfileDTO.getPricelist());
-        hp.setOwnerId(homeProfileDTO.getownerId());
+        hp.setPricelist(homeProfileDTO.getPricelist());
         return homeProfileRepository.save(hp);
     }
 
@@ -55,12 +60,11 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         optionalHomeProfile.get().setId(homeProfileDTO.getId());
         optionalHomeProfile.get().setName(homeProfileDTO.getName());
         optionalHomeProfile.get().setAddress(homeProfileDTO.getAddress());
-        optionalHomeProfile.get().setPriceList(homeProfileDTO.getPricelist());
+        optionalHomeProfile.get().setPricelist(homeProfileDTO.getPricelist());
         optionalHomeProfile.get().setNumberOfRooms(homeProfileDTO.getNumberOfRooms());
         optionalHomeProfile.get().setNumberOfBeds(homeProfileDTO.getNumberOfRooms());
         optionalHomeProfile.get().setPromoDescription(homeProfileDTO.getPromoDescription());
         optionalHomeProfile.get().setExtraService(homeProfileDTO.getExtraService());
-        optionalHomeProfile.get().setFreeTerms(homeProfileDTO.getFreeTerms());
         optionalHomeProfile.get().setInteriorImage(homeProfileDTO.getInteriorImage());
         optionalHomeProfile.get().setExteriorImage(homeProfileDTO.getExteriorImage());
         optionalHomeProfile.get().setBehaviourRules(homeProfileDTO.getBehaviourRules());
@@ -76,5 +80,12 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         optionalHomeProfile.get().setDeleted(true);
         homeProfileRepository.save(optionalHomeProfile.get());
         return true;
+    }
+
+    @Override
+    public List<HomeProfile> getMyHouses() {
+        User user = userService.getCurrentUser();
+
+        return homeProfileRepository.getAllByOwnerId(user.getId());
     }
 }

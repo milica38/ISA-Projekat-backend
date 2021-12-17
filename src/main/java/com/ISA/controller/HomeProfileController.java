@@ -1,6 +1,7 @@
 package com.ISA.controller;
 
 import com.ISA.domain.dto.HomeProfileDTO;
+import com.ISA.domain.dto.converters.HomeProfileConverters;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.service.definition.HomeProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class HomeProfileController {
     public ResponseEntity<?> add(@RequestBody HomeProfileDTO dto) {
         HomeProfile hp = homeProfileService.add(dto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HomeProfileConverters.modelToDTO(hp), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}")
@@ -52,4 +53,13 @@ public class HomeProfileController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping(path = "/my")
+    public ResponseEntity<?> getMyHouses() {
+
+        List<HomeProfile> result = homeProfileService.getMyHouses();
+
+        return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(result), HttpStatus.OK);
+    }
+
 }

@@ -16,11 +16,13 @@ public class HomeProfile {
     private String promoDescription;
     private int numberOfRooms;
     private int numberOfBeds;
-    private Date freeTerms;
+    //private Date freeTerms;
     private String behaviourRules;
     private double pricelist;
     private String extraService;
+    @Column(columnDefinition = "TEXT")
     private String interiorImage;
+    @Column(columnDefinition = "TEXT")
     private String exteriorImage;
     private Long ownerId;
 
@@ -44,19 +46,13 @@ public class HomeProfile {
     public void setAddress(String address) { this.address = address; }
     public Long getownerId(){ return ownerId; }
     public void setOwnerId(Long id){
-        this.ownerId = ownerId;
+        this.ownerId = id;
     }
     public String getPromoDescription(){
         return promoDescription;
     }
     public void setPromoDescription(String promoDescription){
         this.promoDescription = promoDescription;
-    }
-    public Date getFreeTerms(){
-        return freeTerms;
-    }
-    public void setFreeTerms(Date freeTerms){
-        this.freeTerms = freeTerms;
     }
     public String getBehaviourRules(){
         return behaviourRules;
@@ -67,7 +63,7 @@ public class HomeProfile {
     public double getPricelist(){
         return pricelist;
     }
-    public void setPriceList(double pricelist){
+    public void setPricelist(double pricelist){
         this.pricelist = pricelist;
     }
     public String getExtraService(){
