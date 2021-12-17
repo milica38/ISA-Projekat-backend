@@ -35,8 +35,6 @@ public class BoatProfileServiceImpl implements BoatProfileService {
         bp.setInteriorImage(boatProfileDTO.getInteriorImage());
         bp.setCancelConditions(boatProfileDTO.getCancelConditions());
         bp.setCapacity(boatProfileDTO.getCapacity());
-        bp.setLatitude(boatProfileDTO.getLatitude());
-        bp.setLongitude(boatProfileDTO.getLongitude());
         bp.setPriceList(boatProfileDTO.getPricelist());
         bp.setLength(boatProfileDTO.getLength());
         bp.setEngineNumber(boatProfileDTO.getEngineNumber());
@@ -65,8 +63,6 @@ public class BoatProfileServiceImpl implements BoatProfileService {
         optionalBoatProfile.get().setBehaviourRules(boatProfileDTO.getBehaviourRules());
         optionalBoatProfile.get().setCancelConditions(boatProfileDTO.getCancelConditions());
         optionalBoatProfile.get().setCapacity(boatProfileDTO.getCapacity());
-        optionalBoatProfile.get().setLatitude(boatProfileDTO.getLatitude());
-        optionalBoatProfile.get().setLongitude(boatProfileDTO.getLongitude());
         optionalBoatProfile.get().setPriceList(boatProfileDTO.getPricelist());
         optionalBoatProfile.get().setLength(boatProfileDTO.getLength());
         optionalBoatProfile.get().setEngineNumber(boatProfileDTO.getEngineNumber());

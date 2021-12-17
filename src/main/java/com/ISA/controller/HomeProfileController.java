@@ -23,7 +23,7 @@ public class HomeProfileController {
     public ResponseEntity<?> getAll() {
         List<HomeProfile> homeProfiles = homeProfileService.getAll();
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(homeProfiles), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")

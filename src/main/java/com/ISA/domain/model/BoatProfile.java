@@ -28,9 +28,6 @@ public class BoatProfile {
     private String extraService;
     private String fishingEquipment;
     private String cancelConditions;
-
-    private double latitude;
-    private double longitude;
     private boolean deleted;
 
     public int getMaxSpeed() { return  maxSpeed; }
@@ -68,18 +65,6 @@ public class BoatProfile {
     }
     public void setAddress(String address) {
         this.address = address;
-    }
-    public double getLatitude(){
-        return latitude;
-    }
-    public void setLatitude(double latitude){
-        this.latitude = latitude;
-    }
-    public double getLongitude(){
-        return longitude;
-    }
-    public void setLongitude(double longitude){
-        this.longitude = longitude;
     }
     public String getPromoDescription(){
         return promoDescription;
