@@ -1,6 +1,7 @@
 package com.ISA.service.definition;
 
 import com.ISA.domain.dto.RegistrationDTO;
+import com.ISA.domain.dto.UserDTO;
 import com.ISA.domain.model.User;
 
 public interface UserService {
@@ -9,4 +10,6 @@ public interface UserService {
     User houseOwnerRegistration(RegistrationDTO registrationDTO);
     User boatOwnerRegistration(RegistrationDTO registrationDTO);
     User getCurrentUser();
+
+    User edit(UserDTO userDTO);
 }

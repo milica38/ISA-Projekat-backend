@@ -1,6 +1,7 @@
 package com.ISA.controller;
 
 import com.ISA.domain.dto.BoatProfileDTO;
+import com.ISA.domain.dto.converters.BoatProfileConverters;
 import com.ISA.domain.model.BoatProfile;
 import com.ISA.service.definition.BoatProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class BoatProfileController {
     public ResponseEntity<?> getAll() {
         List<BoatProfile> boatProfiles = boatProfileService.getAll();
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(BoatProfileConverters.modelsToDTOs(boatProfiles), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")

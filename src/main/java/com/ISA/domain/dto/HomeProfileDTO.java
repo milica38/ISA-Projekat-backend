@@ -10,7 +10,6 @@ public class HomeProfileDTO {
     private String promoDescription;
     private int numberOfRooms;
     private int numberOfBeds;
-    private Date freeTerms;
     private String behaviourRules;
     private double pricelist;
     private String extraService;
@@ -20,7 +19,7 @@ public class HomeProfileDTO {
 
     public Long getownerId(){ return ownerId; }
     public void setOwnerId(Long id){
-        this.ownerId = ownerId;
+        this.ownerId = id;
     }
     public Long getId(){
         return id;
@@ -44,12 +43,6 @@ public class HomeProfileDTO {
     public void setPromoDescription(String promoDescription){
         this.promoDescription = promoDescription;
     }
-    public Date getFreeTerms(){
-        return freeTerms;
-    }
-    public void setFreeTerms(Date freeTerms){
-        this.freeTerms = freeTerms;
-    }
     public String getBehaviourRules(){
         return behaviourRules;
     }
@@ -59,7 +52,7 @@ public class HomeProfileDTO {
     public double getPricelist(){
         return pricelist;
     }
-    public void setPriceList(double pricelist){
+    public void setPricelist(double pricelist){
         this.pricelist = pricelist;
     }
     public String getExtraService(){
