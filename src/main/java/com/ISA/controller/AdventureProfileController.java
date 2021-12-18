@@ -2,6 +2,7 @@ package com.ISA.controller;
 
 
 import com.ISA.domain.dto.AdventureProfileDTO;
+import com.ISA.domain.dto.converters.AdventureProfileConverters;
 import com.ISA.domain.model.AdventureProfile;
 import com.ISA.service.definition.AdventureProfileService;
 import com.ISA.service.definition.UserService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("api/adventures")
 public class AdventureProfileController {
 
@@ -24,7 +26,7 @@ public class AdventureProfileController {
     public ResponseEntity<?> getAll() {
         List<AdventureProfile> adventureProfiles = adventureProfileService.getAll();
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(AdventureProfileConverters.modelsToDTOs(adventureProfiles), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
