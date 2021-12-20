@@ -10,6 +10,6 @@ public interface UserService {
     User houseOwnerRegistration(RegistrationDTO registrationDTO);
     User boatOwnerRegistration(RegistrationDTO registrationDTO);
     User getCurrentUser();
-
+    Boolean findUserByToken(String token);
     User edit(UserDTO userDTO);
 }

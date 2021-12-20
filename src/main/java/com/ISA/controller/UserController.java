@@ -38,6 +38,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -86,10 +87,18 @@ public class UserController {
         return new ResponseEntity<>(userService.getCurrentUser(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody UserDTO dto) {
+    @PutMapping()
+    public ResponseEntity<?> edit(@RequestBody UserDTO dto) {
+
+
+
         User user = userService.edit(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/activate/{token}")
+    public ResponseEntity<?> activateClient(@PathVariable String token){
+        return new ResponseEntity<>(userService.findUserByToken(token), HttpStatus.OK);
     }
 }

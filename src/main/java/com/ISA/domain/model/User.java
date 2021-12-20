@@ -22,6 +22,7 @@ public class User {
     private String description;
     private String type;
     private String status;
+    private String registrationToken;
 
     public Long getId(){
         return id;
@@ -89,10 +90,9 @@ public class User {
     public void setType(String type){
         this.type = type;
     }
-
-
+    public String  getRegistrationToken() {return registrationToken;}
+    public void setRegistrationToken(String registrationToken) {this.registrationToken = registrationToken;}
     public String getRole() { return type.toString(); }
-
     public String getStatus() {return status;}
     public void setStatus(String status) {
         this.status = status;
