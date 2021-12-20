@@ -22,7 +22,7 @@ public class AdventureProfileController {
     @Autowired
     private AdventureProfileService adventureProfileService;
 
-    @GetMapping
+    @GetMapping(path = "adventure-profiles")
     public ResponseEntity<?> getAll() {
         List<AdventureProfile> adventureProfiles = adventureProfileService.getAll();
 
