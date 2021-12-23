@@ -21,7 +21,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForRegistration(User user)
     {
         // Sender's email ID needs to be mentioned
-        String from = "dunjaISA.projekat@gmail.com";
+        String from = "PatientServicePSWFirma1@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -31,8 +31,9 @@ public class EmailServiceImpl implements EmailService {
 
         // Setup mail server
         properties.setProperty("mail.smtp.host", host);
-        properties.setProperty("mail.smtp.username", "dunjaISA.projekat@gmail.com");
-        properties.setProperty("mail.smtp.password", "ISA123456");
+        properties.setProperty("mail.smtp.username", "PatientServicePSWFirma1@gmail.com");
+        properties.setProperty("mail.smtp.password", "PSW!1234");
+        properties.setProperty("mail.smtp.port", "465");
 
         // Get the default Session object.
         Session session = Session.getDefaultInstance(properties);
@@ -51,7 +52,7 @@ public class EmailServiceImpl implements EmailService {
             message.setSubject("Registration activation");
 
             // Now set the actual message
-            message.setText("localhost:4200/users/acivation?token=" + user.getRegistrationToken());
+            message.setText("http://localhost:8080/users/acivation?token=" + user.getRegistrationToken());
 
             // Send message
             Transport.send(message);

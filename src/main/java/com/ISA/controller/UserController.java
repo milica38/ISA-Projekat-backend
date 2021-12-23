@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -98,7 +99,8 @@ public class UserController {
     }
 
     @PostMapping(path = "/activate/{token}")
-    public ResponseEntity<?> activateClient(@PathVariable String token){
-        return new ResponseEntity<>(userService.findUserByToken(token), HttpStatus.OK);
+    public RedirectView activateClient(@PathVariable String token){
+        userService.findUserByToken(token);
+        return new RedirectView("http://localhost:4200");
     }
 }

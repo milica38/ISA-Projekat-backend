@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         user.setRegistrationToken(generateRandomToken());
         user.setType("Client");
 
-        //emailService.sendEmailForRegistration(user);
+        emailService.sendEmailForRegistration(user);
 
         return userRepository.save(user);
     }
@@ -117,15 +117,33 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> optionalUser = userRepository.findById(getCurrentUser().getId());
 
-        optionalUser.get().setName(userDTO.getName());
-        optionalUser.get().setAddress(userDTO.getAddress());
-        optionalUser.get().setCity(userDTO.getCity());
-        optionalUser.get().setCountry(userDTO.getCountry());
-        optionalUser.get().setDescription(userDTO.getDescription());
-        optionalUser.get().setEmail(userDTO.getEmail());
-        optionalUser.get().setPhoneNumber(userDTO.getPhoneNumber());
-        optionalUser.get().setSurname(userDTO.getSurname());
-        optionalUser.get().setPassword(userDTO.getPassword());
+        if (userDTO.getName() != null && !userDTO.getName().equals("")){
+            optionalUser.get().setName(userDTO.getName());
+        }
+        if (userDTO.getAddress() != null && !userDTO.getAddress().equals("")){
+            optionalUser.get().setAddress(userDTO.getAddress());
+        }
+        if (userDTO.getCity() != null && !userDTO.getCity().equals("")){
+            optionalUser.get().setCity(userDTO.getCity());
+        }
+        if (userDTO.getCountry() != null && !userDTO.getCountry().equals("")){
+            optionalUser.get().setCountry(userDTO.getCountry());
+        }
+        if (userDTO.getDescription() != null && !userDTO.getDescription().equals("")){
+            optionalUser.get().setDescription(userDTO.getDescription());
+        }
+        if (userDTO.getEmail() != null && !userDTO.getEmail().equals("")){
+            optionalUser.get().setEmail(userDTO.getEmail());
+        }
+        if (userDTO.getPhoneNumber() != null && !userDTO.getPhoneNumber().equals("")){
+            optionalUser.get().setPhoneNumber(userDTO.getPhoneNumber());
+        }
+        if (userDTO.getSurname() != null && !userDTO.getSurname().equals("")){
+            optionalUser.get().setSurname(userDTO.getSurname());
+        }
+        if (userDTO.getPassword() != null && !userDTO.getPassword().equals("")){
+            optionalUser.get().setPassword(userDTO.getPassword());
+        }
 
         return userRepository.save(optionalUser.get());
     }
