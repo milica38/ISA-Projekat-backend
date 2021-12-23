@@ -58,7 +58,7 @@ public class HomeProfileController {
     @GetMapping(path = "/my")
     public ResponseEntity<?> getMyHouses() {
 
-        List<HomeProfile> result = homeProfileService.getMyHouses();
+        List<HomeProfile> result = homeProfileService.getMyNotDeletedHouses();
 
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(result), HttpStatus.OK);
     }
