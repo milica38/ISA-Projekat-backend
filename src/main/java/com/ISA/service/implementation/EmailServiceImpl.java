@@ -30,13 +30,21 @@ public class EmailServiceImpl implements EmailService {
         Properties properties = System.getProperties();
 
         // Setup mail server
-        properties.setProperty("mail.smtp.host", host);
-        properties.setProperty("mail.smtp.username", "PatientServicePSWFirma1@gmail.com");
-        properties.setProperty("mail.smtp.password", "PSW!1234");
-        properties.setProperty("mail.smtp.port", "465");
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
 
         // Get the default Session object.
-        Session session = Session.getDefaultInstance(properties);
+        Session session = Session.getDefaultInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("PatientServicePSWFirma1@gmail.com","PSW!1234");
+                    }
+                });
 
         try {
             // Create a default MimeMessage object.
@@ -52,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
             message.setSubject("Registration activation");
 
             // Now set the actual message
-            message.setText("http://localhost:8080/users/acivation?token=" + user.getRegistrationToken());
+            message.setText("http://localhost:8080/api/users/activate/" + user.getRegistrationToken());
 
             // Send message
             Transport.send(message);

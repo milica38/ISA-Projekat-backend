@@ -90,15 +90,12 @@ public class UserController {
 
     @PutMapping()
     public ResponseEntity<?> edit(@RequestBody UserDTO dto) {
-
-
-
         User user = userService.edit(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(path = "/activate/{token}")
+    @GetMapping(path = "/activate/{token}")
     public RedirectView activateClient(@PathVariable String token){
         userService.findUserByToken(token);
         return new RedirectView("http://localhost:4200");
