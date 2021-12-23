@@ -4,6 +4,7 @@ import com.ISA.domain.dto.HomeProfileDTO;
 import com.ISA.domain.dto.converters.HomeProfileConverters;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.service.definition.HomeProfileService;
+import com.ISA.service.implementation.HomeProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.List;
 public class HomeProfileController {
 
     @Autowired
-    private HomeProfileService homeProfileService;
+    private HomeProfileServiceImpl homeProfileService;
 
     @GetMapping(path = "/home-profiles")
     public ResponseEntity<?> getAll() {
