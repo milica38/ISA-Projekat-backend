@@ -21,7 +21,7 @@ public class HomeProfileController {
 
     @GetMapping(path = "/home-profiles")
     public ResponseEntity<?> getAll() {
-        List<HomeProfile> homeProfiles = homeProfileService.getAll();
+        List<HomeProfile> homeProfiles = homeProfileService.getAllNotDeleted();
 
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(homeProfiles), HttpStatus.OK);
     }

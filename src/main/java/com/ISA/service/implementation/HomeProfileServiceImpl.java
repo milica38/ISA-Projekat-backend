@@ -28,6 +28,12 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     }
 
     @Override
+    public List<HomeProfile> getAllNotDeleted() {
+        return homeProfileRepository.findAllByDeleted(false);
+    }
+
+
+    @Override
     public HomeProfile get(Long id) {
         return homeProfileRepository.findById(id).get();
     }

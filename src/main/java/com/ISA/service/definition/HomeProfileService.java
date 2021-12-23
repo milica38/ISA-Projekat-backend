@@ -8,6 +8,7 @@ import java.util.List;
 public interface HomeProfileService {
 
     List<HomeProfile> getAll();
+    List<HomeProfile> getAllNotDeleted();
     HomeProfile get(Long id);
     HomeProfile add(HomeProfileDTO homeProfileDTO);
     HomeProfile edit(HomeProfileDTO homeProfileDTO);
