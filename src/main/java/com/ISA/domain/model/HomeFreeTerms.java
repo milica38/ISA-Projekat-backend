@@ -14,7 +14,8 @@ public class HomeFreeTerms {
     private Long id;
     private Date startDate;
     private Date endDate;
-    private Long houseId;
+    @ManyToOne
+    private HomeProfile homeProfile;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -22,6 +23,12 @@ public class HomeFreeTerms {
     public void setStartDate(Date startDate) { this.startDate = startDate; }
     public Date getEndDate() { return  endDate; }
     public void  setEndDate(Date endDate) { this.endDate = endDate; }
-    public Long getHouseId() { return houseId; }
-    public void setHouseId(Long houseId) { this.houseId = houseId; }
+
+    public HomeProfile getHomeProfile() {
+        return homeProfile;
+    }
+
+    public void setHomeProfile(HomeProfile homeProfile) {
+        this.homeProfile = homeProfile;
+    }
 }

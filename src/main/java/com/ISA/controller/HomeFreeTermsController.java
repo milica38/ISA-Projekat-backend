@@ -1,5 +1,6 @@
 package com.ISA.controller;
 
+import com.ISA.domain.dto.HomeFreeTermsDTO;
 import com.ISA.domain.dto.converters.HomeProfileConverters;
 import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
@@ -8,10 +9,7 @@ import com.ISA.service.implementation.HomeProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,9 +21,15 @@ public class HomeFreeTermsController {
     @Autowired
     private HomeFreeTermsServiceImpl homeFreeTermsService;
 
-    @GetMapping(path = "/")
-    public ResponseEntity<?> getAll() {
-        List<HomeFreeTerms> homeFreeTerms = homeFreeTermsService.getAll();
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> getAll(@PathVariable Long houseId) {
+        List<HomeFreeTerms> homeFreeTerms = homeFreeTermsService.getAll(houseId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> add(@RequestBody HomeFreeTermsDTO dto) {
+        HomeFreeTerms homeFreeTerms = homeFreeTermsService.add(dto);
+        return new ResponseEntity<>(homeFreeTerms,HttpStatus.OK);
     }
 }
