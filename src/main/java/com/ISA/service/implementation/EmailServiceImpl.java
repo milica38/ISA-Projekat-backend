@@ -57,10 +57,10 @@ public class EmailServiceImpl implements EmailService {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
 
             // Set Subject: header field
-            message.setSubject("Registration activation");
+            message.setSubject("Account activation");
 
             // Now set the actual message
-            message.setText("http://localhost:8080/api/users/activate/" + user.getRegistrationToken());
+            message.setText("Hello " + user.getName() +  ",\nIn order to activate your account, click on the link bellow" + "\n\nhttp://localhost:8080/api/users/activate/" + user.getRegistrationToken());
 
             // Send message
             Transport.send(message);
