@@ -22,9 +22,9 @@ public class AdventureProfileController {
     @Autowired
     private AdventureProfileService adventureProfileService;
 
-    @GetMapping(path = "adventure-profiles")
+    @GetMapping(path = "/adventure-profiles")
     public ResponseEntity<?> getAll() {
-        List<AdventureProfile> adventureProfiles = adventureProfileService.getAll();
+        List<AdventureProfile> adventureProfiles = adventureProfileService.getAllNotDeleted();
 
         return new ResponseEntity<>(AdventureProfileConverters.modelsToDTOs(adventureProfiles), HttpStatus.OK);
     }

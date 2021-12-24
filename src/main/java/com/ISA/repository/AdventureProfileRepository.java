@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface AdventureProfileRepository extends JpaRepository<AdventureProfile, Long> {
-    public List<AdventureProfile> findAll();
+     List<AdventureProfile> findAll();
+     List<AdventureProfile> findAllByDeleted(boolean deleted);
 }

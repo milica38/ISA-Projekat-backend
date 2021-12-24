@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface BoatProfileRepository extends JpaRepository<BoatProfile, Long> {
     List<BoatProfile> findAll();
+    List<BoatProfile> findAllByDeleted(boolean deleted);
 }

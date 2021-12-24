@@ -13,5 +13,6 @@ public interface AdventureProfileService {
     AdventureProfile add(AdventureProfileDTO adventureProfileDTO);
     AdventureProfile edit(AdventureProfileDTO adventureProfileDTO);
     boolean delete(Long id);
+    List<AdventureProfile> getAllNotDeleted();
 
 }

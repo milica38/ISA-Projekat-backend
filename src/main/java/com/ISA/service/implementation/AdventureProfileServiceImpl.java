@@ -25,6 +25,11 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
     }
 
     @Override
+    public List<AdventureProfile> getAllNotDeleted() {
+        return adventureProfileRepository.findAllByDeleted(false);
+    }
+
+    @Override
     public AdventureProfile get(Long id) {
         return adventureProfileRepository.findById(id).get();
     }

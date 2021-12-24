@@ -21,6 +21,9 @@ public class BoatProfileServiceImpl implements BoatProfileService {
     public List<BoatProfile> getAll() { return boatProfileRepository.findAll(); }
 
     @Override
+    public List<BoatProfile> getAllNotDeleted() { return boatProfileRepository.findAllByDeleted(false); }
+
+    @Override
     public BoatProfile get(Long id) { return boatProfileRepository.findById(id).get(); }
 
     @Override
