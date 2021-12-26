@@ -33,6 +33,12 @@ public class HomeProfileServiceImpl implements HomeProfileService {
 
         return homeProfileRepository.findAllByOwnerIdAndDeleted(user.getId(), false);
     }
+  
+    @Override
+    public List<HomeProfile> getAllNotDeleted() {
+        return homeProfileRepository.findAllByDeleted(false);
+    }
+
 
     @Override
     public HomeProfile get(Long id) {

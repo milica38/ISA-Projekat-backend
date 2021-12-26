@@ -19,7 +19,9 @@ public class BoatProfile {
     private String navEquipment;
     private String address;
     private String promoDescription;
+    @Column(columnDefinition = "TEXT")
     private String interiorImage;
+    @Column(columnDefinition = "TEXT")
     private String exteriorImage;
     private String capacity;
     private Date freeTerms;

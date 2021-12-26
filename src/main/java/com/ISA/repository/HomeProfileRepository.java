@@ -13,5 +13,6 @@ public interface HomeProfileRepository extends JpaRepository<HomeProfile, Long> 
     public List<HomeProfile> getAllByOwnerId(Long ownerId);
     public List<HomeProfile> findAll();
     public List<HomeProfile>findAllByOwnerIdAndDeleted(Long ownerId, boolean deleted);
+    public List<HomeProfile> findAllByDeleted(boolean deleted);
 
 }

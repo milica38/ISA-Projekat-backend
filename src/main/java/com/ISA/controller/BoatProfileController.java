@@ -21,7 +21,7 @@ public class BoatProfileController {
 
     @GetMapping(path = "/boat-profiles")
     public ResponseEntity<?> getAll() {
-        List<BoatProfile> boatProfiles = boatProfileService.getAll();
+        List<BoatProfile> boatProfiles = boatProfileService.getAllNotDeleted();
 
         return new ResponseEntity<>(BoatProfileConverters.modelsToDTOs(boatProfiles), HttpStatus.OK);
     }
