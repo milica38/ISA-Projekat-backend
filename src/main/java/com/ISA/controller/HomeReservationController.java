@@ -1,8 +1,6 @@
 package com.ISA.controller;
 
-import com.ISA.domain.dto.AdventureReservationDTO;
 import com.ISA.domain.dto.HomeReservationDTO;
-import com.ISA.domain.model.AdventureReservation;
 import com.ISA.domain.model.HomeReservation;
 import com.ISA.service.definition.HomeReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
