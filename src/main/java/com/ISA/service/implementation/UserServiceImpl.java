@@ -73,7 +73,6 @@ public class UserServiceImpl implements UserService {
         user.setSurname(registrationDTO.getSurname());
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setDescription(registrationDTO.getDescription());
-        user.setPassword(registrationDTO.getPassword());
         user.setRegistrationToken(generateRandomToken());
         user.setType("House owner");
 
@@ -100,7 +99,6 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setDescription(registrationDTO.getDescription());
         user.setType("Boat owner");
-        user.setPassword(registrationDTO.getPassword());
         user.setRegistrationToken(generateRandomToken());
         return userRepository.save(user);
     }

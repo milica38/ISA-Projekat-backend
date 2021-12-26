@@ -17,6 +17,7 @@ public class AdventureProfile {
     private double longitude;
     private String promoDescription;
     private String instructorBiography;
+    @Column(columnDefinition = "TEXT")
     private String ambientImage;
     private int maxNumberOfPeople;
     private Date freeTerm;
