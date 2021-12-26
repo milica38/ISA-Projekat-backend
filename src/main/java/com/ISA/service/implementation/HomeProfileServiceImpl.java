@@ -28,6 +28,13 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     }
 
     @Override
+    public List<HomeProfile> getMyNotDeletedHouses() {
+        User user = userService.getCurrentUser();
+
+        return homeProfileRepository.findAllByOwnerIdAndDeleted(user.getId(), false);
+    }
+  
+    @Override
     public List<HomeProfile> getAllNotDeleted() {
         return homeProfileRepository.findAllByDeleted(false);
     }

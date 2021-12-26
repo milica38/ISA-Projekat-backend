@@ -14,4 +14,5 @@ public interface HomeProfileService {
     HomeProfile edit(HomeProfileDTO homeProfileDTO);
     boolean delete(Long id);
     List<HomeProfile> getMyHouses();
+    List<HomeProfile> getMyNotDeletedHouses();
 }
