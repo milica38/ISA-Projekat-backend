@@ -15,7 +15,6 @@ public class HomeProfile {
     private String promoDescription;
     private int numberOfRooms;
     private int numberOfBeds;
-    //private Date freeTerms;
     private String behaviourRules;
     private double pricelist;
     private String extraService;
@@ -95,9 +94,7 @@ public class HomeProfile {
     public void setExteriorImage(String exteriorImage){
         this.exteriorImage = exteriorImage;
     }
-    public boolean getDeleted(){
-        return deleted;
-    }
+    public boolean getDeleted() { return deleted; }
     public void setDeleted(boolean deleted){
         this.deleted = deleted;
     }
