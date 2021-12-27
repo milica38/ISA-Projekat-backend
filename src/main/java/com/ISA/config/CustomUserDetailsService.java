@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<User> user = userRepository.findOneByEmail(username);
         org.springframework.security.core.userdetails.User.UserBuilder builder = null;
 
-        if (!user.isPresent() || !user.get().getStatus().equals("Active")) {
+        if (!user.isPresent() || user.get().getStatus() == null || !user.get().getStatus().equals("Active")) {
             throw new UsernameNotFoundException("USERNAME_NOT_FOUND");
         }
 

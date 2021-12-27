@@ -21,10 +21,10 @@ public class HomeFreeTermsController {
     @Autowired
     private HomeFreeTermsServiceImpl homeFreeTermsService;
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{houseId}")
     public ResponseEntity<?> getAll(@PathVariable Long houseId) {
         List<HomeFreeTerms> homeFreeTerms = homeFreeTermsService.getAll(houseId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(homeFreeTerms, HttpStatus.OK);
     }
 
     @PostMapping()
