@@ -5,7 +5,9 @@ import com.ISA.domain.model.HomeReservation;
 import com.ISA.repository.HomeReservationRepository;
 import com.ISA.service.definition.HomeReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class HomeReservationServiceImpl implements HomeReservationService {
 
     @Autowired

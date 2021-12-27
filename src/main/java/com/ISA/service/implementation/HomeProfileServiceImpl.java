@@ -65,12 +65,10 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         return homeProfileRepository.save(hp);
     }
 
-    @Override
-    public HomeProfile edit(HomeProfileDTO homeProfileDTO) {
+    public HomeProfile edit(Long id, HomeProfileDTO homeProfileDTO) {
 
-        Optional<HomeProfile> optionalHomeProfile = homeProfileRepository.findById(homeProfileDTO.getId());
+        Optional<HomeProfile> optionalHomeProfile = homeProfileRepository.findById(id);
 
-        optionalHomeProfile.get().setId(homeProfileDTO.getId());
         optionalHomeProfile.get().setName(homeProfileDTO.getName());
         optionalHomeProfile.get().setAddress(homeProfileDTO.getAddress());
         optionalHomeProfile.get().setPricelist(homeProfileDTO.getPricelist());
@@ -78,10 +76,18 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         optionalHomeProfile.get().setNumberOfBeds(homeProfileDTO.getNumberOfRooms());
         optionalHomeProfile.get().setPromoDescription(homeProfileDTO.getPromoDescription());
         optionalHomeProfile.get().setExtraService(homeProfileDTO.getExtraService());
-        optionalHomeProfile.get().setInteriorImage(homeProfileDTO.getInteriorImage());
-        optionalHomeProfile.get().setExteriorImage(homeProfileDTO.getExteriorImage());
+        if(homeProfileDTO.getInteriorImage() != null && !homeProfileDTO.getInteriorImage().equals("")) {
+            optionalHomeProfile.get().setInteriorImage(homeProfileDTO.getInteriorImage());
+        }
+
+        if(homeProfileDTO.getExteriorImage() != null && !homeProfileDTO.getExteriorImage().equals("")) {
+            optionalHomeProfile.get().setExteriorImage(homeProfileDTO.getExteriorImage());
+        }
+
         optionalHomeProfile.get().setBehaviourRules(homeProfileDTO.getBehaviourRules());
-        optionalHomeProfile.get().setOwnerId(homeProfileDTO.getownerId());
+        if(homeProfileDTO.getownerId() != null) {
+            optionalHomeProfile.get().setOwnerId(homeProfileDTO.getownerId());
+        }
 
         return homeProfileRepository.save(optionalHomeProfile.get());
     }

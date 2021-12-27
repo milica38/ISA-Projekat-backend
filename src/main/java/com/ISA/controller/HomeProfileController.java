@@ -31,7 +31,7 @@ public class HomeProfileController {
     public ResponseEntity<?> get(@PathVariable Long id) {
         HomeProfile hp = homeProfileService.get(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(hp, HttpStatus.OK);
     }
 
     @PostMapping()
@@ -43,9 +43,9 @@ public class HomeProfileController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody HomeProfileDTO dto) {
-        HomeProfile hp = homeProfileService.edit(dto);
+        HomeProfile hp = homeProfileService.edit(id, dto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(hp, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
