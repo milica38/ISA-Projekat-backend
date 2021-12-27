@@ -31,7 +31,7 @@ public class HomeProfileController {
     public ResponseEntity<?> get(@PathVariable Long id) {
         HomeProfile hp = homeProfileService.get(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(hp, HttpStatus.OK);
     }
 
     @PostMapping()

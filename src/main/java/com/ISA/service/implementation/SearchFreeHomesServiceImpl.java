@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class SearchFreeHomesServiceImpl implements SearchFreeHomesService {
@@ -23,8 +25,9 @@ public class SearchFreeHomesServiceImpl implements SearchFreeHomesService {
         List<HomeProfile> homes = new ArrayList<>();
         List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAll();
 
+
         for (HomeFreeTerms term: freeTerms) {
-            if(dto.getStartDate().after(term.getStartDate()) &&  dto.getEndDate().before(term.getEndDate())){
+            if(dto.getStartDate().after(term.getStartDate()) &&  dto.getEndDate().before(term.getEndDate()) && dto.getLocation().toLowerCase().equals(term.getHomeProfile().getAddress())){
 
                 if(!homeExists(term.getHomeProfile(), homes)){
                     homes.add(term.getHomeProfile());
