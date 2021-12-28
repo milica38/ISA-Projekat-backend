@@ -23,6 +23,7 @@ public class HomeProfileConverters {
         dto.setOwnerId(homeProfile.getownerId());
         dto.setPricelist(homeProfile.getPricelist());
         dto.setPromoDescription(homeProfile.getPromoDescription());
+        dto.setExtraPrice(homeProfile.getExtraPrice());
         return dto;
     }
 

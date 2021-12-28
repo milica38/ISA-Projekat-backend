@@ -51,6 +51,7 @@ public class HomeProfileServiceImpl implements HomeProfileService {
 
         HomeProfile hp = new HomeProfile();
 
+        hp.setExtraPrice(homeProfileDTO.getExtraPrice());
         hp.setOwnerId(userService.getCurrentUser().getId());
         hp.setName(homeProfileDTO.getName());
         hp.setAddress(homeProfileDTO.getAddress());
@@ -69,6 +70,7 @@ public class HomeProfileServiceImpl implements HomeProfileService {
 
         Optional<HomeProfile> optionalHomeProfile = homeProfileRepository.findById(id);
 
+        optionalHomeProfile.get().setExtraPrice(homeProfileDTO.getExtraPrice());
         optionalHomeProfile.get().setName(homeProfileDTO.getName());
         optionalHomeProfile.get().setAddress(homeProfileDTO.getAddress());
         optionalHomeProfile.get().setPricelist(homeProfileDTO.getPricelist());

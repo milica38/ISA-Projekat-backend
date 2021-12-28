@@ -16,6 +16,15 @@ public class HomeProfileDTO {
     private String interiorImage;
     private String exteriorImage;
     private Long ownerId;
+    private double extraPrice;
+
+    public double getExtraPrice() {
+        return extraPrice;
+    }
+
+    public void setExtraPrice(double extraPrice) {
+        this.extraPrice = extraPrice;
+    }
 
     public Long getownerId(){ return ownerId; }
     public void setOwnerId(Long id){
