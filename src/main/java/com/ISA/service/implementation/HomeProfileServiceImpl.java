@@ -10,6 +10,7 @@ import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class HomeProfileServiceImpl implements HomeProfileService {
 
         return homeProfileRepository.findAllByOwnerIdAndDeleted(user.getId(), false);
     }
-  
+
     @Override
     public List<HomeProfile> getAllNotDeleted() {
         return homeProfileRepository.findAllByDeleted(false);
@@ -101,4 +102,34 @@ public class HomeProfileServiceImpl implements HomeProfileService {
 
         return homeProfileRepository.getAllByOwnerId(user.getId());
     }
+
+    @Override
+    public List<HomeProfile> filterHomes(HomeProfileDTO dto) {
+
+        List<HomeProfile> homes =  homeProfileRepository.findAll();
+        List<HomeProfile> results = new ArrayList<>();
+
+        for(HomeProfile home: homes){
+            if(dto.getName().toLowerCase().equals(home.getName()))
+            {
+                if(!homeExists(home, results)){
+                    results.add(home);
+                }
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public boolean homeExists(HomeProfile home, List<HomeProfile> homes) {
+
+        for(HomeProfile profile: homes){
+            if(profile.getId().equals(home.getId())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

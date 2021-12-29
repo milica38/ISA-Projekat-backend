@@ -2,6 +2,7 @@ package com.ISA.controller;
 
 import com.ISA.domain.dto.HomeReservationDTO;
 import com.ISA.domain.dto.SearchFreeHomesDTO;
+import com.ISA.domain.dto.converters.HomeProfileConverters;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.HomeReservation;
 import com.ISA.service.definition.HomeReservationService;
@@ -26,7 +27,7 @@ public class HomeReservationController {
     public ResponseEntity<?> add(@RequestBody HomeReservationDTO dto) {
         HomeReservation reservation = homeReservationService.add(dto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
     @PostMapping(path = "/searchFree")
@@ -34,7 +35,7 @@ public class HomeReservationController {
     {
         List<HomeProfile> homes = freeHomesService.findAllFree(dto);
 
-        return new ResponseEntity<>(homes, HttpStatus.OK);
+        return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(homes), HttpStatus.OK);
     }
 
 

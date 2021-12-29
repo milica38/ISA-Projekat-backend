@@ -31,7 +31,7 @@ public class HomeProfileController {
     public ResponseEntity<?> get(@PathVariable Long id) {
         HomeProfile hp = homeProfileService.get(id);
 
-        return new ResponseEntity<>(hp, HttpStatus.OK);
+        return new ResponseEntity<>(HomeProfileConverters.modelToDTO(hp), HttpStatus.OK);
     }
 
     @PostMapping()
@@ -61,6 +61,12 @@ public class HomeProfileController {
         List<HomeProfile> result = homeProfileService.getMyNotDeletedHouses();
 
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(result), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/filterHomes")
+    public ResponseEntity<?> filterHomes(@RequestBody HomeProfileDTO dto){
+        List<HomeProfile> profiles = homeProfileService.filterHomes(dto);
+        return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(profiles), HttpStatus.OK);
     }
 
 }
