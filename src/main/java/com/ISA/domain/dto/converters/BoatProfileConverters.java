@@ -25,11 +25,12 @@ public class BoatProfileConverters {
         dto.setEngineNumber(boatProfile.getEngineNumber());
         dto.setEnginePower(boatProfile.getEnginePower());
         dto.setFishingEquipment(boatProfile.getFishingEquipment());
-        dto.setFreeTerms(boatProfile.getFreeTerms());
         dto.setLength(boatProfile.getLength());
         dto.setMaxSpeed(boatProfile.getMaxSpeed());
         dto.setNavEquipment(boatProfile.getNavEquipment());
         dto.setType(boatProfile.getType());
+        dto.setExtraPrice(boatProfile.getExtraPrice());
+        dto.setOwnerId(boatProfile.getownerId());
         return dto;
     }
 
