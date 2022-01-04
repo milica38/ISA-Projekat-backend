@@ -19,6 +19,8 @@ public class HomeReservation {
     private boolean cancelled;
     private int numberOfDays;
     private int numberOfPeople;
+    @ManyToOne
+    private HomeProfile homeProfile;
 
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
@@ -36,4 +38,9 @@ public class HomeReservation {
     public void setNumberOfDays(int numberOfDays){this.numberOfDays = numberOfDays;}
     public int getNumberOfPeople(){return  numberOfPeople;}
     public void  setNumberOfPeople(int numberOfPeople){this.numberOfPeople = numberOfPeople;}
+    public HomeProfile getHomeProfile(){return homeProfile;}
+    public void setHomeProfile(HomeProfile homeProfile) {
+        this.homeProfile = homeProfile;
+    }
+
 }

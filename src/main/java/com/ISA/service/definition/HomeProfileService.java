@@ -15,4 +15,7 @@ public interface HomeProfileService {
     boolean delete(Long id);
     List<HomeProfile> getMyHouses();
     List<HomeProfile> getMyNotDeletedHouses();
-}
+    List<HomeProfile> filterHomes(HomeProfileDTO dto);
+    boolean homeExists(HomeProfile home, List<HomeProfile> homes);
+
+    }

@@ -1,5 +1,7 @@
 package com.ISA.domain.dto;
 
+import com.ISA.domain.model.HomeProfile;
+
 import java.util.Date;
 
 public class HomeReservationDTO {
@@ -12,6 +14,7 @@ public class HomeReservationDTO {
     private boolean cancelled;
     private int numberOfDays;
     private int numberOfPeople;
+    private long houseId;
 
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
@@ -29,4 +32,7 @@ public class HomeReservationDTO {
     public void setNumberOfDays(int numberOfDays){this.numberOfDays = numberOfDays;}
     public int getNumberOfPeople(){return  numberOfPeople;}
     public void  setNumberOfPeople(int numberOfPeople){this.numberOfPeople = numberOfPeople;}
+    public long getHouseId(){return houseId;}
+    public void setHouseId(int houseId){this.houseId = houseId;}
+
 }
