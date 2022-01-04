@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
         user.setDescription(registrationDTO.getDescription());
         user.setRegistrationToken(generateRandomToken());
         user.setType("House owner");
+        user.setStatus("Waiting");
 
         return userRepository.save(user);
     }
@@ -99,6 +100,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setDescription(registrationDTO.getDescription());
         user.setType("Boat owner");
+        user.setStatus("Waiting");
         user.setRegistrationToken(generateRandomToken());
         return userRepository.save(user);
     }
@@ -158,6 +160,14 @@ public class UserServiceImpl implements UserService {
            return false;
         }
         user.get().setStatus("Active");
+        userRepository.save(user.get());
+        return true;
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        Optional<User> user = userRepository.findById(getCurrentUser().getId());
+        user.get().setStatus("Pending");
         userRepository.save(user.get());
         return true;
     }

@@ -12,4 +12,6 @@ public interface UserService {
     User getCurrentUser();
     Boolean findUserByToken(String token);
     User edit(UserDTO userDTO);
+    boolean delete(Long id);
+
 }

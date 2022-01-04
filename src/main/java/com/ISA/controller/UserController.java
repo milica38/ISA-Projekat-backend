@@ -2,7 +2,6 @@ package com.ISA.controller;
 
 import com.ISA.config.CustomUserDetailsService;
 import com.ISA.domain.dto.*;
-import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.User;
 import com.ISA.security.TokenUtil;
 import com.ISA.service.definition.UserService;
@@ -99,5 +98,12 @@ public class UserController {
     public RedirectView activateClient(@PathVariable String token){
         userService.findUserByToken(token);
         return new RedirectView("http://localhost:4200");
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        boolean delete = userService.delete(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
