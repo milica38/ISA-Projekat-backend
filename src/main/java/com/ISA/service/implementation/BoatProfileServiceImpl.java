@@ -44,6 +44,7 @@ public class BoatProfileServiceImpl implements BoatProfileService {
         BoatProfile bp = new BoatProfile();
 
         bp.setOwnerId(userService.getCurrentUser().getId());
+        bp.setNavEquipment(boatProfileDTO.getNavEquipment());
         bp.setExtraPrice(boatProfileDTO.getExtraPrice());
         bp.setAddress(boatProfileDTO.getAddress());
         bp.setExtraService(boatProfileDTO.getExtraService());
@@ -68,6 +69,7 @@ public class BoatProfileServiceImpl implements BoatProfileService {
 
         Optional<BoatProfile> optionalBoatProfile = boatProfileRepository.findById(boatProfileDTO.getId());
 
+        optionalBoatProfile.get().setNavEquipment(boatProfileDTO.getNavEquipment());
         optionalBoatProfile.get().setExtraPrice(boatProfileDTO.getExtraPrice());
         optionalBoatProfile.get().setAddress(boatProfileDTO.getAddress());
         optionalBoatProfile.get().setExtraService(boatProfileDTO.getExtraService());
