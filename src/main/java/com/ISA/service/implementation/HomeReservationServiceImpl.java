@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HomeReservationServiceImpl implements HomeReservationService {
@@ -87,6 +88,15 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         User user = userService.getCurrentUser();
 
         return homeReservationRepository.getAllByClientId(user.getId());
+    }
+
+    @Override
+    public boolean cancel(Long id) {
+        Optional<HomeReservation> reservation = homeReservationRepository.findById(id);
+        
+        reservation.get().setCancelled(true);
+        homeReservationRepository.save(reservation.get());
+        return true;
     }
 
 

@@ -12,4 +12,6 @@ public interface HomeReservationService {
     List<HomeProfile> findAll();
     boolean isOverlapping(long houseId, Date startDate, Date endDate);
     List<HomeReservation> getMyReservations();
+    boolean cancel(Long id);
+
 }
