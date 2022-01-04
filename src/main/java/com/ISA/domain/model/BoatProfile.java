@@ -24,14 +24,25 @@ public class BoatProfile {
     @Column(columnDefinition = "TEXT")
     private String exteriorImage;
     private String capacity;
-    private Date freeTerms;
     private String behaviourRules;
     private double pricelist;
     private String extraService;
+    private double extraPrice;
     private String fishingEquipment;
     private String cancelConditions;
+    private Long ownerId;
     private boolean deleted;
 
+    public Long getownerId(){ return ownerId; }
+    public void setOwnerId(Long id){
+        this.ownerId = id;
+    }
+    public double getExtraPrice() {
+        return extraPrice;
+    }
+    public void setExtraPrice(double extraPrice) {
+        this.extraPrice = extraPrice;
+    }
     public int getMaxSpeed() { return  maxSpeed; }
     public void setMaxSpeed(int maxSpeed) { this.maxSpeed = maxSpeed; }
     public int getEnginePower() { return  enginePower; }
@@ -73,12 +84,6 @@ public class BoatProfile {
     }
     public void setPromoDescription(String promoDescription){
         this.promoDescription = promoDescription;
-    }
-    public Date getFreeTerms(){
-        return freeTerms;
-    }
-    public void setFreeTerms(Date freeTerms){
-        this.freeTerms = freeTerms;
     }
     public String getBehaviourRules(){
         return behaviourRules;

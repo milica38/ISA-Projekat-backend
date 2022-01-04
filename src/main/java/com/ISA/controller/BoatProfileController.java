@@ -4,6 +4,7 @@ import com.ISA.domain.dto.BoatProfileDTO;
 import com.ISA.domain.dto.converters.BoatProfileConverters;
 import com.ISA.domain.model.BoatProfile;
 import com.ISA.service.definition.BoatProfileService;
+import com.ISA.service.implementation.BoatProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.List;
 public class BoatProfileController {
 
     @Autowired
-    private BoatProfileService boatProfileService;
+    private BoatProfileServiceImpl boatProfileService;
 
     @GetMapping(path = "/boat-profiles")
     public ResponseEntity<?> getAll() {
@@ -30,21 +31,21 @@ public class BoatProfileController {
     public ResponseEntity<?> get(@PathVariable Long id) {
         BoatProfile bp = boatProfileService.get(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(bp, HttpStatus.OK);
     }
 
     @PostMapping()
     public ResponseEntity<?> add(@RequestBody BoatProfileDTO dto) {
         BoatProfile bp = boatProfileService.add(dto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(BoatProfileConverters.modelToDTO(bp), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody BoatProfileDTO dto) {
-        BoatProfile bp = boatProfileService.edit(dto);
+        BoatProfile bp = boatProfileService.edit(id, dto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(bp, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -52,6 +53,13 @@ public class BoatProfileController {
         boolean delete = boatProfileService.delete(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/my")
+    public ResponseEntity<?> getMyBoats() {
+        List<BoatProfile> result = boatProfileService.getMyNotDeletedBoats();
+
+        return new ResponseEntity<>(BoatProfileConverters.modelsToDTOs(result), HttpStatus.OK);
     }
 
 }
