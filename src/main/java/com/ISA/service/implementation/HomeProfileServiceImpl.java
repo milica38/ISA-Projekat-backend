@@ -118,8 +118,8 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         List<HomeProfile> results = new ArrayList<>();
 
         for(HomeProfile home: homes){
-            if(dto.getName().toLowerCase().equals(home.getName()) || dto.getAddress().toLowerCase().equals(home.getAddress()) ||
-                    dto.getExtraService().toLowerCase().equals(home.getExtraService()) || dto.getNumberOfBeds() == home.getNumberOfBeds())
+            if(dto.getName().toLowerCase().equals(home.getName().toLowerCase()) || dto.getAddress().toLowerCase().equals(home.getAddress().toLowerCase()) ||
+                    dto.getExtraService().toLowerCase().equals(home.getExtraService().toLowerCase()) || dto.getNumberOfBeds() == home.getNumberOfBeds())
             {
                 if(!homeExists(home, results)){
                     results.add(home);

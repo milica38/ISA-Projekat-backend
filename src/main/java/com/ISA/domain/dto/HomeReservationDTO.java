@@ -15,8 +15,9 @@ public class HomeReservationDTO {
     private int numberOfDays;
     private int numberOfPeople;
     private long houseId;
+    private long clientId;
 
-    public Long getId(){ return id; }
+    public long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
     public Date getStartDate(){ return startDate; }
     public void setStartDate(Date startDate){ this.startDate = startDate; }
@@ -34,5 +35,7 @@ public class HomeReservationDTO {
     public void  setNumberOfPeople(int numberOfPeople){this.numberOfPeople = numberOfPeople;}
     public long getHouseId(){return houseId;}
     public void setHouseId(int houseId){this.houseId = houseId;}
+    public long getClientId(){return clientId;}
+    public void setClientId(long clientId){this.clientId = clientId;}
 
 }

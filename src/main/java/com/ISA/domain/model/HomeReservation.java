@@ -21,6 +21,8 @@ public class HomeReservation {
     private int numberOfPeople;
     @ManyToOne
     private HomeProfile homeProfile;
+    private long clientId;
+
 
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
@@ -42,5 +44,7 @@ public class HomeReservation {
     public void setHomeProfile(HomeProfile homeProfile) {
         this.homeProfile = homeProfile;
     }
+    public long getClientId(){return clientId;}
+    public void setClientId(long clientId){this.clientId = clientId;}
 
 }

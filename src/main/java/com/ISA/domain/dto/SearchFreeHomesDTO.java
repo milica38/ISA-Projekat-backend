@@ -6,7 +6,7 @@ public class SearchFreeHomesDTO {
     private long id;
     private Date startDate;
     private Date endDate;
-    private String location;
+    private String address;
 
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
@@ -14,6 +14,10 @@ public class SearchFreeHomesDTO {
     public void setStartDate(Date startDate){ this.startDate = startDate; }
     public Date getEndDate(){ return endDate; }
     public void setEndDate(Date endDate){ this.endDate = endDate; }
-    public String getLocation(){return location;}
-    public void setLocation(){String Location;}
+    public String getAddress(){
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

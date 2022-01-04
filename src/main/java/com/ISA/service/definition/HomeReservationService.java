@@ -1,7 +1,6 @@
 package com.ISA.service.definition;
 
 import com.ISA.domain.dto.HomeReservationDTO;
-import com.ISA.domain.dto.SearchFreeHomesDTO;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.HomeReservation;
 
@@ -12,4 +11,5 @@ public interface HomeReservationService {
     HomeReservation add(HomeReservationDTO dto);
     List<HomeProfile> findAll();
     boolean isOverlapping(long houseId, Date startDate, Date endDate);
+    List<HomeReservation> getMyReservations();
 }
