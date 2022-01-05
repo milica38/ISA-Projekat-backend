@@ -8,6 +8,24 @@ public class HomeFreeTermsDTO {
     private Date startDate;
     private Date endDate;
     private Long houseId;
+    private double actionPrice;
+    private boolean isAction;
+
+    public void setActionPrice(double actionPrice) {
+        this.actionPrice = actionPrice;
+    }
+
+    public double getActionPrice() {
+        return actionPrice;
+    }
+
+    public boolean isAction() {
+        return isAction;
+    }
+
+    public void setIsAction(boolean action) {
+        isAction = action;
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
