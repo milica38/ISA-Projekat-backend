@@ -90,4 +90,32 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
         adventureProfileRepository.save(optionalAdventureProfile.get());
         return true;
     }
+
+    @Override
+    public List<AdventureProfile> filterAdventures(AdventureProfileDTO dto) {
+
+        List<AdventureProfile> results = new ArrayList<>();
+        List<AdventureProfile> adventures = adventureProfileRepository.findAllByDeleted(false);
+
+        for(AdventureProfile profile: adventures){
+            if(profile.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || profile.getAddress().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
+            || profile.getExtraService().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || profile.getFishingEquipment().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
+            || profile.getCancelConditions().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || profile.getInstructorBiography().toLowerCase().contains(dto.getSearchTerm().toLowerCase())){
+
+                if (!adventureExists(profile, results)) {
+                    results.add(profile);
+                }
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public boolean adventureExists(AdventureProfile profile, List<AdventureProfile> profiles) {
+        for(AdventureProfile adventure: profiles){
+            if(adventure.getId().equals(profile.getId()))
+                return true;
+        }
+        return false;
+    }
 }

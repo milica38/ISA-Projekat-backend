@@ -10,6 +10,7 @@ import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,9 +104,30 @@ public class BoatProfileServiceImpl implements BoatProfileService {
     }
 
     @Override
-    public List<BoatProfile> getMyBoats() {
-        User user = userService.getCurrentUser();
+    public List<BoatProfile> filterBoats(BoatProfileDTO dto) {
 
-        return  boatProfileRepository.getAllByOwnerId(user.getId());
+        List<BoatProfile> results = new ArrayList<>();
+        List<BoatProfile> boats = boatProfileRepository.findAllByDeleted(false);
+
+        for(BoatProfile profile: boats){
+            if(profile.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || profile.getAddress().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
+            || profile.getFishingEquipment().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
+                    || profile.getBehaviourRules().toLowerCase().contains(dto.getSearchTerm().toLowerCase())){
+                if(!boatsExists(profile, results))
+                    results.add(profile);
+
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public boolean boatsExists(BoatProfile boat, List<BoatProfile> boats) {
+
+        for(BoatProfile profile: boats){
+            if(profile.getId().equals(boat.getId()))
+                return true;
+        }
+        return false;
     }
 }

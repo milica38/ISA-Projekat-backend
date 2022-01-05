@@ -56,4 +56,10 @@ public class AdventureProfileController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping(path = "/filterAdventures")
+    public ResponseEntity<?> filterAdventures(@RequestBody AdventureProfileDTO dto){
+        List<AdventureProfile> profiles = adventureProfileService.filterAdventures(dto);
+        return new ResponseEntity<>(AdventureProfileConverters.modelsToDTOs(profiles), HttpStatus.OK);
+    }
 }

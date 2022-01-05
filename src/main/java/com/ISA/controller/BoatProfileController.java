@@ -62,4 +62,10 @@ public class BoatProfileController {
         return new ResponseEntity<>(BoatProfileConverters.modelsToDTOs(result), HttpStatus.OK);
     }
 
+    @PostMapping(path = "/filterBoats")
+    public ResponseEntity<?> filterBoats(@RequestBody BoatProfileDTO dto){
+        List<BoatProfile> boats = boatProfileService.filterBoats(dto);
+        return new ResponseEntity<>(BoatProfileConverters.modelsToDTOs(boats), HttpStatus.OK);
+    }
+
 }

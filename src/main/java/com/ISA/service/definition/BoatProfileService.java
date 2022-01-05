@@ -14,6 +14,7 @@ public interface BoatProfileService {
     BoatProfile add(BoatProfileDTO boatProfileDTO);
     BoatProfile edit(Long id, BoatProfileDTO boatProfileDTO);
     boolean delete(Long id);
-    List<BoatProfile> getMyBoats();
     List<BoatProfile> getMyNotDeletedBoats();
+    List<BoatProfile> filterBoats(BoatProfileDTO dto);
+    boolean boatsExists(BoatProfile boat, List<BoatProfile> boats);
 }

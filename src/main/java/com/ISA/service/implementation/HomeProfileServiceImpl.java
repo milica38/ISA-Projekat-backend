@@ -114,7 +114,7 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     @Override
     public List<HomeProfile> filterHomes(HomeProfileDTO dto) {
 
-        List<HomeProfile> homes =  homeProfileRepository.findAll();
+        List<HomeProfile> homes =  homeProfileRepository.findAllByDeleted(false);
         List<HomeProfile> results = new ArrayList<>();
 
         for(HomeProfile home: homes){
