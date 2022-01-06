@@ -2,70 +2,92 @@ package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.AdventureProfileDTO;
 import com.ISA.domain.dto.AdventureReservationDTO;
-import com.ISA.domain.model.AdventureProfile;
-import com.ISA.domain.model.AdventureReservation;
+import com.ISA.domain.model.*;
 import com.ISA.repository.AdventureProfileRepository;
 import com.ISA.repository.AdventureReservationRepository;
 import com.ISA.service.definition.AdventureReservationService;
+import com.ISA.service.definition.EmailService;
+import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AdventureReservationServiceImpl implements AdventureReservationService {
+
     @Autowired
     private AdventureReservationRepository adventureReservationRepository;
 
+    @Autowired
+    private AdventureProfileRepository profileRepository;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private UserService userService;
+
 
     @Override
-    public List<AdventureReservation> getAll() {
-        return adventureReservationRepository.findAll();
+    public AdventureReservation add(AdventureReservationDTO dto) {
+
+        AdventureProfile adventureProfile = profileRepository.findById(dto.getAdventureId()).get();
+
+        if(isOverlapping(adventureProfile.getId(), dto.getStartDate(), dto.getEndDate())){
+            return null;
+        }
+        AdventureReservation reservation = new AdventureReservation();
+        reservation.setExtraServices(dto.getExtraServices());
+        reservation.setCancelled(false);
+        reservation.setEndDate(dto.getEndDate());
+        reservation.setStartDate(dto.getStartDate());
+        reservation.setClientId(userService.getCurrentUser().getId());
+        adventureProfile.setPriceList(dto.getPrice());
+
+        emailService.sendEmailForHouseReservation(userService.getCurrentUser());
+
+        return adventureReservationRepository.save(reservation);
     }
 
     @Override
-    public AdventureReservation get(Long id) {
-        return adventureReservationRepository.findById(id).get();
+    public List<AdventureProfile> findAll() {
+        return profileRepository.findAll();
     }
 
     @Override
-    public AdventureReservation add(AdventureReservationDTO adventureReservationDTO) {
+    public boolean isOverlapping(long adventureId, Date startDate, Date endDate) {
 
-        AdventureReservation ar = new AdventureReservation();
-        ar.setId(adventureReservationDTO.getId());
-        ar.setReservationStart(adventureReservationDTO.getReservationStart());
-        ar.setReservationPlace(adventureReservationDTO.getReservationPlace());
-        ar.setDurationReservation(adventureReservationDTO.getDurationReservation());
-        ar.setMaximumNumberOfPeople(adventureReservationDTO.getMaximumNumberOfPeople());
-        ar.setExtraServices(adventureReservationDTO.getExtraServices());
-        ar.setPrice(adventureReservationDTO.getPrice());
+        List<AdventureReservation> reservations = adventureReservationRepository.findAll();
 
-        return adventureReservationRepository.save(ar);
+        for(AdventureReservation reservation: reservations){
+
+            if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getAdventureProfile().getId().equals(adventureId)) {
+                return true;
+            }
+
+            if(startDate.after(reservation.getStartDate()) && startDate.before(reservation.getEndDate()) && reservation.getAdventureProfile().getId().equals(adventureId)){
+                return true;
+            }
+
+            if(endDate.after(reservation.getStartDate()) && endDate.before(reservation.getEndDate()) && reservation.getAdventureProfile().getId().equals(adventureId)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
-    public AdventureReservation edit(AdventureReservationDTO adventureReservationDTO) {
+    public List<AdventureReservation> getMyReservations() {
+        User user = userService.getCurrentUser();
 
-        Optional<AdventureReservation> optionalAdventureReservation = adventureReservationRepository.findById(adventureReservationDTO.getId());
-
-        optionalAdventureReservation.get().setId(adventureReservationDTO.getId());
-        optionalAdventureReservation.get().setReservationStart(adventureReservationDTO.getReservationStart());
-        optionalAdventureReservation.get().setReservationPlace(adventureReservationDTO.getReservationPlace());
-        optionalAdventureReservation.get().setDurationReservation(adventureReservationDTO.getDurationReservation());
-        optionalAdventureReservation.get().setMaximumNumberOfPeople(adventureReservationDTO.getMaximumNumberOfPeople());
-        optionalAdventureReservation.get().setExtraServices(adventureReservationDTO.getExtraServices());
-        optionalAdventureReservation.get().setPrice(adventureReservationDTO.getPrice());
-
-
-        return adventureReservationRepository.save(optionalAdventureReservation.get());
+        return adventureReservationRepository.getAllByClientId(user.getId());
     }
 
     @Override
-    public boolean delete(Long id) {
-        Optional<AdventureReservation> optionalAdventureReservation = adventureReservationRepository.findById(id);
-        optionalAdventureReservation.get().setDeleted(true);
-        adventureReservationRepository.save(optionalAdventureReservation.get());
-        return true;
+    public boolean cancel(Long id) {
+        return false;
     }
 }

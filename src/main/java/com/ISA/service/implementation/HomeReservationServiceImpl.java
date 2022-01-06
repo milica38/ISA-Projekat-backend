@@ -40,15 +40,15 @@ public class HomeReservationServiceImpl implements HomeReservationService {
             return null;
         }
         HomeReservation reservation = new HomeReservation();
-        reservation.setExtraServices(dto.getExtraServices());
-        reservation.setPrice(dto.getPrice());
-        reservation.setCancelled(dto.getCancelled());
+        reservation.setExtraServices(homeProfile.getExtraService());
+        reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
-        reservation.setNumberOfDays(dto.getNumberOfDays());
-        reservation.setNumberOfPeople(dto.getNumberOfPeople());
         reservation.setHomeProfile(homeProfile);
-        homeProfile.setPricelist(dto.getPrice());
+        reservation.setPrice(homeProfile.getPricelist());
+        reservation.setClientId(userService.getCurrentUser().getId());
+        reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
+
 
         emailService.sendEmailForHouseReservation(userService.getCurrentUser());
 

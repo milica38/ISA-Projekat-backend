@@ -4,9 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "boat_free_terms")
-
-public class BoatFreeTerms {
+@Table(name = "adventure_free_terms")
+public class AdventureFreeTerms {
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
@@ -15,7 +14,7 @@ public class BoatFreeTerms {
     private Date startDate;
     private Date endDate;
     @ManyToOne
-    private BoatProfile boatProfile;
+    private AdventureProfile adventureProfile;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -23,8 +22,12 @@ public class BoatFreeTerms {
     public void setStartDate(Date startDate) { this.startDate = startDate; }
     public Date getEndDate() { return  endDate; }
     public void  setEndDate(Date endDate) { this.endDate = endDate; }
-    public BoatProfile getBoatProfile() { return  boatProfile; }
-    public void setBoatProfile(BoatProfile boatProfile) {
-        this.boatProfile = boatProfile;
+
+    public AdventureProfile getAdventureProfile() {
+        return adventureProfile;
+    }
+
+    public void setAdventureProfile(AdventureProfile adventureProfile) {
+        this.adventureProfile = adventureProfile;
     }
 }
