@@ -4,7 +4,7 @@ import com.ISA.domain.dto.SearchFreeAdventuresDTO;
 import com.ISA.domain.model.AdventureFreeTerms;
 import com.ISA.domain.model.AdventureProfile;
 import com.ISA.repository.AdventureFreeTermsRepository;
-import com.ISA.service.definition.SearchFreeTermsAdventuresService;
+import com.ISA.service.definition.SearchFreeAdventuresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SearchFreeAdventuresServiceImpl implements SearchFreeTermsAdventuresService {
+public class SearchFreeAdventuresServiceImpl implements SearchFreeAdventuresService {
 
     @Autowired
     AdventureFreeTermsRepository freeTermsRepository;
 
     @Override
     public List<AdventureProfile> findAllFree(SearchFreeAdventuresDTO dto) {
+
         List<AdventureProfile> adventures = new ArrayList<>();
         List<AdventureFreeTerms> freeTerms = freeTermsRepository.findAll();
 
@@ -37,8 +38,10 @@ public class SearchFreeAdventuresServiceImpl implements SearchFreeTermsAdventure
     @Override
     public Boolean adventureExists(AdventureProfile adventure, List<AdventureProfile> adventures) {
         for(AdventureProfile profile: adventures){
-            if(profile.getId().equals(adventure.getId()))
+            if(profile.getId().equals(adventure.getId())){
                 return true;
+            }
+
         }
         return false;
     }

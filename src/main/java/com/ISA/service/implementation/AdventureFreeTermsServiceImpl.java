@@ -12,9 +12,8 @@ import java.util.List;
 public class AdventureFreeTermsServiceImpl implements AdventureFreeTermsService {
 
     @Autowired
-    AdventureFreeTermsRepository freeTermsRepository;
+    private AdventureFreeTermsRepository freeTermsRepository;
 
-    @Override
     public List<AdventureFreeTerms> getAll(Long adventureId) {
         return freeTermsRepository.findAllByAdventureProfileId(adventureId);
     }

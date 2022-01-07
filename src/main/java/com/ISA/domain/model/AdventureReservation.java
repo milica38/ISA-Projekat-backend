@@ -13,12 +13,10 @@ public class AdventureReservation {
     private long id;
     private Date startDate;
     private Date endDate;
-    private String reservationPlace;
-    private String durationReservation;
-    private int maximumNumberOfPeople;
     private String extraServices;
     private double price;
     private boolean cancelled;
+    private int numberOfPeople;
     private long clientId;
     @ManyToOne
     private AdventureProfile adventureProfile;
@@ -30,12 +28,6 @@ public class AdventureReservation {
     public void setStartDate(Date startDate){ this.startDate = startDate; }
     public Date getEndDate(){ return endDate; }
     public void setEndDate(Date endDate){ this.endDate = endDate; }
-    public String getReservationPlace(){ return reservationPlace; }
-    public void setReservationPlace(String reservationPlace){ this.reservationPlace = reservationPlace; }
-    public String getDurationReservation(){ return durationReservation; }
-    public void setDurationReservation(String durationReservation){ this.durationReservation = durationReservation;}
-    public int getMaximumNumberOfPeople(){ return maximumNumberOfPeople; }
-    public void setMaximumNumberOfPeople(int maximumNumberOfPeople){ this.maximumNumberOfPeople = maximumNumberOfPeople;}
     public String getExtraServices(){ return extraServices; }
     public void setExtraServices(String extraServices){ this.extraServices = extraServices; }
     public double getPrice(){ return price; }

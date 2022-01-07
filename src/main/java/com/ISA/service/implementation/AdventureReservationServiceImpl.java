@@ -9,6 +9,8 @@ import com.ISA.service.definition.AdventureReservationService;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -45,6 +47,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
         reservation.setClientId(userService.getCurrentUser().getId());
+        reservation.setAdventureProfile(adventureProfile);
         adventureProfile.setPriceList(dto.getPrice());
 
         emailService.sendEmailForHouseReservation(userService.getCurrentUser());

@@ -5,7 +5,7 @@ import com.ISA.domain.model.AdventureProfile;
 
 import java.util.List;
 
-public interface SearchFreeTermsAdventuresService {
+public interface SearchFreeAdventuresService {
 
     List<AdventureProfile> findAllFree(SearchFreeAdventuresDTO dto);
     Boolean adventureExists(AdventureProfile adventure, List<AdventureProfile> adventures);

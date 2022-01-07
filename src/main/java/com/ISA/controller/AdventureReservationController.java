@@ -6,7 +6,7 @@ import com.ISA.domain.dto.converters.AdventureProfileConverters;
 import com.ISA.domain.model.AdventureProfile;
 import com.ISA.domain.model.AdventureReservation;
 import com.ISA.service.definition.AdventureReservationService;
-import com.ISA.service.definition.SearchFreeTermsAdventuresService;
+import com.ISA.service.definition.SearchFreeAdventuresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class AdventureReservationController {
     private AdventureReservationService reservationService;
 
     @Autowired
-    private SearchFreeTermsAdventuresService freeTermsAdventuresService;
+    private SearchFreeAdventuresService freeTermsAdventuresService;
 
 
 

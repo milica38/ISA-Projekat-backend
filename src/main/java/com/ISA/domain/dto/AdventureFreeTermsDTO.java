@@ -7,7 +7,7 @@ public class AdventureFreeTermsDTO {
     private Long id;
     private Date startDate;
     private Date endDate;
-    private Long houseId;
+    private Long adventureId;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -15,6 +15,6 @@ public class AdventureFreeTermsDTO {
     public void setStartDate(Date startDate) { this.startDate = startDate; }
     public Date getEndDate() { return  endDate; }
     public void  setEndDate(Date endDate) { this.endDate = endDate; }
-    public Long getHouseId() { return houseId; }
-    public void setHouseId(Long houseId) { this.houseId = houseId; }
+    public Long getAdventureId() { return adventureId; }
+    public void setAdventureId(Long adventureId) { this.adventureId = adventureId; }
 }

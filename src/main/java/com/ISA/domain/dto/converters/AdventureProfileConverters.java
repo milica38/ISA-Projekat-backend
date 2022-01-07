@@ -20,8 +20,9 @@ public class AdventureProfileConverters {
         dto.setInstructorBiography(adventureProfile.getInstructorBiography());
         dto.setMaxNumberOfPeople(adventureProfile.getMaxNumberOfPeople());
         dto.setName(adventureProfile.getName());
-        dto.setPriceList(adventureProfile.getPriceList());
+        dto.setPricelist(adventureProfile.getPriceList());
         dto.setPromoDescription(adventureProfile.getPromoDescription());
+        dto.setId(adventureProfile.getId());
 
         return dto;
     }

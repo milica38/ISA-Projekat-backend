@@ -15,7 +15,7 @@ public class AdventureProfileDTO {
     private Date freeTerm;
     private String behaviourRules;
     private String fishingEquipment;
-    private double priceList;
+    private double pricelist;
     private String extraService;
     private String cancelConditions;
     private boolean deleted;
@@ -45,8 +45,8 @@ public class AdventureProfileDTO {
     public void setBehaviourRules(String behaviourRules){ this.behaviourRules = behaviourRules; }
     public String getFishingEquipment(){ return fishingEquipment; }
     public void setFishingEquipment(String fishingEquipment){ this.fishingEquipment = fishingEquipment; }
-    public double getPriceList(){ return priceList; }
-    public void setPriceList(double priceList){ this.priceList = priceList; }
+    public double getPricelist(){ return pricelist; }
+    public void setPricelist(double pricelist){ this.pricelist = pricelist; }
     public String getExtraService(){ return extraService; }
     public void setExtraService(String extraService){ this.extraService = extraService; }
     public String getCancelConditions(){ return cancelConditions; }

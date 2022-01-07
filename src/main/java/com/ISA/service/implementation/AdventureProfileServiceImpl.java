@@ -2,7 +2,7 @@ package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.AdventureProfileDTO;
 import com.ISA.domain.model.AdventureProfile;
-import com.ISA.domain.model.User;
+import com.ISA.domain.model.HomeProfile;
 import com.ISA.repository.AdventureProfileRepository;
 import com.ISA.service.definition.AdventureProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
         ap.setFreeTerm(adventureProfileDTO.getFreeTerm());
         ap.setBehaviourRules(adventureProfileDTO.getBehaviourRules());
         ap.setFishingEquipment(adventureProfileDTO.getFishingEquipment());
-        ap.setPriceList(adventureProfileDTO.getPriceList());
+        ap.setPriceList(adventureProfileDTO.getPricelist());
         ap.setExtraService(adventureProfileDTO.getExtraService());
         ap.setCancelConditions(adventureProfileDTO.getCancelConditions());
 
@@ -76,7 +76,7 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
         optionalAdventureProfile.get().setFreeTerm(adventureProfileDTO.getFreeTerm());
         optionalAdventureProfile.get().setBehaviourRules(adventureProfileDTO.getBehaviourRules());
         optionalAdventureProfile.get().setFishingEquipment(adventureProfileDTO.getFishingEquipment());
-        optionalAdventureProfile.get().setPriceList(adventureProfileDTO.getPriceList());
+        optionalAdventureProfile.get().setPriceList(adventureProfileDTO.getPricelist());
         optionalAdventureProfile.get().setExtraService(adventureProfileDTO.getExtraService());
         optionalAdventureProfile.get().setCancelConditions(adventureProfileDTO.getCancelConditions());
 
