@@ -2,7 +2,8 @@ package com.ISA.domain.dto;
 
 import java.util.Date;
 
-public class SearchFreeHomesDTO {
+public class SearchFreeBoatsDTO {
+
     private long id;
     private Date startDate;
     private Date endDate;

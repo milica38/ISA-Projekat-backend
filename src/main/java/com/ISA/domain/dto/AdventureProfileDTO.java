@@ -15,10 +15,11 @@ public class AdventureProfileDTO {
     private Date freeTerm;
     private String behaviourRules;
     private String fishingEquipment;
-    private double priceList;
+    private double pricelist;
     private String extraService;
     private String cancelConditions;
     private boolean deleted;
+    private String searchTerm;
 
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id;}
@@ -44,13 +45,15 @@ public class AdventureProfileDTO {
     public void setBehaviourRules(String behaviourRules){ this.behaviourRules = behaviourRules; }
     public String getFishingEquipment(){ return fishingEquipment; }
     public void setFishingEquipment(String fishingEquipment){ this.fishingEquipment = fishingEquipment; }
-    public double getPriceList(){ return priceList; }
-    public void setPriceList(double priceList){ this.priceList = priceList; }
+    public double getPricelist(){ return pricelist; }
+    public void setPricelist(double pricelist){ this.pricelist = pricelist; }
     public String getExtraService(){ return extraService; }
     public void setExtraService(String extraService){ this.extraService = extraService; }
     public String getCancelConditions(){ return cancelConditions; }
     public void setCancelConditions(String cancelConditions){ this.cancelConditions = cancelConditions; }
     public boolean getDeleted(){ return deleted; }
     public void setDeleted(boolean deleted){ this.deleted = deleted; }
+    public String getSearchTerm(){return searchTerm;}
+    public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
 
 }

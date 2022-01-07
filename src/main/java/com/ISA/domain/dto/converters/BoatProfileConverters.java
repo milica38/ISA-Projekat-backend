@@ -31,6 +31,7 @@ public class BoatProfileConverters {
         dto.setType(boatProfile.getType());
         dto.setExtraPrice(boatProfile.getExtraPrice());
         dto.setOwnerId(boatProfile.getownerId());
+        dto.setPriceList(boatProfile.getPricelist());
         return dto;
     }
 

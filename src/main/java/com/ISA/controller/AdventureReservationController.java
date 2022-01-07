@@ -1,8 +1,12 @@
 package com.ISA.controller;
 
 import com.ISA.domain.dto.AdventureReservationDTO;
+import com.ISA.domain.dto.SearchFreeAdventuresDTO;
+import com.ISA.domain.dto.converters.AdventureProfileConverters;
+import com.ISA.domain.model.AdventureProfile;
 import com.ISA.domain.model.AdventureReservation;
 import com.ISA.service.definition.AdventureReservationService;
+import com.ISA.service.definition.SearchFreeAdventuresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,40 +21,31 @@ import java.util.List;
 public class AdventureReservationController {
 
     @Autowired
-    private AdventureReservationService adventureReservationService;
+    private AdventureReservationService reservationService;
 
-    @GetMapping
-    public ResponseEntity<?> getAll() {
-        List<AdventureReservation> adventureReservation = adventureReservationService.getAll();
+    @Autowired
+    private SearchFreeAdventuresService freeTermsAdventuresService;
 
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<?> get(@PathVariable Long id) {
-        AdventureReservation ar = adventureReservationService.get(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
     @PostMapping()
     public ResponseEntity<?> add(@RequestBody AdventureReservationDTO dto) {
-        AdventureReservation ar = adventureReservationService.add(dto);
+        AdventureReservation reservation = reservationService.add(dto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody AdventureReservationDTO dto) {
-        AdventureReservation ar = adventureReservationService.edit(dto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping(path = "/searchFree")
+    public ResponseEntity<?> searchFree(@RequestBody SearchFreeAdventuresDTO dto)
+    {
+        List<AdventureProfile> adventures = freeTermsAdventuresService.findAllFree(dto);
+
+        return new ResponseEntity<>(AdventureProfileConverters.modelsToDTOs(adventures), HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        boolean delete = adventureReservationService.delete(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+
+
 }

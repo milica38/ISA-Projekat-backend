@@ -17,6 +17,7 @@ public class HomeProfileDTO {
     private String exteriorImage;
     private Long ownerId;
     private double extraPrice;
+    private String searchTerm;
 
     public double getExtraPrice() {
         return extraPrice;
@@ -94,4 +95,6 @@ public class HomeProfileDTO {
     public void setExteriorImage(String exteriorImage){
         this.exteriorImage = exteriorImage;
     }
+    public String getSearchTerm(){return searchTerm;}
+    public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
 }

@@ -3,7 +3,9 @@ package com.ISA.controller;
 
 import com.ISA.domain.dto.AdventureProfileDTO;
 import com.ISA.domain.dto.converters.AdventureProfileConverters;
+import com.ISA.domain.dto.converters.HomeProfileConverters;
 import com.ISA.domain.model.AdventureProfile;
+import com.ISA.domain.model.HomeProfile;
 import com.ISA.service.definition.AdventureProfileService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.MutablePropertyValues;
@@ -31,9 +33,9 @@ public class AdventureProfileController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
-        AdventureProfile ap = adventureProfileService.get(id);
+        AdventureProfile profile = adventureProfileService.get(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(AdventureProfileConverters.modelToDTO(profile), HttpStatus.OK);
     }
 
     @PostMapping()
@@ -55,5 +57,11 @@ public class AdventureProfileController {
         boolean delete = adventureProfileService.delete(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/filterAdventures")
+    public ResponseEntity<?> filterAdventures(@RequestBody AdventureProfileDTO dto){
+        List<AdventureProfile> profiles = adventureProfileService.filterAdventures(dto);
+        return new ResponseEntity<>(AdventureProfileConverters.modelsToDTOs(profiles), HttpStatus.OK);
     }
 }

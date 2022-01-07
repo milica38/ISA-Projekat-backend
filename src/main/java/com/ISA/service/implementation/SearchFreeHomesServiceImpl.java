@@ -27,7 +27,7 @@ public class SearchFreeHomesServiceImpl implements SearchFreeHomesService {
 
 
         for (HomeFreeTerms term: freeTerms) {
-            if(dto.getStartDate().after(term.getStartDate()) &&  dto.getEndDate().before(term.getEndDate()) && dto.getLocation().toLowerCase().equals(term.getHomeProfile().getAddress())){
+            if(dto.getStartDate().after(term.getStartDate()) &&  dto.getEndDate().before(term.getEndDate()) && term.getHomeProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
 
                 if(!homeExists(term.getHomeProfile(), homes)){
                     homes.add(term.getHomeProfile());

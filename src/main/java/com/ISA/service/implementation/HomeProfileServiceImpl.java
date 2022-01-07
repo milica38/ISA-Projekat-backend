@@ -114,12 +114,11 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     @Override
     public List<HomeProfile> filterHomes(HomeProfileDTO dto) {
 
-        List<HomeProfile> homes =  homeProfileRepository.findAll();
+        List<HomeProfile> homes =  homeProfileRepository.findAllByDeleted(false);
         List<HomeProfile> results = new ArrayList<>();
 
         for(HomeProfile home: homes){
-            if(dto.getName().toLowerCase().equals(home.getName()) || dto.getAddress().toLowerCase().equals(home.getAddress()) ||
-                    dto.getExtraService().toLowerCase().equals(home.getExtraService()) || dto.getNumberOfBeds() == home.getNumberOfBeds())
+            if(home.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || home.getAddress().toLowerCase().contains(dto.getSearchTerm().toLowerCase()))
             {
                 if(!homeExists(home, results)){
                     results.add(home);
