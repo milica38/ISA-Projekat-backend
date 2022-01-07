@@ -20,12 +20,13 @@ import java.util.List;
 public class BoatReservationController {
 
     @Autowired
-    private SearchFreeBoatsService freeBoatsService;
-
-    @Autowired
     private BoatReservationService reservationService;
 
-    @PostMapping()
+    @Autowired
+    private SearchFreeBoatsService freeBoatsService;
+
+
+    @PostMapping(path = "/book")
     public ResponseEntity<?> add(@RequestBody BoatReservationDTO dto) {
         BoatReservation reservation = reservationService.add(dto);
 

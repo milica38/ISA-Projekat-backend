@@ -9,6 +9,8 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
+
 
 import java.util.Date;
 import java.util.List;
@@ -30,20 +32,19 @@ public class BoatReservationServiceImpl implements BoatReservationService {
 
     @Override
     public BoatReservation add(BoatReservationDTO dto) {
+
         BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
 
         if(isOverlapping(boatProfile.getId(), dto.getStartDate(), dto.getEndDate())){
             return null;
         }
         BoatReservation reservation = new BoatReservation();
-        reservation.setExtraServices(dto.getExtraServices());
+        reservation.setExtraServices(boatProfile.getExtraService());
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
-        reservation.setNumberOfDays(dto.getNumberOfDays());
-        reservation.setNumberOfPeople(dto.getNumberOfPeople());
         reservation.setBoatProfile(boatProfile);
-        boatProfile.setPriceList(dto.getPrice());
+        reservation.setPrice(boatProfile.getPricelist());
         reservation.setClientId(userService.getCurrentUser().getId());
 
 
@@ -59,6 +60,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
 
     @Override
     public boolean isOverlapping(long boatId, Date startDate, Date endDate) {
+
         List<BoatReservation> reservations = reservationRepository.findAll();
 
         for(BoatReservation reservation: reservations){

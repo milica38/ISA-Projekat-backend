@@ -1,7 +1,5 @@
 package com.ISA.domain.dto;
 
-import com.ISA.domain.model.HomeProfile;
-
 import java.util.Date;
 
 public class HomeReservationDTO {

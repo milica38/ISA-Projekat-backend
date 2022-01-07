@@ -31,7 +31,7 @@ public class BoatProfileController {
     public ResponseEntity<?> get(@PathVariable Long id) {
         BoatProfile bp = boatProfileService.get(id);
 
-        return new ResponseEntity<>(bp, HttpStatus.OK);
+        return new ResponseEntity<>(BoatProfileConverters.modelToDTO(bp), HttpStatus.OK);
     }
 
     @PostMapping()
@@ -45,7 +45,7 @@ public class BoatProfileController {
     public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody BoatProfileDTO dto) {
         BoatProfile bp = boatProfileService.edit(id, dto);
 
-        return new ResponseEntity<>(bp, HttpStatus.OK);
+        return new ResponseEntity<>(BoatProfileConverters.modelToDTO(bp), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")

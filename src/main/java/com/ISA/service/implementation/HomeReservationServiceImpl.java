@@ -21,7 +21,6 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     @Autowired
     private HomeReservationRepository homeReservationRepository;
 
-
     @Autowired
     private HomeProfileRepository homeProfileRepository;
 
