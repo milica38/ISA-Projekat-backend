@@ -100,6 +100,18 @@ public class UserController {
         return new RedirectView("http://localhost:4200");
     }
 
+
+    @PostMapping(path = "/password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+        User user = userService.changePassword(changePasswordDTO);
+
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean delete = userService.delete(id);

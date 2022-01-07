@@ -1,6 +1,7 @@
 package com.ISA.service.implementation;
 
 import com.ISA.config.SecurityUtils;
+import com.ISA.domain.dto.ChangePasswordDTO;
 import com.ISA.domain.dto.RegistrationDTO;
 import com.ISA.domain.dto.UserDTO;
 import com.ISA.domain.model.HomeProfile;
@@ -146,6 +147,20 @@ public class UserServiceImpl implements UserService {
         }
 
         return userRepository.save(optionalUser.get());
+    }
+
+    @Override
+    public User changePassword(ChangePasswordDTO changePasswordDTO) {
+
+        User user = getCurrentUser();
+
+        if(!encoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
+            return null;
+        }
+
+        user.setPassword(encoder.encode(changePasswordDTO.getNewPassword()));
+
+        return userRepository.save(user);
     }
 
     public static String generateRandomToken(){

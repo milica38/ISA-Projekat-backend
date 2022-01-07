@@ -14,8 +14,26 @@ public class HomeFreeTerms {
     private Long id;
     private Date startDate;
     private Date endDate;
+    private double actionPrice;
+    private boolean isAction;
     @ManyToOne
     private HomeProfile homeProfile;
+
+    public void setActionPrice(double actionPrice) {
+        this.actionPrice = actionPrice;
+    }
+
+    public double getActionPrice() {
+        return actionPrice;
+    }
+
+    public boolean isAction() {
+        return isAction;
+    }
+
+    public void setAction(boolean action) {
+        isAction = action;
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
