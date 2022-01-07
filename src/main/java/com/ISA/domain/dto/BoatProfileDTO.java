@@ -24,6 +24,8 @@ public class BoatProfileDTO {
     private String cancelConditions;
     private double extraPrice;
     private Long ownerId;
+    private String searchTerm;
+
 
 
     public Long getownerId(){ return ownerId; }
@@ -108,5 +110,7 @@ public class BoatProfileDTO {
     public void setExteriorImage(String exteriorImage){
         this.exteriorImage = exteriorImage;
     }
+    public String getSearchTerm(){return searchTerm;}
+    public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
 
 }

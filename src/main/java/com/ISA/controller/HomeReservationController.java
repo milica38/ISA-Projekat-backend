@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("api/homeReservations")
 public class HomeReservationController {
 
@@ -36,6 +37,13 @@ public class HomeReservationController {
         List<HomeProfile> homes = freeHomesService.findAllFree(dto);
 
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(homes), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/myReservations")
+    public ResponseEntity<?> getMyReservations()
+    {
+        List<HomeReservation> reservations = homeReservationService.getMyReservations();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
 

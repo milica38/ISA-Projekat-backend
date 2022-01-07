@@ -4,28 +4,31 @@ import java.util.Date;
 
 public class AdventureReservationDTO {
     private long id;
-    private Date reservationStart;
-    private String reservationPlace;
-    private String durationReservation;
-    private int maximumNumberOfPeople;
+    private Date startDate;
+    private Date endDate;
     private String extraServices;
     private double price;
-    private boolean deleted;
+    private boolean cancelled;
+    private long clientId;
+    private long adventureId;
+
 
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
-    public Date getReservationStart(){ return reservationStart; }
-    public void setReservationStart(Date reservationStart){ this.reservationStart = reservationStart; }
-    public String getReservationPlace(){ return reservationPlace; }
-    public void setReservationPlace(String reservationPlace){ this.reservationPlace = reservationPlace; }
-    public String getDurationReservation(){ return durationReservation; }
-    public void setDurationReservation(String durationReservation){ this.durationReservation = durationReservation;}
-    public int getMaximumNumberOfPeople(){ return maximumNumberOfPeople; }
-    public void setMaximumNumberOfPeople(int maximumNumberOfPeople){ this.maximumNumberOfPeople = maximumNumberOfPeople;}
+    public Date getStartDate(){ return startDate; }
+    public void setStartDate(Date startDate){ this.startDate = startDate; }
+    public Date getEndDate(){ return endDate; }
+    public void setEndDate(Date endDate){ this.endDate = endDate; }
     public String getExtraServices(){ return extraServices; }
     public void setExtraServices(String extraServices){ this.extraServices = extraServices; }
     public double getPrice(){ return price; }
     public void setPrice(double price){ this.price = price; }
-    public boolean getDeleted(){ return deleted; }
-    public void setDeleted(boolean deleted){ this.deleted = deleted; }
+    public boolean getCancelled(){ return cancelled; }
+    public void setCancelled(boolean cancelled){ this.cancelled = cancelled; }
+    public long getClientId(){return clientId;}
+    public void setClientId(long clientId){this.clientId = clientId;}
+    public long getAdventureId(){return adventureId;}
+    public void setAdventureId(long adventureId) {
+        this.adventureId = adventureId;
+    }
 }

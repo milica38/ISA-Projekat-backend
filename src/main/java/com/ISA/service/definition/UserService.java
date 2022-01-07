@@ -14,4 +14,6 @@ public interface UserService {
     Boolean findUserByToken(String token);
     User edit(UserDTO userDTO);
     User changePassword(ChangePasswordDTO changePasswordDTO);
+    boolean delete(Long id);
+
 }
