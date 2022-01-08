@@ -32,4 +32,10 @@ public class HomeFreeTermsController {
         HomeFreeTerms homeFreeTerms = homeFreeTermsService.add(dto);
         return new ResponseEntity<>(homeFreeTerms,HttpStatus.OK);
     }
+
+    @GetMapping(path = "/getActions")
+    public ResponseEntity<?> getAllActions(){
+        List<HomeFreeTerms> actions = homeFreeTermsService.getAllActions();
+        return new ResponseEntity<>(actions, HttpStatus.OK);
+    }
 }

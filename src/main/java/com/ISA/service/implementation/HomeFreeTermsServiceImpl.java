@@ -64,4 +64,9 @@ public class HomeFreeTermsServiceImpl implements HomeFreeTermsService {
         homeFreeTerms.setAction(homeFreeTermsDTO.isAction());
         return homeFreeTermsRepository.save(homeFreeTerms);
     }
+
+    @Override
+    public List<HomeFreeTerms> getAllActions() {
+        return homeFreeTermsRepository.findAllByIsAction(true);
+    }
 }

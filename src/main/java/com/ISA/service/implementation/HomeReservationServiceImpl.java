@@ -4,6 +4,7 @@ import com.ISA.domain.dto.HomeReservationDTO;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.HomeReservation;
 import com.ISA.domain.model.User;
+import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.repository.HomeProfileRepository;
 import com.ISA.repository.HomeReservationRepository;
 import com.ISA.service.definition.EmailService;
@@ -97,6 +98,5 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         homeReservationRepository.save(reservation.get());
         return true;
     }
-
 
 }

@@ -5,6 +5,7 @@ import com.ISA.domain.dto.SearchFreeBoatsDTO;
 import com.ISA.domain.dto.converters.BoatProfileConverters;
 import com.ISA.domain.model.BoatProfile;
 import com.ISA.domain.model.BoatReservation;
+import com.ISA.domain.model.HomeReservation;
 import com.ISA.service.definition.BoatReservationService;
 import com.ISA.service.definition.SearchFreeBoatsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,12 @@ public class BoatReservationController {
         List<BoatProfile> boats = freeBoatsService.findAllFree(dto);
 
         return new ResponseEntity<>(BoatProfileConverters.modelsToDTOs(boats), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/myReservations")
+    public ResponseEntity<?> getMyReservations()
+    {
+        List<BoatReservation> reservations = reservationService.getMyReservations();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 }

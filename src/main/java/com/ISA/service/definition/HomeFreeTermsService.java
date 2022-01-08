@@ -9,5 +9,6 @@ public interface HomeFreeTermsService {
 
     List<HomeFreeTerms> getAll(Long houseId);
     HomeFreeTerms add(HomeFreeTermsDTO homeFreeTermsDTO);
+    List<HomeFreeTerms>  getAllActions();
 
 }
