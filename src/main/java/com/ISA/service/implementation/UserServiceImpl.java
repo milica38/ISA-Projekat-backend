@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setRegistrationToken(generateRandomToken());
         user.setType("Client");
+        user.setStatus("Waiting");
 
         emailService.sendEmailForRegistration(user);
 

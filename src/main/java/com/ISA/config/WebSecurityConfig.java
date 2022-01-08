@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/users/login", "/api/users/client/register", "/api/users/house-owner/register","/api/users/boat-owner/register", "/api/users/activate/**", "/api/homeReservations/searchFree", "/api/homes/filterHomes", "/api/boats/filterBoats", "/api/adventures/filterAdventures", "/api/adventuresReservation/searchFree", "/api/boatReservations/searchFree");
+        web.ignoring().antMatchers(HttpMethod.POST, "/api/users/login", "/api/users/client/register", "/api/users/house-owner/register","/api/users/boat-owner/register", "/api/users/activate/**", "/api/homes/filterHomes", "/api/boats/filterBoats", "/api/adventures/filterAdventures", "/api/adventuresReservation/searchFree", "/api/boatReservations/searchFree");
         web.ignoring().antMatchers(HttpMethod.GET, "/api/homes/home-profiles", "/api/boats/boat-profiles", "/api/adventures/adventure-profiles", "/api/users/activate/**");
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
         web.ignoring().antMatchers(HttpMethod.PUT, "/api/users");
