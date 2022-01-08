@@ -50,7 +50,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
 
 
-        emailService.sendEmailForHouseReservation(userService.getCurrentUser());
+        emailService.sendEmailForHouseReservation(userService.getCurrentUser(), reservation);
 
         return homeReservationRepository.save(reservation);
     }
@@ -68,7 +68,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
         for(HomeReservation reservation: reservations){
 
-            if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getHomeProfile().getId().equals(houseId)) {
+           if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getHomeProfile().getId().equals(houseId)) {
                 return true;
             }
 

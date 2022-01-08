@@ -50,7 +50,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         reservation.setAdventureProfile(adventureProfile);
         adventureProfile.setPriceList(dto.getPrice());
 
-        emailService.sendEmailForHouseReservation(userService.getCurrentUser());
+        emailService.sendEmailForAdventureReservation(userService.getCurrentUser(), reservation);
 
         return adventureReservationRepository.save(reservation);
     }

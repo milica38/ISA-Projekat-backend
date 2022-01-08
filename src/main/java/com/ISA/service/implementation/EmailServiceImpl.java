@@ -1,7 +1,6 @@
 package com.ISA.service.implementation;
 
-import com.ISA.domain.model.HomeProfile;
-import com.ISA.domain.model.User;
+import com.ISA.domain.model.*;
 import com.ISA.service.definition.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -71,7 +70,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
 
-    public void sendEmailForHouseReservation(User user)
+    public void sendEmailForHouseReservation(User user, HomeReservation reservation)
     {
         // Sender's email ID needs to be mentioned
         String from = "PatientServicePSWFirma1@gmail.com";
@@ -110,10 +109,115 @@ public class EmailServiceImpl implements EmailService {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
 
             // Set Subject: header field
-            message.setSubject("Your account - Verify your email address");
+            message.setSubject("Confirmation of your booking");
 
             // Now set the actual message
-            message.setText("Dear " + user.getName() +  ",\n\nThank your for your reservation");
+            message.setText("Dear " + user.getName() +  ",\n\nThank your for booking " +  reservation.getHomeProfile().getName() +
+                    "\n\nYour arrival date: " + reservation.getStartDate() +  "\nYour departure date: " + reservation.getEndDate());
+
+            // Send message
+            Transport.send(message);
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendEmailForBoatReservation(User user, BoatReservation reservation) {
+        // Sender's email ID needs to be mentioned
+        String from = "PatientServicePSWFirma1@gmail.com";
+
+        // Assuming you are sending email from localhost
+        String host = "smtp.gmail.com";
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
+
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("PatientServicePSWFirma1@gmail.com","PSW!1234");
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+
+            // Set Subject: header field
+            message.setSubject("Confirmation of your booking");
+
+            // Now set the actual message
+            message.setText("Dear " + user.getName() +  ",\n\nThank your for booking " +  reservation.getBoatProfile().getName() +
+                    "\n\nYour arrival date: " + reservation.getStartDate() +  "\nYour departure date: " + reservation.getEndDate());
+
+            // Send message
+            Transport.send(message);
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendEmailForAdventureReservation(User user, AdventureReservation reservation) {
+        // Sender's email ID needs to be mentioned
+        String from = "PatientServicePSWFirma1@gmail.com";
+
+        // Assuming you are sending email from localhost
+        String host = "smtp.gmail.com";
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
+
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("PatientServicePSWFirma1@gmail.com","PSW!1234");
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+
+            // Set Subject: header field
+            message.setSubject("Confirmation of your booking");
+
+            // Now set the actual message
+            message.setText("Dear " + user.getName() +  ",\n\nThank your for booking " +  reservation.getAdventureProfile().getName() +
+                    "\n\nYour arrival date: " + reservation.getStartDate() +  "\nYour departure date: " + reservation.getEndDate());
 
             // Send message
             Transport.send(message);

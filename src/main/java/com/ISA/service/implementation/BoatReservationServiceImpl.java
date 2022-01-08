@@ -48,7 +48,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         reservation.setClientId(userService.getCurrentUser().getId());
 
 
-        emailService.sendEmailForHouseReservation(userService.getCurrentUser());
+        emailService.sendEmailForBoatReservation(userService.getCurrentUser(), reservation);
 
         return reservationRepository.save(reservation);
     }
