@@ -3,6 +3,7 @@ package com.ISA.controller;
 import com.ISA.domain.dto.HomeReservationDTO;
 import com.ISA.domain.dto.SearchFreeHomesDTO;
 import com.ISA.domain.dto.converters.HomeProfileConverters;
+import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.HomeReservation;
 import com.ISA.service.definition.HomeReservationService;
@@ -51,7 +52,20 @@ public class HomeReservationController {
     public ResponseEntity<?> cancel(@PathVariable Long id) {
         boolean delete = homeReservationService.cancel(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(delete, HttpStatus.OK);
+    }
+
+
+    @GetMapping(path = "/getActions")
+    public ResponseEntity<?> getAllActions(){
+        List<HomeProfile> actions = homeReservationService.getAllActions();
+        return new ResponseEntity<>(actions, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getActionDates")
+    public ResponseEntity<?> getAllActionDates(){
+        List<HomeFreeTerms> actions = homeReservationService.getAllActionDates();
+        return new ResponseEntity<>(actions, HttpStatus.OK);
     }
 
 

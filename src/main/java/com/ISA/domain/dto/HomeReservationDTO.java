@@ -14,6 +14,7 @@ public class HomeReservationDTO {
     private int numberOfPeople;
     private long houseId;
     private long clientId;
+    private String status;
 
     public long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
@@ -35,5 +36,6 @@ public class HomeReservationDTO {
     public void setHouseId(int houseId){this.houseId = houseId;}
     public long getClientId(){return clientId;}
     public void setClientId(long clientId){this.clientId = clientId;}
-
+    public String getStatus(){return status;}
+    public void setStatus(String status){this.status = status;}
 }

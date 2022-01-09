@@ -66,32 +66,5 @@ public class HomeFreeTermsServiceImpl implements HomeFreeTermsService {
         return homeFreeTermsRepository.save(homeFreeTerms);
     }
 
-    @Override
-    public List<HomeProfile> getAllActions() {
-        List<HomeProfile> homes = new ArrayList<>();
-        List<HomeFreeTerms> actions = homeFreeTermsRepository.findAllByIsAction(true);
 
-        for (HomeFreeTerms term: actions) {
-            if(term.isAction() == true ){
-                if(!homeExists(term.getHomeProfile(), homes)){
-                    homes.add(term.getHomeProfile());
-                }
-            }
-        }
-        return homes;
-    }
-
-    public Boolean homeExists(HomeProfile home, List<HomeProfile> homes) {
-
-        for(HomeProfile profile: homes){
-            if(profile.getId().equals(home.getId())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<HomeFreeTerms> getAllActionDates(){
-        return homeFreeTermsRepository.findAllByIsAction(true);
-    }
 }

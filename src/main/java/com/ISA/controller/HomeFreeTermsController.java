@@ -33,15 +33,4 @@ public class HomeFreeTermsController {
         return new ResponseEntity<>(homeFreeTerms,HttpStatus.OK);
     }
 
-    @GetMapping(path = "/getActions")
-    public ResponseEntity<?> getAllActions(){
-        List<HomeProfile> actions = homeFreeTermsService.getAllActions();
-        return new ResponseEntity<>(actions, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/getActionDates")
-    public ResponseEntity<?> getAllActionDates(){
-        List<HomeFreeTerms> actions = homeFreeTermsService.getAllActionDates();
-        return new ResponseEntity<>(actions, HttpStatus.OK);
-    }
 }
