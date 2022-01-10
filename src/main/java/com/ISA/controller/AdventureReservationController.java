@@ -3,9 +3,7 @@ package com.ISA.controller;
 import com.ISA.domain.dto.AdventureReservationDTO;
 import com.ISA.domain.dto.SearchFreeAdventuresDTO;
 import com.ISA.domain.dto.converters.AdventureProfileConverters;
-import com.ISA.domain.model.AdventureProfile;
-import com.ISA.domain.model.AdventureReservation;
-import com.ISA.domain.model.BoatReservation;
+import com.ISA.domain.model.*;
 import com.ISA.service.definition.AdventureReservationService;
 import com.ISA.service.definition.SearchFreeAdventuresService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +49,18 @@ public class AdventureReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/getAdventuresOnAction")
+    public ResponseEntity<?> getAllAdventuresOnAction(){
+        List<AdventureFreeTerms> actions = reservationService.getAllAdventuresOnAction();
+        return new ResponseEntity<>(actions, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> cancel(@PathVariable Long id) {
+        boolean delete = reservationService.cancel(id);
+
+        return new ResponseEntity<>(delete, HttpStatus.OK);
+    }
 
 
 

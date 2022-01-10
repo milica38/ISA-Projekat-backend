@@ -10,5 +10,7 @@ import java.util.List;
 public interface AdventureFreeTermsRepository extends JpaRepository<AdventureFreeTerms, Long> {
     List<AdventureFreeTerms> findAll();
     List<AdventureFreeTerms> findAllByAdventureProfileId(Long adventureProfileId);
+    List<AdventureFreeTerms> findAllByIsAction(boolean isAction);
+
 
 }

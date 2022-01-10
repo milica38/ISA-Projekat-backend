@@ -3,6 +3,7 @@ package com.ISA.service.implementation;
 import com.ISA.domain.dto.AdventureProfileDTO;
 import com.ISA.domain.dto.AdventureReservationDTO;
 import com.ISA.domain.model.*;
+import com.ISA.repository.AdventureFreeTermsRepository;
 import com.ISA.repository.AdventureProfileRepository;
 import com.ISA.repository.AdventureReservationRepository;
 import com.ISA.service.definition.AdventureReservationService;
@@ -27,6 +28,9 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     private AdventureProfileRepository profileRepository;
 
     @Autowired
+    private AdventureFreeTermsRepository freeTermsRepository;
+
+    @Autowired
     private EmailService emailService;
 
     @Autowired
@@ -37,20 +41,26 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     public AdventureReservation add(AdventureReservationDTO dto) {
 
         AdventureProfile adventureProfile = profileRepository.findById(dto.getAdventureId()).get();
+        User currentUser = userService.getCurrentUser();
 
         if(isOverlapping(adventureProfile.getId(), dto.getStartDate(), dto.getEndDate())){
             return null;
         }
+
+        if(!canClientBook(currentUser.getId(), dto.getAdventureId(), dto.getStartDate(), dto.getEndDate() )){
+            return null;
+        }
+
         AdventureReservation reservation = new AdventureReservation();
         reservation.setExtraServices(dto.getExtraServices());
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
-        reservation.setClientId(userService.getCurrentUser().getId());
+        reservation.setClientId(currentUser.getId());
         reservation.setAdventureProfile(adventureProfile);
         adventureProfile.setPriceList(dto.getPrice());
 
-        emailService.sendEmailForAdventureReservation(userService.getCurrentUser(), reservation);
+        emailService.sendEmailForAdventureReservation(currentUser, reservation);
 
         return adventureReservationRepository.save(reservation);
     }
@@ -66,6 +76,10 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         List<AdventureReservation> reservations = adventureReservationRepository.findAll();
 
         for(AdventureReservation reservation: reservations){
+
+            if(reservation.getCancelled()) {
+                continue;
+            }
 
             if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getAdventureProfile().getId().equals(adventureId)) {
                 return true;
@@ -91,6 +105,48 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
 
     @Override
     public boolean cancel(Long id) {
-        return false;
+
+        Optional<AdventureReservation> reservation = adventureReservationRepository.findById(id);
+        Date today = new Date();
+
+        if(reservation.get().getStartDate().before(today))
+            return false;
+
+        reservation.get().setCancelled(true);
+        adventureReservationRepository.save(reservation.get());
+        return true;
+    }
+
+    @Override
+    public List<AdventureFreeTerms> getAllAdventuresOnAction() {
+
+        return freeTermsRepository.findAllByIsAction(true);
+    }
+
+    @Override
+    public boolean canClientBook(Long currentClientId, Long adventureId, Date startDate, Date endDate) {
+        List<AdventureReservation> reservations = adventureReservationRepository.findAll();
+
+        for(AdventureReservation reservation: reservations){
+            System.out.println("==============================");
+            System.out.println(reservation.getId());
+            System.out.println(reservation.getCancelled());
+            System.out.println(reservation.getAdventureProfile().getId().equals(adventureId));
+            System.out.println(reservation.getClientId().equals(currentClientId));
+            System.out.println(isDateEqual(reservation.getStartDate(), startDate));
+            System.out.println(isDateEqual(reservation.getEndDate(), endDate));
+
+            if(reservation.getCancelled() && reservation.getAdventureProfile().getId().equals(adventureId) && reservation.getClientId().equals(currentClientId) && isDateEqual(reservation.getStartDate(), startDate) && isDateEqual(reservation.getEndDate(), endDate)){
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    public boolean isDateEqual(Date date1, Date date2) {
+
+        return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
+
     }
 }

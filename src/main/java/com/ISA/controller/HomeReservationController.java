@@ -56,8 +56,8 @@ public class HomeReservationController {
     }
 
     @GetMapping(path = "/getHousesOnAction")
-    public ResponseEntity<?> getAllAHousesOnAction(){
-        List<HomeFreeTerms> actions = homeReservationService.getAllAHousesOnAction();
+    public ResponseEntity<?> getAllHousesOnAction(){
+        List<HomeFreeTerms> actions = homeReservationService.getAllHousesOnAction();
         return new ResponseEntity<>(actions, HttpStatus.OK);
     }
 
