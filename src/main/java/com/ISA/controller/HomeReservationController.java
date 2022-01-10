@@ -3,6 +3,7 @@ package com.ISA.controller;
 import com.ISA.domain.dto.HomeReservationDTO;
 import com.ISA.domain.dto.SearchFreeHomesDTO;
 import com.ISA.domain.dto.converters.HomeProfileConverters;
+import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.HomeReservation;
 import com.ISA.service.definition.HomeReservationService;
@@ -10,6 +11,7 @@ import com.ISA.service.definition.SearchFreeHomesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -44,6 +46,19 @@ public class HomeReservationController {
     {
         List<HomeReservation> reservations = homeReservationService.getMyReservations();
         return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> cancel(@PathVariable Long id) {
+        boolean delete = homeReservationService.cancel(id);
+
+        return new ResponseEntity<>(delete, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getHousesOnAction")
+    public ResponseEntity<?> getAllHousesOnAction(){
+        List<HomeFreeTerms> actions = homeReservationService.getAllHousesOnAction();
+        return new ResponseEntity<>(actions, HttpStatus.OK);
     }
 
 

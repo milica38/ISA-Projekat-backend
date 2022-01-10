@@ -17,7 +17,7 @@ public class AdventureReservation {
     private double price;
     private boolean cancelled;
     private int numberOfPeople;
-    private long clientId;
+    private Long clientId;
     @ManyToOne
     private AdventureProfile adventureProfile;
 
@@ -34,8 +34,8 @@ public class AdventureReservation {
     public void setPrice(double price){ this.price = price; }
     public boolean getCancelled(){ return cancelled; }
     public void setCancelled(boolean cancelled){ this.cancelled = cancelled; }
-    public long getClientId(){return clientId;}
-    public void setClientId(long clientId){this.clientId = clientId;}
+    public Long getClientId(){return clientId;}
+    public void setClientId(Long clientId){this.clientId = clientId;}
     public AdventureProfile getAdventureProfile(){return adventureProfile;}
     public void setAdventureProfile(AdventureProfile adventureProfile) {
         this.adventureProfile = adventureProfile;

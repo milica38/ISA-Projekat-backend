@@ -8,6 +8,8 @@ public class AdventureFreeTermsDTO {
     private Date startDate;
     private Date endDate;
     private Long adventureId;
+    private double actionPrice;
+    private boolean isAction;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -17,4 +19,16 @@ public class AdventureFreeTermsDTO {
     public void  setEndDate(Date endDate) { this.endDate = endDate; }
     public Long getAdventureId() { return adventureId; }
     public void setAdventureId(Long adventureId) { this.adventureId = adventureId; }
+    public void setActionPrice(double actionPrice) {
+        this.actionPrice = actionPrice;
+    }
+    public double getActionPrice() {
+        return actionPrice;
+    }
+    public boolean isAction() {
+        return isAction;
+    }
+    public void setIsAction(boolean action) {
+        isAction = action;
+    }
 }

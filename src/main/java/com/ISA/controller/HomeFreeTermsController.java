@@ -32,4 +32,5 @@ public class HomeFreeTermsController {
         HomeFreeTerms homeFreeTerms = homeFreeTermsService.add(dto);
         return new ResponseEntity<>(homeFreeTerms,HttpStatus.OK);
     }
+
 }

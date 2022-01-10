@@ -11,4 +11,6 @@ public interface BoatFreeTermsRepository  extends JpaRepository<BoatFreeTerms, L
 
      List<BoatFreeTerms> findAll();
      List<BoatFreeTerms> findAllByBoatProfileId(Long boatProfileId);
+     List<BoatFreeTerms> findAllByIsAction(boolean isAction);
+
 }

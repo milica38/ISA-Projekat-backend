@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.EmailService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,4 +65,6 @@ public class HomeFreeTermsServiceImpl implements HomeFreeTermsService {
         homeFreeTerms.setAction(homeFreeTermsDTO.isAction());
         return homeFreeTermsRepository.save(homeFreeTerms);
     }
+
+
 }

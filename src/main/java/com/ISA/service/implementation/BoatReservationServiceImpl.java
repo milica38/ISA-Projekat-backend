@@ -2,6 +2,7 @@ package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.BoatReservationDTO;
 import com.ISA.domain.model.*;
+import com.ISA.repository.BoatFreeTermsRepository;
 import com.ISA.repository.BoatProfileRepository;
 import com.ISA.repository.BoatReservationRepository;
 import com.ISA.service.definition.BoatReservationService;
@@ -9,11 +10,11 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoatReservationServiceImpl implements BoatReservationService {
@@ -25,6 +26,9 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     private  BoatProfileRepository profileRepository;
 
     @Autowired
+    private BoatFreeTermsRepository freeTermsRepository;
+
+    @Autowired
     private EmailService emailService;
 
     @Autowired
@@ -34,8 +38,13 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     public BoatReservation add(BoatReservationDTO dto) {
 
         BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
+        User currentUser = userService.getCurrentUser();
 
         if(isOverlapping(boatProfile.getId(), dto.getStartDate(), dto.getEndDate())){
+            return null;
+        }
+
+        if(!canClientBook(currentUser.getId(), dto.getBoatId(), dto.getStartDate(), dto.getEndDate() )){
             return null;
         }
         BoatReservation reservation = new BoatReservation();
@@ -45,10 +54,10 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         reservation.setStartDate(dto.getStartDate());
         reservation.setBoatProfile(boatProfile);
         reservation.setPrice(boatProfile.getPricelist());
-        reservation.setClientId(userService.getCurrentUser().getId());
+        reservation.setClientId(currentUser.getId());
 
 
-        emailService.sendEmailForHouseReservation(userService.getCurrentUser());
+        emailService.sendEmailForBoatReservation(currentUser, reservation);
 
         return reservationRepository.save(reservation);
     }
@@ -64,6 +73,10 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         List<BoatReservation> reservations = reservationRepository.findAll();
 
         for(BoatReservation reservation: reservations){
+
+            if(reservation.getCancelled()) {
+                continue;
+            }
 
             if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getBoatProfile().getId().equals(boatId)) {
                 return true;
@@ -84,11 +97,53 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     public List<BoatReservation> getMyReservations() {
         User user = userService.getCurrentUser();
 
-        return reservationRepository.getAllByClientId(user.getId());
+        return reservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
     }
 
     @Override
     public boolean cancel(Long id) {
-        return false;
+
+        Optional<BoatReservation> reservation = reservationRepository.findById(id);
+        Date today = new Date();
+
+        if(reservation.get().getStartDate().before(today))
+            return false;
+
+        reservation.get().setCancelled(true);
+        reservationRepository.save(reservation.get());
+        return true;
     }
+
+    @Override
+    public List<BoatFreeTerms> getAllBoatsOnAction() {
+        return freeTermsRepository.findAllByIsAction(true);
+    }
+
+    @Override
+    public boolean canClientBook(Long currentClientId, Long boatId, Date startDate, Date endDate) {
+
+        List<BoatReservation> reservations = reservationRepository.findAll();
+
+        for(BoatReservation reservation: reservations) {
+            System.out.println("==============================");
+            System.out.println(reservation.getId());
+            System.out.println(reservation.getCancelled());
+            System.out.println(reservation.getBoatProfile().getId().equals(boatId));
+            System.out.println(reservation.getClientId().equals(currentClientId));
+            System.out.println(isDateEqual(reservation.getStartDate(), startDate));
+            System.out.println(isDateEqual(reservation.getEndDate(), endDate));
+
+            if (reservation.getCancelled() && reservation.getBoatProfile().getId().equals(boatId) && reservation.getClientId().equals(currentClientId) && isDateEqual(reservation.getStartDate(), startDate) && isDateEqual(reservation.getEndDate(), endDate)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isDateEqual(Date date1, Date date2) {
+
+        return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
+
+    }
+
 }

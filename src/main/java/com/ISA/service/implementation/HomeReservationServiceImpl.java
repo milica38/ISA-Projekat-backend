@@ -1,19 +1,22 @@
 package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.HomeReservationDTO;
+import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.HomeReservation;
 import com.ISA.domain.model.User;
+import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.repository.HomeProfileRepository;
 import com.ISA.repository.HomeReservationRepository;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeReservationService;
 import com.ISA.service.definition.UserService;
+import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.client.HttpClientErrorException;
+
+import java.util.*;
 
 @Service
 public class HomeReservationServiceImpl implements HomeReservationService {
@@ -23,6 +26,10 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
     @Autowired
     private HomeProfileRepository homeProfileRepository;
+
+    @Autowired
+    private HomeFreeTermsRepository homeFreeTermsRepository;
+
 
     @Autowired
     private EmailService emailService;
@@ -35,9 +42,16 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
 
+        User currentUser = userService.getCurrentUser();
+
         if(isOverlapping(homeProfile.getId(), dto.getStartDate(), dto.getEndDate())){
             return null;
         }
+
+        if(!canClientBook(currentUser.getId(), dto.getHouseId(), dto.getStartDate(), dto.getEndDate() )){
+            return null;
+        }
+
         HomeReservation reservation = new HomeReservation();
         reservation.setExtraServices(homeProfile.getExtraService());
         reservation.setCancelled(false);
@@ -45,14 +59,15 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         reservation.setStartDate(dto.getStartDate());
         reservation.setHomeProfile(homeProfile);
         reservation.setPrice(homeProfile.getPricelist());
-        reservation.setClientId(userService.getCurrentUser().getId());
+        reservation.setClientId(currentUser.getId());
         reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
 
-
-        emailService.sendEmailForHouseReservation(userService.getCurrentUser());
+        emailService.sendEmailForHouseReservation(currentUser, reservation);
 
         return homeReservationRepository.save(reservation);
     }
+
+
 
     @Override
     public List<HomeProfile> findAll() {
@@ -67,7 +82,11 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
         for(HomeReservation reservation: reservations){
 
-            if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getHomeProfile().getId().equals(houseId)) {
+            if(reservation.getCancelled()) {
+                continue;
+            }
+
+           if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getHomeProfile().getId().equals(houseId)) {
                 return true;
             }
 
@@ -86,17 +105,53 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     public List<HomeReservation> getMyReservations() {
         User user = userService.getCurrentUser();
 
-        return homeReservationRepository.getAllByClientId(user.getId());
+        return homeReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
     }
 
     @Override
     public boolean cancel(Long id) {
         Optional<HomeReservation> reservation = homeReservationRepository.findById(id);
-        
+
+        Date today = new Date();
+
+       if(reservation.get().getStartDate().before(today))
+           return false;
+
         reservation.get().setCancelled(true);
         homeReservationRepository.save(reservation.get());
         return true;
     }
 
+    @Override
+    public List<HomeFreeTerms> getAllHousesOnAction(){
 
+        return homeFreeTermsRepository.findAllByIsAction(true);
+    }
+
+    @Override
+    public boolean canClientBook(Long currentClientId, Long houseId, Date startDate, Date endDate) {
+        List<HomeReservation> reservations = homeReservationRepository.findAll();
+
+        for(HomeReservation reservation: reservations){
+            System.out.println("==============================");
+            System.out.println(reservation.getId());
+            System.out.println(reservation.getCancelled());
+            System.out.println(reservation.getHomeProfile().getId().equals(houseId));
+            System.out.println(reservation.getClientId().equals(currentClientId));
+            System.out.println(isDateEqual(reservation.getStartDate(), startDate));
+            System.out.println(isDateEqual(reservation.getEndDate(), endDate));
+
+            if(reservation.getCancelled() && reservation.getHomeProfile().getId().equals(houseId) && reservation.getClientId().equals(currentClientId) && isDateEqual(reservation.getStartDate(), startDate) && isDateEqual(reservation.getEndDate(), endDate)){
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    public boolean isDateEqual(Date date1, Date date2) {
+
+        return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
+
+    }
 }
