@@ -17,6 +17,7 @@ public interface HomeReservationService {
     List<HomeProfile>  getAllActions();
     boolean homeExists(HomeProfile home, List<HomeProfile> homes);
     List<HomeFreeTerms> getAllActionDates();
+    boolean canClientBook(Long currentClientId, Long houseId, Date startDate, Date endDate);
 
 
     }
