@@ -28,7 +28,7 @@ public class HomeComplaintsServiceImpl implements HomeComplaintsService {
 
 
     @Override
-    public boolean canUserSentComplaints(Long currentClientId, Long houseReservationId) {
+    public boolean canUserSendComplaints(Long currentClientId, Long houseReservationId) {
         User currentUser = userService.getCurrentUser();
         List<HomeReservation> reservations = homeReservationRepository.findAll();
 
@@ -45,10 +45,10 @@ public class HomeComplaintsServiceImpl implements HomeComplaintsService {
     public HomeComplaints add(HomeComplaintsDTO dto) {
         HomeReservation reservation = homeReservationRepository.findById(dto.getHomeReservationId()).get();
         User currentUser = userService.getCurrentUser();
-        /*
-        if(canUserSentComplaints(currentUser.getId(), dto.getHomeReservationId())){
+
+        if(canUserSendComplaints(currentUser.getId(), dto.getHomeReservationId())){
             return null;
-        }*/
+        }
 
         HomeComplaints complaints = new HomeComplaints();
         complaints.setContent(dto.getContent());

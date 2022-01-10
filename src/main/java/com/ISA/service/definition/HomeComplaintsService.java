@@ -6,6 +6,6 @@ import com.ISA.domain.model.HomeComplaints;
 import java.util.Date;
 
 public interface HomeComplaintsService {
-    boolean canUserSentComplaints(Long currentClientId, Long houseReservationId);
+    boolean canUserSendComplaints(Long currentClientId, Long houseReservationId);
     HomeComplaints add(HomeComplaintsDTO dto);
 }
