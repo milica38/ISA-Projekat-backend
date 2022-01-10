@@ -62,7 +62,6 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         reservation.setClientId(currentUser.getId());
         reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
 
-
         emailService.sendEmailForHouseReservation(userService.getCurrentUser(), reservation);
 
         return homeReservationRepository.save(reservation);
@@ -86,7 +85,6 @@ public class HomeReservationServiceImpl implements HomeReservationService {
             if(reservation.getCancelled()) {
                 continue;
             }
-
 
            if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getHomeProfile().getId().equals(houseId)) {
                 return true;
@@ -125,34 +123,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     }
 
     @Override
-    public List<HomeProfile> getAllActions() {
-        List<HomeProfile> homes = new ArrayList<>();
-        List<HomeFreeTerms> actions = homeFreeTermsRepository.findAllByIsAction(true);
-
-        for (HomeFreeTerms term: actions) {
-            if(term.isAction() == true ){
-                if(!homeExists(term.getHomeProfile(), homes)){
-                    homes.add(term.getHomeProfile());
-                }
-
-            }
-        }
-        return homes;
-    }
-
-    @Override
-    public boolean homeExists(HomeProfile home, List<HomeProfile> homes) {
-
-        for(HomeProfile profile: homes){
-            if(profile.getId().equals(home.getId())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public List<HomeFreeTerms> getAllActionDates(){
+    public List<HomeFreeTerms> getAllAHousesOnAction(){
 
         return homeFreeTermsRepository.findAllByIsAction(true);
     }

@@ -55,16 +55,9 @@ public class HomeReservationController {
         return new ResponseEntity<>(delete, HttpStatus.OK);
     }
 
-
-    @GetMapping(path = "/getActions")
-    public ResponseEntity<?> getAllActions(){
-        List<HomeProfile> actions = homeReservationService.getAllActions();
-        return new ResponseEntity<>(actions, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/getActionDates")
-    public ResponseEntity<?> getAllActionDates(){
-        List<HomeFreeTerms> actions = homeReservationService.getAllActionDates();
+    @GetMapping(path = "/getHousesOnAction")
+    public ResponseEntity<?> getAllAHousesOnAction(){
+        List<HomeFreeTerms> actions = homeReservationService.getAllAHousesOnAction();
         return new ResponseEntity<>(actions, HttpStatus.OK);
     }
 
