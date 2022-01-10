@@ -62,7 +62,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         reservation.setClientId(currentUser.getId());
         reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
 
-        emailService.sendEmailForHouseReservation(userService.getCurrentUser(), reservation);
+        emailService.sendEmailForHouseReservation(currentUser, reservation);
 
         return homeReservationRepository.save(reservation);
     }
@@ -123,7 +123,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     }
 
     @Override
-    public List<HomeFreeTerms> getAllAHousesOnAction(){
+    public List<HomeFreeTerms> getAllHousesOnAction(){
 
         return homeFreeTermsRepository.findAllByIsAction(true);
     }

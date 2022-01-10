@@ -3,9 +3,7 @@ package com.ISA.controller;
 import com.ISA.domain.dto.BoatReservationDTO;
 import com.ISA.domain.dto.SearchFreeBoatsDTO;
 import com.ISA.domain.dto.converters.BoatProfileConverters;
-import com.ISA.domain.model.BoatProfile;
-import com.ISA.domain.model.BoatReservation;
-import com.ISA.domain.model.HomeReservation;
+import com.ISA.domain.model.*;
 import com.ISA.service.definition.BoatReservationService;
 import com.ISA.service.definition.SearchFreeBoatsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +45,18 @@ public class BoatReservationController {
     {
         List<BoatReservation> reservations = reservationService.getMyReservations();
         return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getBoatsOnAction")
+    public ResponseEntity<?> getAllBoatsOnAction(){
+        List<BoatFreeTerms> actions = reservationService.getAllBoatsOnAction();
+        return new ResponseEntity<>(actions, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> cancel(@PathVariable Long id) {
+        boolean delete = reservationService.cancel(id);
+
+        return new ResponseEntity<>(delete, HttpStatus.OK);
     }
 }
