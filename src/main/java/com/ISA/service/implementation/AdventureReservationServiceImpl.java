@@ -100,7 +100,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     public List<AdventureReservation> getMyReservations() {
         User user = userService.getCurrentUser();
 
-        return adventureReservationRepository.getAllByClientId(user.getId());
+        return adventureReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
     }
 
     @Override

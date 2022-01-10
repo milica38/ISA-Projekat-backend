@@ -97,7 +97,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     public List<BoatReservation> getMyReservations() {
         User user = userService.getCurrentUser();
 
-        return reservationRepository.getAllByClientId(user.getId());
+        return reservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
     }
 
     @Override
