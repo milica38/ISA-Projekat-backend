@@ -16,5 +16,6 @@ public interface HomeReservationService {
     boolean cancel(Long id);
     List<HomeFreeTerms> getAllHousesOnAction();
     boolean canClientBook(Long currentClientId, Long houseId, Date startDate, Date endDate);
+    HomeReservation get(Long id);
 
 }

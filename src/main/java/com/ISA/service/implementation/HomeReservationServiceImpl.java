@@ -11,10 +11,8 @@ import com.ISA.repository.HomeReservationRepository;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeReservationService;
 import com.ISA.service.definition.UserService;
-import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.*;
 
@@ -147,6 +145,11 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
         }
         return true;
+    }
+
+    @Override
+    public HomeReservation get(Long id) {
+        return homeReservationRepository.findById(id).get();
     }
 
     public boolean isDateEqual(Date date1, Date date2) {

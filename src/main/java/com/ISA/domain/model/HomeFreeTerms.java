@@ -5,7 +5,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "home_free_terms")
-
 public class HomeFreeTerms {
     @Id
     @GeneratedValue(
@@ -18,6 +17,8 @@ public class HomeFreeTerms {
     private boolean isAction;
     @ManyToOne
     private HomeProfile homeProfile;
+   // private Long clientId;
+  //  private boolean isSubscribed;
 
     public void setActionPrice(double actionPrice) {
         this.actionPrice = actionPrice;
@@ -43,4 +44,8 @@ public class HomeFreeTerms {
     public void setHomeProfile(HomeProfile homeProfile) {
         this.homeProfile = homeProfile;
     }
+   // public Long getClientId(){return clientId;}
+  //  public void setClientId(Long clientId){this.clientId = clientId;}
+    //public boolean isSubscribed() {return isSubscribed;}
+   // public void setSubscribed(boolean subscribed) {isSubscribed = subscribed;}
 }
