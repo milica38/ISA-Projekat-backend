@@ -24,14 +24,12 @@ public class HomeProfile {
     @Column(columnDefinition = "TEXT")
     private String exteriorImage;
     private Long ownerId;
-
-
     private boolean deleted;
+
 
     public double getExtraPrice() {
         return extraPrice;
     }
-
     public void setExtraPrice(double extraPrice) {
         this.extraPrice = extraPrice;
     }

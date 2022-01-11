@@ -12,7 +12,6 @@ import com.ISA.service.definition.SearchFreeHomesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -68,6 +67,14 @@ public class HomeReservationController {
         List<HomeReservation> reservations = homeReservationService.getAllReservationsForMyHouses(dto);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
+  
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> get(@PathVariable Long id) {
+        HomeReservation reservation = homeReservationService.get(id);
+
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
+    }
+
 
     @GetMapping(path = "/getAllReservations")
     public ResponseEntity<?> getAllReservations(){

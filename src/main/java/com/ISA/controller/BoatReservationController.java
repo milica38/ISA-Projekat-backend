@@ -59,4 +59,11 @@ public class BoatReservationController {
 
         return new ResponseEntity<>(delete, HttpStatus.OK);
     }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> get(@PathVariable Long id) {
+        BoatReservation reservation = reservationService.get(id);
+
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
+    }
 }

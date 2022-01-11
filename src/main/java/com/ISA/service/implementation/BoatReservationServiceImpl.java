@@ -140,6 +140,11 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         return true;
     }
 
+    @Override
+    public BoatReservation get(Long id) {
+        return reservationRepository.findById(id).get();
+    }
+
     public boolean isDateEqual(Date date1, Date date2) {
 
         return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();

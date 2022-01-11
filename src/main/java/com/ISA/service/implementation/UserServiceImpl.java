@@ -2,10 +2,12 @@ package com.ISA.service.implementation;
 
 import com.ISA.config.SecurityUtils;
 import com.ISA.domain.dto.ChangePasswordDTO;
+import com.ISA.domain.dto.HomeFreeTermsDTO;
 import com.ISA.domain.dto.RegistrationDTO;
 import com.ISA.domain.dto.UserDTO;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.User;
+import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
@@ -27,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private HomeFreeTermsRepository homeFreeTermsRepository;
 
     @Override
     public User clientRegistration(RegistrationDTO registrationDTO) {
