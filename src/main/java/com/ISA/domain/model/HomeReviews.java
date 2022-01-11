@@ -13,6 +13,7 @@ public class HomeReviews {
     private Long id;
     private String content;
     private Long ownerId;
+    @OneToOne
     private HomeReservation homeReservation;
     private boolean isAppear;
     private boolean isBadComment;
