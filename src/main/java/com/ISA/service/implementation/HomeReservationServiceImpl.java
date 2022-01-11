@@ -11,10 +11,8 @@ import com.ISA.repository.HomeReservationRepository;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeReservationService;
 import com.ISA.service.definition.UserService;
-import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.*;
 
@@ -41,8 +39,9 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     public HomeReservation add(HomeReservationDTO dto) {
 
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
-
         User currentUser = userService.getCurrentUser();
+        List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAllByHomeProfileId(dto.getHouseId());
+        List<HomeFreeTerms> result = new ArrayList<>();
 
         if(isOverlapping(homeProfile.getId(), dto.getStartDate(), dto.getEndDate())){
             return null;
@@ -58,6 +57,13 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
         reservation.setHomeProfile(homeProfile);
+        for(HomeFreeTerms term: freeTerms){
+            if(term.getHomeProfile().getId().equals(dto.getHouseId()) && term.getStartDate().equals(dto.getStartDate()) && term.getEndDate().equals(dto.getEndDate())){
+                result.add(term);
+            }
+            if(term.isAction())
+                reservation.setPrice(term.getActionPrice());
+        }
         reservation.setPrice(homeProfile.getPricelist());
         reservation.setClientId(currentUser.getId());
         reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
@@ -147,6 +153,11 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
         }
         return true;
+    }
+
+    @Override
+    public HomeReservation get(Long id) {
+        return homeReservationRepository.findById(id).get();
     }
 
     public boolean isDateEqual(Date date1, Date date2) {

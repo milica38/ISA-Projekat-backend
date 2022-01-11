@@ -1,10 +1,7 @@
 package com.ISA.service.definition;
 
 import com.ISA.domain.dto.BoatReservationDTO;
-import com.ISA.domain.model.BoatFreeTerms;
-import com.ISA.domain.model.BoatProfile;
-import com.ISA.domain.model.BoatReservation;
-import com.ISA.domain.model.HomeFreeTerms;
+import com.ISA.domain.model.*;
 
 import java.util.Date;
 import java.util.List;
@@ -17,5 +14,7 @@ public interface BoatReservationService {
     boolean cancel(Long id);
     List<BoatFreeTerms> getAllBoatsOnAction();
     boolean canClientBook(Long currentClientId, Long boatId, Date startDate, Date endDate);
+    BoatReservation get(Long id);
+
 
 }

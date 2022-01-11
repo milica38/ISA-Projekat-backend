@@ -10,6 +10,8 @@ public class HomeFreeTermsDTO {
     private Long houseId;
     private double actionPrice;
     private boolean isAction;
+    private Long clientId;
+    private boolean isSubscribed;
 
     public void setActionPrice(double actionPrice) {
         this.actionPrice = actionPrice;
@@ -31,4 +33,12 @@ public class HomeFreeTermsDTO {
     public void  setEndDate(Date endDate) { this.endDate = endDate; }
     public Long getHouseId() { return houseId; }
     public void setHouseId(Long houseId) { this.houseId = houseId; }
+    public Long getClientId(){return clientId;}
+    public void setClientId(Long clientId){this.clientId = clientId;}
+    public boolean isSubscribed() {
+        return isSubscribed;
+    }
+    public void setSubscribed(boolean subscribed) {
+        isSubscribed = subscribed;
+    }
 }

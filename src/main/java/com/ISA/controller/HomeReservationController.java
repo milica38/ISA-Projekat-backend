@@ -11,7 +11,6 @@ import com.ISA.service.definition.SearchFreeHomesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -59,6 +58,13 @@ public class HomeReservationController {
     public ResponseEntity<?> getAllHousesOnAction(){
         List<HomeFreeTerms> actions = homeReservationService.getAllHousesOnAction();
         return new ResponseEntity<>(actions, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> get(@PathVariable Long id) {
+        HomeReservation reservation = homeReservationService.get(id);
+
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
 
