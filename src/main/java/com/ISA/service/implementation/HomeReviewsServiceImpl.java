@@ -33,9 +33,9 @@ public class HomeReviewsServiceImpl implements HomeReviewsService {
         HomeReviews reviews = new HomeReviews();
         reviews.setContent(dto.getContent());
         reviews.setOwnerId(currentUser.getId());
+        reviews.setAppear(dto.isAppear());
+        reviews.setBadComment(dto.isBadComment());
         reviews.setHomeReservation(reservation);
-        reviews.setAppear(false);
-        reviews.setBadComment(false);
 
         return homeReviewsRepository.save(reviews);
     }
