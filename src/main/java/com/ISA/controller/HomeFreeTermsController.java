@@ -1,6 +1,7 @@
 package com.ISA.controller;
 
 import com.ISA.domain.dto.HomeFreeTermsDTO;
+import com.ISA.domain.dto.HomeProfileDTO;
 import com.ISA.domain.dto.converters.HomeProfileConverters;
 import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
