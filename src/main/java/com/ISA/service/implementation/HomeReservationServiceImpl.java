@@ -1,5 +1,6 @@
 package com.ISA.service.implementation;
 
+import com.ISA.domain.dto.HomeHistoryReservationDTO;
 import com.ISA.domain.dto.HomeReservationDTO;
 import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
@@ -114,6 +115,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         return homeReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
     }
 
+
     @Override
     public boolean cancel(Long id) {
         Optional<HomeReservation> reservation = homeReservationRepository.findById(id);
@@ -156,6 +158,38 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     }
 
     @Override
+    public List<HomeReservation> getAllReservationsForMyHouses(HomeHistoryReservationDTO dto) {
+        List<HomeReservation> reservations = homeReservationRepository.getAllByHomeProfileId(dto.getHouseId());
+        User currentUser = userService.getCurrentUser();
+        List<HomeReservation> results = new ArrayList<>();
+
+        for(HomeReservation reservation: reservations){
+            if(reservation.getHomeProfile().getId().equals(dto.getHouseId()) && reservation.getHomeProfile().getownerId().equals(currentUser.getId())){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<HomeReservation> getAll() {
+        return homeReservationRepository.findAll();
+    }
+
+    @Override
+    public List<HomeReservation> getAllReservations(Long ownerId, Long houseId) {
+
+        List<HomeReservation> reservations = homeReservationRepository.getAllByHomeProfileId(houseId);
+        User currentUser = userService.getCurrentUser();
+        List<HomeReservation> results = new ArrayList<>();
+
+        for(HomeReservation reservation: reservations){
+            if(reservation.getHomeProfile().getId().equals(houseId) && reservation.getHomeProfile().getownerId().equals(currentUser.getId())){
+                results.add(reservation);
+            }
+        }
+        return results;
+      
     public HomeReservation get(Long id) {
         return homeReservationRepository.findById(id).get();
     }

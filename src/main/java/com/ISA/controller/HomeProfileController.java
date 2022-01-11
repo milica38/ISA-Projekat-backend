@@ -52,7 +52,7 @@ public class HomeProfileController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean delete = homeProfileService.delete(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(delete, HttpStatus.OK);
     }
 
     @GetMapping(path = "/my")

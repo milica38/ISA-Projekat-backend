@@ -92,6 +92,9 @@ public class BoatProfileServiceImpl implements BoatProfileService {
         if(boatProfileDTO.getExteriorImage() != null && !boatProfileDTO.getExteriorImage().equals("")) {
             optionalBoatProfile.get().setExteriorImage(boatProfileDTO.getExteriorImage());
         }
+        if(boatProfileDTO.getownerId() != null) {
+            optionalBoatProfile.get().setOwnerId(boatProfileDTO.getownerId());
+        }
 
         return boatProfileRepository.save(optionalBoatProfile.get());
     }
