@@ -183,13 +183,14 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         User currentUser = userService.getCurrentUser();
         List<HomeReservation> results = new ArrayList<>();
 
-        for(HomeReservation reservation: reservations){
-            if(reservation.getHomeProfile().getId().equals(houseId) && reservation.getHomeProfile().getownerId().equals(currentUser.getId())){
+        for (HomeReservation reservation : reservations) {
+            if (reservation.getHomeProfile().getId().equals(houseId) && reservation.getHomeProfile().getownerId().equals(currentUser.getId())) {
                 results.add(reservation);
             }
         }
         return results;
-      
+    }
+
     public HomeReservation get(Long id) {
         return homeReservationRepository.findById(id).get();
     }
