@@ -1,5 +1,6 @@
 package com.ISA.controller;
 
+import com.ISA.domain.dto.HomeHistoryReservationDTO;
 import com.ISA.domain.dto.HomeReservationDTO;
 import com.ISA.domain.dto.SearchFreeHomesDTO;
 import com.ISA.domain.dto.converters.HomeProfileConverters;
@@ -61,5 +62,16 @@ public class HomeReservationController {
         return new ResponseEntity<>(actions, HttpStatus.OK);
     }
 
+    @PostMapping(path = "/myReservationsForMyHouses")
+    public ResponseEntity<?> getReservationsForMyHouses(@RequestBody HomeHistoryReservationDTO dto)
+    {
+        List<HomeReservation> reservations = homeReservationService.getAllReservationsForMyHouses(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
 
+    @GetMapping(path = "/getAllReservations")
+    public ResponseEntity<?> getAllReservations(){
+        List<HomeReservation> actions = homeReservationService.getAll();
+        return new ResponseEntity<>(actions, HttpStatus.OK);
+    }
 }
