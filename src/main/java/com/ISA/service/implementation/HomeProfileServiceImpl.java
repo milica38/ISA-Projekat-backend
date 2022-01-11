@@ -3,8 +3,10 @@ package com.ISA.service.implementation;
 import com.ISA.config.SecurityUtils;
 import com.ISA.domain.dto.HomeProfileDTO;
 import com.ISA.domain.model.HomeProfile;
+import com.ISA.domain.model.HomeReservation;
 import com.ISA.domain.model.User;
 import com.ISA.repository.HomeProfileRepository;
+import com.ISA.repository.HomeReservationRepository;
 import com.ISA.service.definition.HomeProfileService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class HomeProfileServiceImpl implements HomeProfileService {
 
     @Autowired
     private HomeProfileRepository homeProfileRepository;
+
+    @Autowired
+    private HomeReservationRepository reservationRepository;
 
     @Autowired
     private UserService userService;
@@ -71,6 +76,9 @@ public class HomeProfileServiceImpl implements HomeProfileService {
 
         Optional<HomeProfile> optionalHomeProfile = homeProfileRepository.findById(id);
 
+        if(!canOwnerDelete(id)){
+            return null;
+        }
         optionalHomeProfile.get().setExtraPrice(homeProfileDTO.getExtraPrice());
         optionalHomeProfile.get().setName(homeProfileDTO.getName());
         optionalHomeProfile.get().setAddress(homeProfileDTO.getAddress());
@@ -97,8 +105,10 @@ public class HomeProfileServiceImpl implements HomeProfileService {
 
     @Override
     public boolean delete(Long id) {
-
         Optional<HomeProfile> optionalHomeProfile = homeProfileRepository.findById(id);
+        if(!canOwnerDelete(optionalHomeProfile.get().getId())){
+            return false;
+        }
         optionalHomeProfile.get().setDeleted(true);
         homeProfileRepository.save(optionalHomeProfile.get());
         return true;
@@ -138,6 +148,29 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         }
         return false;
     }
+
+    @Override
+    public boolean canOwnerDelete(Long houseId) {
+        List<HomeReservation> reservations = reservationRepository.findAll();
+        for(HomeReservation reservation: reservations){
+            if(reservation.getHomeProfile().getId().equals(houseId)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean canOwnerEdit(Long houseId) {
+        List<HomeReservation> reservations = reservationRepository.findAll();
+        for(HomeReservation reservation: reservations){
+            if(reservation.getHomeProfile().getId().equals(houseId)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 
 }
