@@ -39,7 +39,15 @@ public class BoatFreeTermsServiceImpl implements BoatFreeTermsService {
 
         List<BoatFreeTerms> freeTerms = boatFreeTermsRepository.findAllByBoatProfileId(boatFreeTermsDTO.getBoatId());
         for(BoatFreeTerms freeTerm: freeTerms) {
-            if(boatFreeTermsDTO.getStartDate().equals(freeTerm.getStartDate()) && boatFreeTermsDTO.getEndDate().equals(freeTerm.getEndDate())){
+            if(boatFreeTermsDTO.getStartDate().equals(freeTerm.getStartDate()) || boatFreeTermsDTO.getEndDate().equals(freeTerm.getEndDate()) || boatFreeTermsDTO.getStartDate().equals(freeTerm.getEndDate()) || boatFreeTermsDTO.getEndDate().equals(freeTerm.getStartDate()) && boatFreeTermsDTO.getBoatId().equals(freeTerm.getBoatProfile().getId())){
+                return null;
+            }
+
+            if(boatFreeTermsDTO.getStartDate().after(freeTerm.getStartDate()) && boatFreeTermsDTO.getStartDate().before(freeTerm.getEndDate()) && boatFreeTermsDTO.getBoatId().equals(freeTerm.getBoatProfile().getId())){
+                return null;
+            }
+
+            if(boatFreeTermsDTO.getEndDate().after(freeTerm.getStartDate()) && boatFreeTermsDTO.getEndDate().before(freeTerm.getEndDate()) && boatFreeTermsDTO.getBoatId().equals(freeTerm.getBoatProfile().getId())){
                 return null;
             }
         }
