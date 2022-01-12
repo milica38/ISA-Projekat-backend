@@ -136,13 +136,13 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(reservation.get().getStartDate());
         calendar.add(Calendar.DATE, -3);
-
         Date lastDayToCancel = calendar.getTime();
 
-       if(reservation.get().getStartDate().before(today) && lastDayToCancel.before(reservation.get().getStartDate()))
+        if(lastDayToCancel.before(today))
            return false;
 
         reservation.get().setCancelled(true);
+
         homeReservationRepository.save(reservation.get());
         return true;
     }
