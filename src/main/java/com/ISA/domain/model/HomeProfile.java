@@ -25,6 +25,8 @@ public class HomeProfile {
     private String exteriorImage;
     private Long ownerId;
     private boolean deleted;
+    private int rateCounter;
+    private double avgRate;
 
 
     public double getExtraPrice() {
@@ -105,4 +107,9 @@ public class HomeProfile {
     public void setDeleted(boolean deleted){
         this.deleted = deleted;
     }
+    public int getRateCounter(){return rateCounter;}
+    public void setRateCounter(int rateCounter){this.rateCounter = rateCounter;}
+    public double getAvgRate(){return avgRate;}
+    public void setAvgRate(double avgRate){this.avgRate = avgRate;}
+
 }
