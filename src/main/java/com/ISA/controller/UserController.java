@@ -2,7 +2,6 @@ package com.ISA.controller;
 
 import com.ISA.config.CustomUserDetailsService;
 import com.ISA.domain.dto.*;
-import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.User;
 import com.ISA.security.TokenUtil;
 import com.ISA.service.definition.UserService;
@@ -135,6 +134,7 @@ public class UserController {
         return new RedirectView("http://localhost:4200");
     }
 
+
     @PostMapping(path = "/approve/{id}")
     public ResponseEntity<?> approveUser(@PathVariable Long id){
         userService.registrationApproved(id);
@@ -148,9 +148,29 @@ public class UserController {
     }
 
    @DeleteMapping(path = "/deleteUser/{id}")
-   public ResponseEntity<?> delete(@PathVariable Long id) {
+   public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         userService.delete(id);
 
        return new ResponseEntity<>(HttpStatus.OK);
    }
+
+
+    @PostMapping(path = "/password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+        User user = userService.changePassword(changePasswordDTO);
+
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        boolean delete = userService.delete(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

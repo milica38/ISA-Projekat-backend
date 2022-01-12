@@ -2,10 +2,13 @@ package com.ISA.service.implementation;
 
 import com.ISA.config.SecurityUtils;
 import com.ISA.domain.dto.PasswordDTO;
+import com.ISA.domain.dto.ChangePasswordDTO;
+import com.ISA.domain.dto.HomeFreeTermsDTO;
 import com.ISA.domain.dto.RegistrationDTO;
 import com.ISA.domain.dto.UserDTO;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.User;
+import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
@@ -30,6 +33,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private HomeFreeTermsRepository homeFreeTermsRepository;
+
     @Override
     public User clientRegistration(RegistrationDTO registrationDTO) {
 
@@ -51,6 +57,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setRegistrationToken(generateRandomToken());
         user.setType("Client");
+        user.setStatus("Waiting");
 
         emailService.sendEmailForRegistration(user);
 
@@ -76,9 +83,9 @@ public class UserServiceImpl implements UserService {
         user.setSurname(registrationDTO.getSurname());
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setDescription(registrationDTO.getDescription());
-        user.setPassword(registrationDTO.getPassword());
         user.setRegistrationToken(generateRandomToken());
         user.setType("House owner");
+        user.setStatus("Waiting");
 
         return userRepository.save(user);
     }
@@ -103,7 +110,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setDescription(registrationDTO.getDescription());
         user.setType("Boat owner");
-        user.setPassword(registrationDTO.getPassword());
+        user.setStatus("Waiting");
         user.setRegistrationToken(generateRandomToken());
         return userRepository.save(user);
     }
@@ -216,6 +223,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(optionalUser.get());
     }
 
+    @Override
+    public User changePassword(ChangePasswordDTO changePasswordDTO) {
+
+        User user = getCurrentUser();
+
+        if(!encoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
+            return null;
+        }
+
+        user.setPassword(encoder.encode(changePasswordDTO.getNewPassword()));
+
+        return userRepository.save(user);
+    }
+
     public static String generateRandomToken(){
         String uuid = UUID.randomUUID().toString();
         return uuid;
@@ -261,7 +282,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public Boolean delete(Long id)
+    public Boolean deleteUser(Long id)
     {
         Optional<User> user = userRepository.findById(id);
 
@@ -275,4 +296,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
+
+    @Override
+    public boolean delete(Long id) {
+        Optional<User> user = userRepository.findById(getCurrentUser().getId());
+        user.get().setStatus("Pending");
+        userRepository.save(user.get());
+        return true;
+    }
 }

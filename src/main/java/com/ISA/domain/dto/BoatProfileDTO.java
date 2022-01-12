@@ -17,14 +17,27 @@ public class BoatProfileDTO {
     private String interiorImage;
     private String exteriorImage;
     private String capacity;
-    private Date freeTerms;
     private String behaviourRules;
     private double pricelist;
     private String extraService;
     private String fishingEquipment;
     private String cancelConditions;
+    private double extraPrice;
+    private Long ownerId;
+    private String searchTerm;
 
 
+
+    public Long getownerId(){ return ownerId; }
+    public void setOwnerId(Long id){
+        this.ownerId = id;
+    }
+    public double getExtraPrice() {
+        return extraPrice;
+    }
+    public void setExtraPrice(double extraPrice) {
+        this.extraPrice = extraPrice;
+    }
     public int getMaxSpeed() { return  maxSpeed; }
     public void setMaxSpeed(int maxSpeed) { this.maxSpeed = maxSpeed; }
     public int getEnginePower() { return  enginePower; }
@@ -67,12 +80,6 @@ public class BoatProfileDTO {
     public void setPromoDescription(String promoDescription){
         this.promoDescription = promoDescription;
     }
-    public Date getFreeTerms(){
-        return freeTerms;
-    }
-    public void setFreeTerms(Date freeTerms){
-        this.freeTerms = freeTerms;
-    }
     public String getBehaviourRules(){
         return behaviourRules;
     }
@@ -103,5 +110,7 @@ public class BoatProfileDTO {
     public void setExteriorImage(String exteriorImage){
         this.exteriorImage = exteriorImage;
     }
+    public String getSearchTerm(){return searchTerm;}
+    public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
 
 }

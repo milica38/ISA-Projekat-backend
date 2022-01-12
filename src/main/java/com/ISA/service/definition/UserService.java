@@ -1,7 +1,10 @@
 package com.ISA.service.definition;
 
+import com.ISA.domain.dto.ChangePasswordDTO;
+import com.ISA.domain.dto.HomeFreeTermsDTO;
 import com.ISA.domain.dto.RegistrationDTO;
 import com.ISA.domain.dto.UserDTO;
+import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.User;
 
 import java.util.List;
@@ -20,6 +23,8 @@ public interface UserService {
     User edit(UserDTO userDTO);
     List<User> getNullStatusUsers();
     List<User> getAllUsers();
-    Boolean delete(Long id);
+    Boolean deleteUser(Long id);
+    User changePassword(ChangePasswordDTO changePasswordDTO);
+    boolean delete(Long id);
 
 }

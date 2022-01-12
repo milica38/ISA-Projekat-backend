@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface BoatProfileRepository extends JpaRepository<BoatProfile, Long> {
-    List<BoatProfile> findAll();
-    List<BoatProfile> findAllByDeleted(boolean deleted);
+     List<BoatProfile> findAll();
+     List<BoatProfile> findAllByOwnerIdAndDeleted(Long ownerId, boolean deleted);
+     List<BoatProfile> getAllByOwnerId(Long ownerId);
+     List<BoatProfile> findAllByDeleted(boolean deleted);
 }

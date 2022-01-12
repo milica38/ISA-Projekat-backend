@@ -15,18 +15,24 @@ public class HomeProfile {
     private String promoDescription;
     private int numberOfRooms;
     private int numberOfBeds;
-    //private Date freeTerms;
     private String behaviourRules;
     private double pricelist;
     private String extraService;
+    private double extraPrice;
     @Column(columnDefinition = "TEXT")
     private String interiorImage;
     @Column(columnDefinition = "TEXT")
     private String exteriorImage;
     private Long ownerId;
-
     private boolean deleted;
 
+
+    public double getExtraPrice() {
+        return extraPrice;
+    }
+    public void setExtraPrice(double extraPrice) {
+        this.extraPrice = extraPrice;
+    }
     public Long getId(){
         return id;
     }
@@ -95,9 +101,7 @@ public class HomeProfile {
     public void setExteriorImage(String exteriorImage){
         this.exteriorImage = exteriorImage;
     }
-    public boolean getDeleted(){
-        return deleted;
-    }
+    public boolean getDeleted() { return deleted; }
     public void setDeleted(boolean deleted){
         this.deleted = deleted;
     }

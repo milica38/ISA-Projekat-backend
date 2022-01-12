@@ -11,8 +11,13 @@ public interface HomeProfileService {
     List<HomeProfile> getAllNotDeleted();
     HomeProfile get(Long id);
     HomeProfile add(HomeProfileDTO homeProfileDTO);
-    HomeProfile edit(HomeProfileDTO homeProfileDTO);
+    HomeProfile edit(Long id, HomeProfileDTO homeProfileDTO);
     boolean delete(Long id);
     List<HomeProfile> getMyHouses();
+    List<HomeProfile> getMyNotDeletedHouses();
+    List<HomeProfile> filterHomes(HomeProfileDTO dto);
+    boolean homeExists(HomeProfile home, List<HomeProfile> homes);
+    boolean canOwnerDelete(Long houseId);
+    boolean canOwnerEdit(Long houseId);
 
 }
