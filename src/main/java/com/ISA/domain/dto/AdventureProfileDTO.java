@@ -20,6 +20,8 @@ public class AdventureProfileDTO {
     private String cancelConditions;
     private boolean deleted;
     private String searchTerm;
+    private double avgRate;
+
 
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id;}
@@ -55,5 +57,6 @@ public class AdventureProfileDTO {
     public void setDeleted(boolean deleted){ this.deleted = deleted; }
     public String getSearchTerm(){return searchTerm;}
     public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
-
+    public double getAvgRate(){return avgRate;}
+    public void setAvgRate(double avgRate){this.avgRate = avgRate;}
 }

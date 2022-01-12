@@ -144,6 +144,11 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         return true;
     }
 
+    @Override
+    public AdventureReservation get(Long id) {
+        return adventureReservationRepository.findById(id).get();
+    }
+
     public boolean isDateEqual(Date date1, Date date2) {
 
         return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
