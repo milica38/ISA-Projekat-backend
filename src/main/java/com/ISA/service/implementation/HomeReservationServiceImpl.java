@@ -184,13 +184,30 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         List<HomeReservation> all = homeReservationRepository.findAll();
         List<HomeReservation> results = new ArrayList<>();
         User currentUser = userService.getCurrentUser();
+        Date today = new Date();
 
         for(HomeReservation hr : all) {
-            if(hr.getHomeProfile().getownerId().equals(currentUser.getId())) {
+            if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && hr.getStartDate().after(today)) {
                 results.add(hr);
             }
         }
 
+        return results;
+    }
+
+    @Override
+    public List<HomeReservation> getAllHistoryReservationsForMyHouses(HomeHistoryReservationDTO dto) {
+
+        List<HomeReservation> all = homeReservationRepository.findAll();
+        List<HomeReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(HomeReservation hr : all) {
+            if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && hr.getEndDate().before(today)) {
+                results.add(hr);
+            }
+        }
         return results;
     }
 
@@ -203,11 +220,14 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         Date today = new Date();
 
         for(HomeReservation hr : all) {
-            if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && hr.getStartDate().before(today) && hr.getEndDate().after(today)) {
+            if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && (
+                    (hr.getStartDate().before(today) && hr.getEndDate().after(today)) || (hr.getStartDate().before(today) && hr.getEndDate().equals(today))
+                    || (hr.getStartDate().equals(today) && hr.getEndDate().after(today)) || (hr.getStartDate().equals(today) && hr.getEndDate().equals(today))
+                    )
+            ) {
                 results.add(hr);
             }
         }
-
         return results;
     }
 

@@ -82,6 +82,13 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PostMapping(path = "/myHistoryReservationsForMyHouses")
+    public ResponseEntity<?> getHistoryReservationsForMyHouses(@RequestBody HomeHistoryReservationDTO dto)
+    {
+        List<HomeReservation> reservations = homeReservationService.getAllHistoryReservationsForMyHouses(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         HomeReservation reservation = homeReservationService.get(id);
