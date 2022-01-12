@@ -1,5 +1,6 @@
 package com.ISA.service.definition;
 
+import com.ISA.domain.dto.BoatHistoryReservationDTO;
 import com.ISA.domain.dto.BoatReservationDTO;
 import com.ISA.domain.model.*;
 
@@ -15,6 +16,8 @@ public interface BoatReservationService {
     List<BoatFreeTerms> getAllBoatsOnAction();
     boolean canClientBook(Long currentClientId, Long boatId, Date startDate, Date endDate);
     BoatReservation get(Long id);
-
+    List<BoatReservation> getAllReservationsForMyBoats(BoatHistoryReservationDTO dto);
+    List<BoatReservation> getAllTodayReservationsForMyBoats(BoatHistoryReservationDTO dto);
+    List<BoatReservation> getAllHistoryReservationsForMyBoats(BoatHistoryReservationDTO dto);
 
 }

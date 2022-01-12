@@ -1,6 +1,8 @@
 package com.ISA.controller;
 
+import com.ISA.domain.dto.BoatHistoryReservationDTO;
 import com.ISA.domain.dto.BoatReservationDTO;
+import com.ISA.domain.dto.HomeHistoryReservationDTO;
 import com.ISA.domain.dto.SearchFreeBoatsDTO;
 import com.ISA.domain.dto.converters.BoatProfileConverters;
 import com.ISA.domain.model.*;
@@ -65,5 +67,26 @@ public class BoatReservationController {
         BoatReservation reservation = reservationService.get(id);
 
         return new ResponseEntity<>(reservation, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/myReservationsForMyBoats")
+    public ResponseEntity<?> getReservationsForMyBoats(@RequestBody BoatHistoryReservationDTO dto)
+    {
+        List<BoatReservation> reservations = reservationService.getAllReservationsForMyBoats(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/myTodayReservationsForMyBoats")
+    public ResponseEntity<?> getTodayReservationsForMyBoats(@RequestBody BoatHistoryReservationDTO dto)
+    {
+        List<BoatReservation> reservations = reservationService.getAllTodayReservationsForMyBoats(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/myHistoryReservationsForMyBoats")
+    public ResponseEntity<?> getHistoryReservationsForMyBoats(@RequestBody BoatHistoryReservationDTO dto)
+    {
+        List<BoatReservation> reservations = reservationService.getAllHistoryReservationsForMyBoats(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 }
