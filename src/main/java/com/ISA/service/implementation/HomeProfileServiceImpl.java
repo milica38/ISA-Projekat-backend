@@ -94,4 +94,7 @@ public class HomeProfileServiceImpl implements HomeProfileService {
 
         return homeProfileRepository.getAllByOwnerId(user.getId());
     }
+
+
+
 }

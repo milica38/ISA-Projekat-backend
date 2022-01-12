@@ -1,6 +1,7 @@
 package com.ISA.service.implementation;
 
 import com.ISA.config.SecurityUtils;
+import com.ISA.domain.dto.PasswordDTO;
 import com.ISA.domain.dto.RegistrationDTO;
 import com.ISA.domain.dto.UserDTO;
 import com.ISA.domain.model.HomeProfile;
@@ -11,6 +12,8 @@ import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.UUID;
 
 import java.util.Optional;
@@ -105,12 +108,77 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    public User adminRegistration(RegistrationDTO registrationDTO) {
+
+        Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
+
+        if(!optionalUser.isEmpty()) {
+            return null;
+        }
+
+        User user = new User();
+        user.setPassword(encoder.encode(registrationDTO.getPassword()));
+        user.setEmail(registrationDTO.getEmail());
+        user.setAddress(registrationDTO.getAddress());
+        user.setCity(registrationDTO.getCity());
+        user.setCountry(registrationDTO.getCountry());
+        user.setDescription(registrationDTO.getDescription());
+        user.setName(registrationDTO.getName());
+        user.setSurname(registrationDTO.getSurname());
+        user.setPhoneNumber(registrationDTO.getPhoneNumber());
+        user.setDescription(registrationDTO.getDescription());
+        user.setPassword(registrationDTO.getPassword());
+        user.setRegistrationToken(generateRandomToken());
+        user.setType("Admin");
+
+        return userRepository.save(user);
+    }
+
+    public User fishingInstructorRegistration(RegistrationDTO registrationDTO) {
+
+        Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
+
+        if(!optionalUser.isEmpty()) {
+            return null;
+        }
+
+        User user = new User();
+        user.setPassword(encoder.encode(registrationDTO.getPassword()));
+        user.setEmail(registrationDTO.getEmail());
+        user.setAddress(registrationDTO.getAddress());
+        user.setCity(registrationDTO.getCity());
+        user.setCountry(registrationDTO.getCountry());
+        user.setDescription(registrationDTO.getDescription());
+        user.setName(registrationDTO.getName());
+        user.setSurname(registrationDTO.getSurname());
+        user.setPhoneNumber(registrationDTO.getPhoneNumber());
+        user.setDescription(registrationDTO.getDescription());
+        user.setPassword(registrationDTO.getPassword());
+        user.setRegistrationToken(generateRandomToken());
+        user.setType("Fishing instructor");
+
+        return userRepository.save(user);
+    }
+
     @Override
     public User getCurrentUser() {
 
         String email = SecurityUtils.getCurrentUserLogin().get();
         return userRepository.findOneByEmail(email).get();
     }
+
+    @Override
+    public List<User> getNullStatusUsers()
+    {
+        return userRepository.findAllUsersByStatus(null);
+    }
+
+
+    public List<User> getAllUsers()
+    {
+        return userRepository.findAll();
+    }
+
 
     @Override
     public User edit(UserDTO userDTO) {
@@ -163,4 +231,48 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user.get());
         return true;
     }
+
+    public Boolean registrationApproved(Long id){
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()){
+            return false;
+        }
+        user.get().setStatus("Active");
+        userRepository.save(user.get());
+        return true;
+    }
+
+    public Boolean registrationDeclined(Long id)
+    {
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()){
+            return false;
+        }
+        user.get().setStatus("Declined");
+        userRepository.save(user.get());
+        return true;
+    }
+
+
+    public void changePassword(PasswordDTO passwordDTO)
+    {
+
+    }
+
+    public Boolean delete(Long id)
+    {
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.get().getType().equals("Admin")){
+            return false;
+        }
+
+        userRepository.delete(user.get());
+
+       return true;
+    }
+
+
 }

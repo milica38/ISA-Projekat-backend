@@ -68,6 +68,30 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @RequestMapping(path = "/fishing-instructor/register", method = RequestMethod.POST)
+    public ResponseEntity<?> registerFishingInstructor(@RequestBody RegistrationDTO registrationDTO) {
+
+        User user = userService.fishingInstructorRegistration(registrationDTO);
+
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(path = "/admin/register", method = RequestMethod.POST)
+    public ResponseEntity<?> registerAdmin(@RequestBody RegistrationDTO registrationDTO) {
+
+        User user = userService.adminRegistration(registrationDTO);
+
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @PostMapping(path = "/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
 
@@ -88,6 +112,16 @@ public class UserController {
         return new ResponseEntity<>(userService.getCurrentUser(), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/userStatus")
+    public ResponseEntity<?> getNullStatusUsers() {
+        return new ResponseEntity<>(userService.getNullStatusUsers(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/allUsers")
+    public ResponseEntity<?> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    }
+
     @PutMapping()
     public ResponseEntity<?> edit(@RequestBody UserDTO dto) {
         User user = userService.edit(dto);
@@ -100,4 +134,23 @@ public class UserController {
         userService.findUserByToken(token);
         return new RedirectView("http://localhost:4200");
     }
+
+    @PostMapping(path = "/approve/{id}")
+    public ResponseEntity<?> approveUser(@PathVariable Long id){
+        userService.registrationApproved(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/decline/{id}")
+    public ResponseEntity<?> declineUser(@PathVariable Long id){
+        userService.registrationDeclined(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+   @DeleteMapping(path = "/deleteUser/{id}")
+   public ResponseEntity<?> delete(@PathVariable Long id) {
+        userService.delete(id);
+
+       return new ResponseEntity<>(HttpStatus.OK);
+   }
 }
