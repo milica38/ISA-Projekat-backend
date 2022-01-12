@@ -159,15 +159,34 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
     @Override
     public List<HomeReservation> getAllReservationsForMyHouses(HomeHistoryReservationDTO dto) {
-        List<HomeReservation> reservations = homeReservationRepository.getAllByHomeProfileId(dto.getHouseId());
-        User currentUser = userService.getCurrentUser();
-        List<HomeReservation> results = new ArrayList<>();
 
-        for(HomeReservation reservation: reservations){
-            if(reservation.getHomeProfile().getId().equals(dto.getHouseId()) && reservation.getHomeProfile().getownerId().equals(currentUser.getId())){
-                results.add(reservation);
+        List<HomeReservation> all = homeReservationRepository.findAll();
+        List<HomeReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+
+        for(HomeReservation hr : all) {
+            if(hr.getHomeProfile().getownerId().equals(currentUser.getId())) {
+                results.add(hr);
             }
         }
+
+        return results;
+    }
+
+    @Override
+    public List<HomeReservation> getAllTodayReservationsForMyHouses(HomeHistoryReservationDTO dto) {
+
+        List<HomeReservation> all = homeReservationRepository.findAll();
+        List<HomeReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(HomeReservation hr : all) {
+            if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && hr.getStartDate().before(today) && hr.getEndDate().after(today)) {
+                results.add(hr);
+            }
+        }
+
         return results;
     }
 

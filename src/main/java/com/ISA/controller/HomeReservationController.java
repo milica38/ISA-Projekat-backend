@@ -67,14 +67,20 @@ public class HomeReservationController {
         List<HomeReservation> reservations = homeReservationService.getAllReservationsForMyHouses(dto);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
-  
+
+    @PostMapping(path = "/myTodayReservationsForMyHouses")
+    public ResponseEntity<?> getTodayReservationsForMyHouses(@RequestBody HomeHistoryReservationDTO dto)
+    {
+        List<HomeReservation> reservations = homeReservationService.getAllTodayReservationsForMyHouses(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         HomeReservation reservation = homeReservationService.get(id);
 
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
-
 
     @GetMapping(path = "/getAllReservations")
     public ResponseEntity<?> getAllReservations(){
