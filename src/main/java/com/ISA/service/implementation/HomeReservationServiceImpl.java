@@ -58,13 +58,6 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
         reservation.setHomeProfile(homeProfile);
-        for(HomeFreeTerms term: freeTerms){
-            if(term.getHomeProfile().getId().equals(dto.getHouseId()) && term.getStartDate().equals(dto.getStartDate()) && term.getEndDate().equals(dto.getEndDate())){
-                result.add(term);
-            }
-            if(term.isAction())
-                reservation.setPrice(term.getActionPrice());
-        }
         reservation.setPrice(homeProfile.getPricelist());
         reservation.setClientId(currentUser.getId());
         reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
@@ -74,6 +67,34 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         return homeReservationRepository.save(reservation);
     }
 
+    @Override
+    public HomeReservation addByOwner(HomeReservationDTO dto, Long clientId) {
+        HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
+        User currentUser = userService.getCurrentUser();
+        List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAllByHomeProfileId(dto.getHouseId());
+        List<HomeFreeTerms> result = new ArrayList<>();
+
+        if(isOverlapping(homeProfile.getId(), dto.getStartDate(), dto.getEndDate())){
+            return null;
+        }
+
+        if(!canClientBook(currentUser.getId(), dto.getHouseId(), dto.getStartDate(), dto.getEndDate() )){
+            return null;
+        }
+
+        HomeReservation reservation = new HomeReservation();
+        reservation.setExtraServices(homeProfile.getExtraService());
+        reservation.setCancelled(false);
+        reservation.setEndDate(dto.getEndDate());
+        reservation.setStartDate(dto.getStartDate());
+        reservation.setHomeProfile(homeProfile);
+        reservation.setPrice(homeProfile.getPricelist());
+        reservation.setClientId(currentUser.getId());
+        reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
+        reservation.setClientId(dto.getClientId());
+
+        return homeReservationRepository.save(reservation);
+    }
 
 
     @Override

@@ -33,6 +33,13 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PostMapping(path = "/owner")
+    public ResponseEntity<?> addByOwner(@RequestBody HomeReservationDTO dto){
+        HomeReservation reservation = homeReservationService.addByOwner(dto, dto.getClientId());
+
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
+    }
+
     @PostMapping(path = "/searchFree")
     public ResponseEntity<?> searchFree(@RequestBody SearchFreeHomesDTO dto)
     {
@@ -82,9 +89,10 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/getAllReservations")
-    public ResponseEntity<?> getAllReservations(){
-        List<HomeReservation> actions = homeReservationService.getAll();
+    @GetMapping(path = "/getAllReservations/{houseId}/{ownerId}")
+    public ResponseEntity<?> getAllReservations(@PathVariable Long houseId, @PathVariable Long ownerId){
+        List<HomeReservation> actions = homeReservationService.getAllReservations(ownerId, houseId);
         return new ResponseEntity<>(actions, HttpStatus.OK);
     }
+
 }

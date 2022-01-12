@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface HomeReservationService {
     HomeReservation add(HomeReservationDTO dto);
+    HomeReservation addByOwner(HomeReservationDTO dto, Long clientId);
     List<HomeProfile> findAll();
     boolean isOverlapping(long houseId, Date startDate, Date endDate);
     List<HomeReservation> getMyReservations();
