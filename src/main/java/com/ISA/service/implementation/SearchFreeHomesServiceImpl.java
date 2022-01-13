@@ -8,10 +8,7 @@ import com.ISA.service.definition.SearchFreeHomesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Service
 public class SearchFreeHomesServiceImpl implements SearchFreeHomesService {
@@ -27,7 +24,7 @@ public class SearchFreeHomesServiceImpl implements SearchFreeHomesService {
 
 
         for (HomeFreeTerms term: freeTerms) {
-            if(term.isAction() != true && dto.getStartDate().after(term.getStartDate()) &&  dto.getEndDate().before(term.getEndDate()) && term.getHomeProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
+            if(term.isAction() != true && (dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getHomeProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
 
                 if(!homeExists(term.getHomeProfile(), homes)){
                     homes.add(term.getHomeProfile());
@@ -46,6 +43,12 @@ public class SearchFreeHomesServiceImpl implements SearchFreeHomesService {
             }
         }
         return false;
+    }
+
+    public boolean isDateEqual(Date date1, Date date2) {
+
+        return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
+
     }
 
 

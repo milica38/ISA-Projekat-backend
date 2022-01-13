@@ -50,13 +50,14 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         }
 
         HomeReservation reservation = new HomeReservation();
+        HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
+
         reservation.setExtraServices(homeProfile.getExtraService());
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
         reservation.setHomeProfile(homeProfile);
 
-        HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
         if(freeTerm != null && freeTerm.isAction()){
             reservation.setPrice(freeTerm.getActionPrice());
         }
