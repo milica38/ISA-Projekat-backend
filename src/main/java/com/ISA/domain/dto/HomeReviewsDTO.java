@@ -19,11 +19,11 @@ public class HomeReviewsDTO {
         return isBadComment;
     }
 
-    public void setAppear(boolean appear) {
+    public void setIsAppear(boolean appear) {
         isAppear = appear;
     }
 
-    public void setBadComment(boolean badComment) {
+    public void setIsBadComment(boolean badComment) {
         isBadComment = badComment;
     }
 

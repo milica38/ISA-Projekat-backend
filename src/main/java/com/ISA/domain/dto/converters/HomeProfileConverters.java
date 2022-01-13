@@ -24,6 +24,8 @@ public class HomeProfileConverters {
         dto.setPricelist(homeProfile.getPricelist());
         dto.setPromoDescription(homeProfile.getPromoDescription());
         dto.setExtraPrice(homeProfile.getExtraPrice());
+        dto.setLatitude(homeProfile.getLatitude());
+        dto.setLongitude(homeProfile.getLongitude());
         return dto;
     }
 

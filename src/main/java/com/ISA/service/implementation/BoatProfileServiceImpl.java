@@ -68,7 +68,7 @@ public class BoatProfileServiceImpl implements BoatProfileService {
 
     public BoatProfile edit(Long id, BoatProfileDTO boatProfileDTO) {
 
-        Optional<BoatProfile> optionalBoatProfile = boatProfileRepository.findById(boatProfileDTO.getId());
+        Optional<BoatProfile> optionalBoatProfile = boatProfileRepository.findById(id);
 
         optionalBoatProfile.get().setNavEquipment(boatProfileDTO.getNavEquipment());
         optionalBoatProfile.get().setExtraPrice(boatProfileDTO.getExtraPrice());
