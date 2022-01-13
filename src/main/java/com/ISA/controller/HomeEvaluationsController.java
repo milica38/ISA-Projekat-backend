@@ -23,6 +23,4 @@ public class HomeEvaluationsController {
         return new ResponseEntity<>(evaluations, HttpStatus.OK);
     }
 
-
-
 }
