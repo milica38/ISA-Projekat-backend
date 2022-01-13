@@ -63,6 +63,8 @@ public class BoatProfileServiceImpl implements BoatProfileService {
         bp.setMaxSpeed(boatProfileDTO.getMaxSpeed());
         bp.setName(boatProfileDTO.getName());
         bp.setType(boatProfileDTO.getType());
+        bp.setLatitude(boatProfileDTO.getLatitude());
+        bp.setLongitude(boatProfileDTO.getLongitude());
         return boatProfileRepository.save(bp);
     }
 
