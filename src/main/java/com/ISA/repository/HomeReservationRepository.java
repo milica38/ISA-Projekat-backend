@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface HomeReservationRepository extends JpaRepository<HomeReservation, Long> {
     List<HomeReservation> getAllByClientIdAndCancelled(Long clientId, boolean cancelled);
+    List<HomeReservation> getAllByHomeProfileId(Long homeProfileId);
 }

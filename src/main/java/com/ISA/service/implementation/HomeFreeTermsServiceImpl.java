@@ -45,7 +45,15 @@ public class HomeFreeTermsServiceImpl implements HomeFreeTermsService {
 
         for(HomeFreeTerms freeTerm: freeTerms) {
 
-            if(homeFreeTermsDTO.getStartDate().equals(freeTerm.getStartDate()) && homeFreeTermsDTO.getEndDate().equals(freeTerm.getEndDate())){
+            if(homeFreeTermsDTO.getStartDate().equals(freeTerm.getStartDate()) || homeFreeTermsDTO.getEndDate().equals(freeTerm.getEndDate()) || homeFreeTermsDTO.getStartDate().equals(freeTerm.getEndDate()) || homeFreeTermsDTO.getEndDate().equals(freeTerm.getStartDate()) && homeFreeTermsDTO.getHouseId().equals(freeTerm.getHomeProfile().getId())){
+                return null;
+            }
+
+            if(homeFreeTermsDTO.getStartDate().after(freeTerm.getStartDate()) && homeFreeTermsDTO.getStartDate().before(freeTerm.getEndDate()) && homeFreeTermsDTO.getHouseId().equals(freeTerm.getHomeProfile().getId())){
+                return null;
+            }
+
+            if(homeFreeTermsDTO.getEndDate().after(freeTerm.getStartDate()) && homeFreeTermsDTO.getEndDate().before(freeTerm.getEndDate()) && homeFreeTermsDTO.getHouseId().equals(freeTerm.getHomeProfile().getId())){
                 return null;
             }
         }
