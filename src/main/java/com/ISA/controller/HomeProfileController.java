@@ -8,6 +8,7 @@ import com.ISA.service.implementation.HomeProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,17 +24,17 @@ public class HomeProfileController {
     @GetMapping(path = "/home-profiles")
     public ResponseEntity<?> getAll() {
         List<HomeProfile> homeProfiles = homeProfileService.getAllNotDeleted();
-
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(homeProfiles), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         HomeProfile hp = homeProfileService.get(id);
-
         return new ResponseEntity<>(HomeProfileConverters.modelToDTO(hp), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner')")
     @PostMapping()
     public ResponseEntity<?> add(@RequestBody HomeProfileDTO dto) {
         HomeProfile hp = homeProfileService.add(dto);
@@ -41,6 +42,7 @@ public class HomeProfileController {
         return new ResponseEntity<>(HomeProfileConverters.modelToDTO(hp), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner')")
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody HomeProfileDTO dto) {
         HomeProfile hp = homeProfileService.edit(id, dto);
@@ -48,6 +50,7 @@ public class HomeProfileController {
         return new ResponseEntity<>(hp, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean delete = homeProfileService.delete(id);
@@ -55,11 +58,10 @@ public class HomeProfileController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner')")
     @GetMapping(path = "/my")
     public ResponseEntity<?> getMyHouses() {
-
         List<HomeProfile> result = homeProfileService.getMyNotDeletedHouses();
-
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(result), HttpStatus.OK);
     }
 

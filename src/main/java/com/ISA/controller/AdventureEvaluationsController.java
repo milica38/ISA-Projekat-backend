@@ -6,6 +6,7 @@ import com.ISA.service.definition.AdventureEvaluationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class AdventureEvaluationsController {
     @Autowired
     private AdventureEvaluationsService adventureEvaluationsService;
 
+    @PreAuthorize("hasAuthority('Client')")
     @PostMapping()
     public ResponseEntity<?> add(@RequestBody AdventureEvaluationsDTO dto) {
         AdventureEvaluations evaluations = adventureEvaluationsService.add(dto);

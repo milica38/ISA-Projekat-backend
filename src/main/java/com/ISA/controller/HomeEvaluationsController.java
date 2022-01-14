@@ -6,6 +6,7 @@ import com.ISA.service.definition.HomeEvaluationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,10 +17,10 @@ public class HomeEvaluationsController {
     @Autowired
     private HomeEvaluationsService homeEvaluationsService;
 
+    @PreAuthorize("hasAuthority('Client')")
     @PostMapping()
     public ResponseEntity<?> add(@RequestBody HomeEvaluationsDTO dto) {
         HomeEvaluations evaluations = homeEvaluationsService.add(dto);
-
         return new ResponseEntity<>(evaluations, HttpStatus.OK);
     }
 

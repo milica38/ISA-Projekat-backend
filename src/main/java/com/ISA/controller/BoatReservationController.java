@@ -9,6 +9,7 @@ import com.ISA.service.definition.SearchFreeBoatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,21 +26,22 @@ public class BoatReservationController {
     private SearchFreeBoatsService freeBoatsService;
 
 
+    @PreAuthorize("hasAuthority('Client')")
     @PostMapping(path = "/book")
     public ResponseEntity<?> add(@RequestBody BoatReservationDTO dto) {
         BoatReservation reservation = reservationService.add(dto);
-
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
     @PostMapping(path = "/searchFree")
     public ResponseEntity<?> searchFree(@RequestBody SearchFreeBoatsDTO dto)
     {
         List<BoatProfile> boats = freeBoatsService.findAllFree(dto);
-
         return new ResponseEntity<>(BoatProfileConverters.modelsToDTOs(boats), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
     @GetMapping(path = "/myReservations")
     public ResponseEntity<?> getMyReservations()
     {
@@ -47,23 +49,24 @@ public class BoatReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
     @GetMapping(path = "/getBoatsOnAction")
     public ResponseEntity<?> getAllBoatsOnAction(){
         List<BoatFreeTerms> actions = reservationService.getAllBoatsOnAction();
         return new ResponseEntity<>(actions, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> cancel(@PathVariable Long id) {
         boolean delete = reservationService.cancel(id);
-
         return new ResponseEntity<>(delete, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client') or hasAuthority('Boat owner')")
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         BoatReservation reservation = reservationService.get(id);
-
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 }
