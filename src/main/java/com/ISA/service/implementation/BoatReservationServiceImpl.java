@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -104,12 +105,19 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     public boolean cancel(Long id) {
 
         Optional<BoatReservation> reservation = reservationRepository.findById(id);
-        Date today = new Date();
 
-        if(reservation.get().getStartDate().before(today))
+        Date today = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(reservation.get().getStartDate());
+        calendar.add(Calendar.DATE, -3);
+
+        Date lastDayToCancel = calendar.getTime();
+
+        if(lastDayToCancel.before(today))
             return false;
 
         reservation.get().setCancelled(true);
+
         reservationRepository.save(reservation.get());
         return true;
     }

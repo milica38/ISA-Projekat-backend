@@ -8,6 +8,7 @@ import com.ISA.service.implementation.BoatProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class BoatProfileController {
         return new ResponseEntity<>(BoatProfileConverters.modelsToDTOs(boatProfiles), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         BoatProfile bp = boatProfileService.get(id);
@@ -34,6 +36,7 @@ public class BoatProfileController {
         return new ResponseEntity<>(BoatProfileConverters.modelToDTO(bp), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping()
     public ResponseEntity<?> add(@RequestBody BoatProfileDTO dto) {
         BoatProfile bp = boatProfileService.add(dto);
@@ -41,6 +44,7 @@ public class BoatProfileController {
         return new ResponseEntity<>(BoatProfileConverters.modelToDTO(bp), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody BoatProfileDTO dto) {
         BoatProfile bp = boatProfileService.edit(id, dto);
@@ -48,6 +52,7 @@ public class BoatProfileController {
         return new ResponseEntity<>(BoatProfileConverters.modelToDTO(bp), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean delete = boatProfileService.delete(id);
@@ -55,6 +60,7 @@ public class BoatProfileController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @GetMapping(path = "/my")
     public ResponseEntity<?> getMyBoats() {
         List<BoatProfile> result = boatProfileService.getMyNotDeletedBoats();

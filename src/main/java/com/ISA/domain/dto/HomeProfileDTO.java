@@ -18,6 +18,7 @@ public class HomeProfileDTO {
     private Long ownerId;
     private double extraPrice;
     private String searchTerm;
+    private double avgRate;
 
     public double getExtraPrice() {
         return extraPrice;
@@ -97,4 +98,6 @@ public class HomeProfileDTO {
     }
     public String getSearchTerm(){return searchTerm;}
     public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
+    public double getAvgRate(){return avgRate;}
+    public void setAvgRate(double avgRate){this.avgRate = avgRate;}
 }

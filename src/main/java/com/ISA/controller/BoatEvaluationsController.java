@@ -1,8 +1,8 @@
 package com.ISA.controller;
 
-import com.ISA.domain.dto.HomeEvaluationsDTO;
-import com.ISA.domain.model.HomeEvaluations;
-import com.ISA.service.definition.HomeEvaluationsService;
+import com.ISA.domain.dto.BoatEvaluationsDTO;
+import com.ISA.domain.model.BoatEvaluations;
+import com.ISA.service.definition.BoatEvaluationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +11,16 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("api/homeEvaluations")
-public class HomeEvaluationsController {
+@RequestMapping("api/boatEvaluations")
+public class BoatEvaluationsController {
 
     @Autowired
-    private HomeEvaluationsService homeEvaluationsService;
+    private BoatEvaluationsService boatEvaluationsService;
 
     @PreAuthorize("hasAuthority('Client')")
     @PostMapping()
-    public ResponseEntity<?> add(@RequestBody HomeEvaluationsDTO dto) {
-        HomeEvaluations evaluations = homeEvaluationsService.add(dto);
+    public ResponseEntity<?> add(@RequestBody BoatEvaluationsDTO dto) {
+        BoatEvaluations evaluations = boatEvaluationsService.add(dto);
         return new ResponseEntity<>(evaluations, HttpStatus.OK);
     }
-
 }

@@ -24,6 +24,7 @@ public class HomeProfileConverters {
         dto.setPricelist(homeProfile.getPricelist());
         dto.setPromoDescription(homeProfile.getPromoDescription());
         dto.setExtraPrice(homeProfile.getExtraPrice());
+        dto.setAvgRate(homeProfile.getAvgRate());
         return dto;
     }
 

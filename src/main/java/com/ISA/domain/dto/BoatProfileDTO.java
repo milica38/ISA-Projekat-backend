@@ -25,6 +25,7 @@ public class BoatProfileDTO {
     private double extraPrice;
     private Long ownerId;
     private String searchTerm;
+    private double avgRate;
 
 
 
@@ -112,5 +113,6 @@ public class BoatProfileDTO {
     }
     public String getSearchTerm(){return searchTerm;}
     public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
-
+    public double getAvgRate(){return avgRate;}
+    public void setAvgRate(double avgRate){this.avgRate = avgRate;}
 }
