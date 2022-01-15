@@ -34,6 +34,13 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PostMapping(path = "/owner")
+    public ResponseEntity<?> addByOwner(@RequestBody HomeReservationDTO dto){
+        HomeReservation reservation = homeReservationService.addByOwner(dto, dto.getClientId());
+
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAuthority('Client')")
     @PostMapping(path = "/searchFree")
     public ResponseEntity<?> searchFree(@RequestBody SearchFreeHomesDTO dto) {
@@ -69,6 +76,20 @@ public class HomeReservationController {
         List<HomeReservation> reservations = homeReservationService.getAllReservationsForMyHouses(dto);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
+
+    @PostMapping(path = "/myTodayReservationsForMyHouses")
+    public ResponseEntity<?> getTodayReservationsForMyHouses(@RequestBody HomeHistoryReservationDTO dto)
+    {
+        List<HomeReservation> reservations = homeReservationService.getAllTodayReservationsForMyHouses(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/myHistoryReservationsForMyHouses")
+    public ResponseEntity<?> getHistoryReservationsForMyHouses(@RequestBody HomeHistoryReservationDTO dto)
+    {
+        List<HomeReservation> reservations = homeReservationService.getAllHistoryReservationsForMyHouses(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
   
     @PreAuthorize("hasAuthority('Client') or hasAuthority('House owner')")
     @GetMapping(path = "/{id}")
@@ -77,10 +98,10 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
-
-    @GetMapping(path = "/getAllReservations")
-    public ResponseEntity<?> getAllReservations(){
-        List<HomeReservation> actions = homeReservationService.getAll();
+    @GetMapping(path = "/getAllReservations/{houseId}/{ownerId}")
+    public ResponseEntity<?> getAllReservations(@PathVariable Long houseId, @PathVariable Long ownerId){
+        List<HomeReservation> actions = homeReservationService.getAllReservations(ownerId, houseId);
         return new ResponseEntity<>(actions, HttpStatus.OK);
     }
+
 }

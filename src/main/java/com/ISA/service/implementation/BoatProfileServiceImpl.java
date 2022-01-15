@@ -1,10 +1,9 @@
 package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.BoatProfileDTO;
-import com.ISA.domain.model.BoatProfile;
-import com.ISA.domain.model.HomeProfile;
-import com.ISA.domain.model.User;
+import com.ISA.domain.model.*;
 import com.ISA.repository.BoatProfileRepository;
+import com.ISA.repository.BoatReservationRepository;
 import com.ISA.service.definition.BoatProfileService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,9 @@ public class BoatProfileServiceImpl implements BoatProfileService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BoatReservationRepository reservationRepository;
 
     @Override
     public List<BoatProfile> getAll() { return boatProfileRepository.findAll(); }
@@ -63,13 +65,17 @@ public class BoatProfileServiceImpl implements BoatProfileService {
         bp.setMaxSpeed(boatProfileDTO.getMaxSpeed());
         bp.setName(boatProfileDTO.getName());
         bp.setType(boatProfileDTO.getType());
+        bp.setLatitude(boatProfileDTO.getLatitude());
+        bp.setLongitude(boatProfileDTO.getLongitude());
         return boatProfileRepository.save(bp);
     }
 
     public BoatProfile edit(Long id, BoatProfileDTO boatProfileDTO) {
 
-        Optional<BoatProfile> optionalBoatProfile = boatProfileRepository.findById(boatProfileDTO.getId());
-
+        Optional<BoatProfile> optionalBoatProfile = boatProfileRepository.findById(id);
+        if(!canOwnerDelete(id)){
+            return null;
+        }
         optionalBoatProfile.get().setNavEquipment(boatProfileDTO.getNavEquipment());
         optionalBoatProfile.get().setExtraPrice(boatProfileDTO.getExtraPrice());
         optionalBoatProfile.get().setAddress(boatProfileDTO.getAddress());
@@ -103,6 +109,9 @@ public class BoatProfileServiceImpl implements BoatProfileService {
     public boolean delete(Long id) {
 
         Optional<BoatProfile> optionalBoatProfile = boatProfileRepository.findById(id);
+        if(!canOwnerDelete(optionalBoatProfile.get().getId())){
+            return false;
+        }
         optionalBoatProfile.get().setDeleted(true);
         boatProfileRepository.save(optionalBoatProfile.get());
         return true;
@@ -134,5 +143,27 @@ public class BoatProfileServiceImpl implements BoatProfileService {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean canOwnerEdit(Long boatId) {
+        List<BoatReservation> reservations = reservationRepository.findAll();
+        for(BoatReservation reservation: reservations){
+            if(reservation.getBoatProfile().getId().equals(boatId)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean canOwnerDelete(Long boatId) {
+        List<BoatReservation> reservations = reservationRepository.findAll();
+        for(BoatReservation reservation: reservations){
+            if(reservation.getBoatProfile().getId().equals(boatId)){
+                return false;
+            }
+        }
+        return true;
     }
 }

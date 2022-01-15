@@ -17,4 +17,6 @@ public interface BoatProfileService {
     List<BoatProfile> getMyNotDeletedBoats();
     List<BoatProfile> filterBoats(BoatProfileDTO dto);
     boolean boatsExists(BoatProfile boat, List<BoatProfile> boats);
+    boolean canOwnerEdit(Long boatId);
+    boolean canOwnerDelete(Long boatId);
 }
