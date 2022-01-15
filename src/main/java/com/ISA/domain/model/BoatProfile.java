@@ -34,7 +34,8 @@ public class BoatProfile {
     private boolean deleted;
     private double latitude;
     private double longitude;
-
+    private int rateCounter;
+    private double avgRate;
 
     public double getLatitude() {
         return latitude;
@@ -140,5 +141,9 @@ public class BoatProfile {
     public void setDeleted(boolean deleted){
         this.deleted = deleted;
     }
+    public int getRateCounter(){return rateCounter;}
+    public void setRateCounter(int rateCounter){this.rateCounter = rateCounter;}
+    public double getAvgRate(){return avgRate;}
+    public void setAvgRate(double avgRate){this.avgRate = avgRate;}
 
 }

@@ -20,6 +20,7 @@ public class HomeProfileDTO {
     private String searchTerm;
     private double latitude;
     private double longitude;
+    private double avgRate;
 
     public double getLatitude() {
         return latitude;
@@ -115,4 +116,6 @@ public class HomeProfileDTO {
     }
     public String getSearchTerm(){return searchTerm;}
     public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
+    public double getAvgRate(){return avgRate;}
+    public void setAvgRate(double avgRate){this.avgRate = avgRate;}
 }

@@ -15,4 +15,5 @@ public interface AdventureReservationService {
     boolean cancel(Long id);
     List<AdventureFreeTerms> getAllAdventuresOnAction();
     boolean canClientBook(Long currentClientId, Long adventureId, Date startDate, Date endDate);
+    AdventureReservation get(Long id);
 }

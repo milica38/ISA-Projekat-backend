@@ -34,6 +34,7 @@ public class BoatProfileConverters {
         dto.setPriceList(boatProfile.getPricelist());
         dto.setLatitude(boatProfile.getLatitude());
         dto.setLongitude(boatProfile.getLongitude());
+        dto.setAvgRate(boatProfile.getAvgRate());
         return dto;
     }
 

@@ -12,6 +12,7 @@ import com.ISA.service.definition.SearchFreeHomesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -26,10 +27,10 @@ public class HomeReservationController {
     @Autowired
     private SearchFreeHomesService freeHomesService;
 
+    @PreAuthorize("hasAuthority('Client')")
     @PostMapping()
     public ResponseEntity<?> add(@RequestBody HomeReservationDTO dto) {
         HomeReservation reservation = homeReservationService.add(dto);
-
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
@@ -40,34 +41,35 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
     @PostMapping(path = "/searchFree")
-    public ResponseEntity<?> searchFree(@RequestBody SearchFreeHomesDTO dto)
-    {
+    public ResponseEntity<?> searchFree(@RequestBody SearchFreeHomesDTO dto) {
         List<HomeProfile> homes = freeHomesService.findAllFree(dto);
-
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(homes), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
     @GetMapping(path = "/myReservations")
-    public ResponseEntity<?> getMyReservations()
-    {
+    public ResponseEntity<?> getMyReservations() {
         List<HomeReservation> reservations = homeReservationService.getMyReservations();
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> cancel(@PathVariable Long id) {
         boolean delete = homeReservationService.cancel(id);
-
         return new ResponseEntity<>(delete, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
     @GetMapping(path = "/getHousesOnAction")
     public ResponseEntity<?> getAllHousesOnAction(){
         List<HomeFreeTerms> actions = homeReservationService.getAllHousesOnAction();
         return new ResponseEntity<>(actions, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner')")
     @PostMapping(path = "/myReservationsForMyHouses")
     public ResponseEntity<?> getReservationsForMyHouses(@RequestBody HomeHistoryReservationDTO dto)
     {
@@ -88,11 +90,11 @@ public class HomeReservationController {
         List<HomeReservation> reservations = homeReservationService.getAllHistoryReservationsForMyHouses(dto);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
-
+  
+    @PreAuthorize("hasAuthority('Client') or hasAuthority('House owner')")
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         HomeReservation reservation = homeReservationService.get(id);
-
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 

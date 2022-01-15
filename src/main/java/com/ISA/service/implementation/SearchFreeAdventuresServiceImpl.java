@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class SearchFreeAdventuresServiceImpl implements SearchFreeAdventuresServ
 
 
         for (AdventureFreeTerms term: freeTerms) {
-            if(dto.getStartDate().after(term.getStartDate()) &&  dto.getEndDate().before(term.getEndDate()) && term.getAdventureProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
+            if((dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getAdventureProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
 
                 if(!adventureExists(term.getAdventureProfile(), adventures)){
                     adventures.add(term.getAdventureProfile());
@@ -41,8 +42,13 @@ public class SearchFreeAdventuresServiceImpl implements SearchFreeAdventuresServ
             if(profile.getId().equals(adventure.getId())){
                 return true;
             }
-
         }
         return false;
+    }
+
+    public boolean isDateEqual(Date date1, Date date2) {
+
+        return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
+
     }
 }
