@@ -52,7 +52,7 @@ public class BoatProfileController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean delete = boatProfileService.delete(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(delete, HttpStatus.OK);
     }
 
     @GetMapping(path = "/my")
