@@ -13,5 +13,8 @@ public interface EmailService {
      void sendEmailForAdventureReservation(User user, AdventureReservation reservation);
      void sendEmailForHouseAction(User user, HomeProfile homeProfile);
      void sendEmailForBoatAction(User user, BoatProfile boatProfile);
+     void sendEmailForAdventureAction(User user, AdventureProfile adventureProfile);
+     void sendEmailForRegistrationApproved(User user);
+     void sendEmailForRegistrationDeclined(User user);
 
 }

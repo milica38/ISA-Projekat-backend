@@ -38,7 +38,7 @@ public class AdventureProfileController {
         return new ResponseEntity<>(AdventureProfileConverters.modelToDTO(profile), HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping(path = "/addAdventure")
     public ResponseEntity<?> add(@RequestBody AdventureProfileDTO dto) {
         AdventureProfile ap = adventureProfileService.add(dto);
 

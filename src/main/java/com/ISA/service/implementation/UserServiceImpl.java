@@ -260,6 +260,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         user.get().setStatus("Active");
+        emailService.sendEmailForRegistrationApproved(user.get());
         userRepository.save(user.get());
         return true;
     }
@@ -272,6 +273,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         user.get().setStatus("Declined");
+        emailService.sendEmailForRegistrationDeclined(user.get());
         userRepository.save(user.get());
         return true;
     }

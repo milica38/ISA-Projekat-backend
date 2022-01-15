@@ -23,6 +23,7 @@ public class User {
     private String type;
     private String status;
     private String registrationToken;
+    private String cancelReason;
 
     public Long getId(){
         return id;
@@ -96,5 +97,9 @@ public class User {
     public String getStatus() {return status;}
     public void setStatus(String status) {
         this.status = status;
+    }
+    public String getCancelReason() {return cancelReason;}
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
     }
 }
