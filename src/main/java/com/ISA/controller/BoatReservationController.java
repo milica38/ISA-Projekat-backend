@@ -92,4 +92,25 @@ public class BoatReservationController {
         List<BoatReservation> reservations = reservationService.getAllHistoryReservationsForMyBoats(dto);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myFinishedReservations")
+    public ResponseEntity<?> getMyFinishedReservations() {
+        List<BoatReservation> reservations = reservationService.getMyFinishedReservations();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myUpcomingReservations")
+    public ResponseEntity<?> getMyUpcomingReservations() {
+        List<BoatReservation> reservations = reservationService.getMyUpcomingReservatons();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myInProgressReservations")
+    public ResponseEntity<?> getMyInProgressReservations() {
+        List<BoatReservation> reservations = reservationService.getMyInProgressReservations();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
 }
