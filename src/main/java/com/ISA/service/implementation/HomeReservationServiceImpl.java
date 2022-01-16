@@ -51,7 +51,6 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         }
 
         HomeReservation reservation = new HomeReservation();
-        //reservation.setExtraServices(homeProfile.getExtraService());
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
