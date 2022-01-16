@@ -1,8 +1,6 @@
 package com.ISA.controller;
 
-import com.ISA.domain.dto.HomeFreeTermsDTO;
 import com.ISA.domain.dto.SubscriptionsDTO;
-import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.Subscriptions;
 import com.ISA.service.definition.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;

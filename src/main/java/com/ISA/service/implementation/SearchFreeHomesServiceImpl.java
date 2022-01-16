@@ -22,7 +22,6 @@ public class SearchFreeHomesServiceImpl implements SearchFreeHomesService {
         List<HomeProfile> homes = new ArrayList<>();
         List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAll();
 
-
         for (HomeFreeTerms term: freeTerms) {
             if(term.isAction() != true && (dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getHomeProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
 

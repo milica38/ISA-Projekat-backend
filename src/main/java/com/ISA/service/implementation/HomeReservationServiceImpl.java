@@ -51,14 +51,21 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         }
 
         HomeReservation reservation = new HomeReservation();
-        HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
-
         reservation.setExtraServices(homeProfile.getExtraService());
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
         reservation.setHomeProfile(homeProfile);
+        reservation.setClientId(currentUser.getId());
+        reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
+        HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
 
+        if(reservation.getExtraServices() != null){
+            reservation.setExtraServices(homeProfile.getExtraService());
+        }
+        else {
+            reservation.setExtraServices(dto.getExtraServices());
+        }
 
         if(freeTerm != null && freeTerm.isAction()){
             reservation.setPrice(freeTerm.getActionPrice());
@@ -66,8 +73,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         else {
             reservation.setPrice(homeProfile.getPricelist());
         }
-        reservation.setClientId(currentUser.getId());
-        reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
+
 
         emailService.sendEmailForHouseReservation(currentUser, reservation);
 
@@ -108,11 +114,6 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         HomeFreeTerms result = null;
 
         for (HomeFreeTerms term : freeTerms) {
-            System.out.println("==============================");
-            System.out.println(term.getId());
-            System.out.println(term.getHomeProfile().getId().equals(houseId));
-            System.out.println(isDateEqual(term.getStartDate(), startDate));
-            System.out.println(isDateEqual(term.getEndDate(), endDate));
             if (term.getHomeProfile().getId().equals(houseId) && (isDateEqual(term.getStartDate(), startDate) || term.getStartDate().before(startDate)) && (isDateEqual(term.getEndDate(), endDate) || term.getEndDate().after(endDate)))
                 result = term;
 

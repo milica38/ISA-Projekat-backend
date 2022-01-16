@@ -47,13 +47,11 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
         ap.setInstructorBiography(adventureProfileDTO.getInstructorBiography());
         ap.setAmbientImage(adventureProfileDTO.getAmbientImage());
         ap.setMaxNumberOfPeople(adventureProfileDTO.getMaxNumberOfPeople());
-        ap.setFreeTerm(adventureProfileDTO.getFreeTerm());
         ap.setBehaviourRules(adventureProfileDTO.getBehaviourRules());
         ap.setFishingEquipment(adventureProfileDTO.getFishingEquipment());
         ap.setPriceList(adventureProfileDTO.getPricelist());
         ap.setExtraService(adventureProfileDTO.getExtraService());
         ap.setCancelConditions(adventureProfileDTO.getCancelConditions());
-
 
 
         return adventureProfileRepository.save(ap);
@@ -73,7 +71,6 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
         optionalAdventureProfile.get().setInstructorBiography(adventureProfileDTO.getInstructorBiography());
         optionalAdventureProfile.get().setAmbientImage(adventureProfileDTO.getAmbientImage());
         optionalAdventureProfile.get().setMaxNumberOfPeople(adventureProfileDTO.getMaxNumberOfPeople());
-        optionalAdventureProfile.get().setFreeTerm(adventureProfileDTO.getFreeTerm());
         optionalAdventureProfile.get().setBehaviourRules(adventureProfileDTO.getBehaviourRules());
         optionalAdventureProfile.get().setFishingEquipment(adventureProfileDTO.getFishingEquipment());
         optionalAdventureProfile.get().setPriceList(adventureProfileDTO.getPricelist());
