@@ -104,4 +104,25 @@ public class HomeReservationController {
         return new ResponseEntity<>(actions, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myFinishedReservations")
+    public ResponseEntity<?> getMyFinishedReservations() {
+        List<HomeReservation> reservations = homeReservationService.getMyFinishedReservations();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myUpcomingReservations")
+    public ResponseEntity<?> getMyUpcomingReservations() {
+        List<HomeReservation> reservations = homeReservationService.getMyUpcomingReservatons();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myInProgressReservations")
+    public ResponseEntity<?> getMyInProgressReservations() {
+        List<HomeReservation> reservations = homeReservationService.getMyInProgressReservations();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
 }
