@@ -71,6 +71,27 @@ public class AdventureReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myFinishedReservations")
+    public ResponseEntity<?> getMyFinishedReservations() {
+        List<AdventureReservation> reservations = reservationService.getMyFinishedReservations();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myUpcomingReservations")
+    public ResponseEntity<?> getMyUpcomingReservations() {
+        List<AdventureReservation> reservations = reservationService.getMyUpcomingReservatons();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myInProgressReservations")
+    public ResponseEntity<?> getMyInProgressReservations() {
+        List<AdventureReservation> reservations = reservationService.getMyInProgressReservations();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
 
 
 }

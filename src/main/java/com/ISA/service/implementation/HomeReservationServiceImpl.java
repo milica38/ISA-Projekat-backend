@@ -50,19 +50,19 @@ public class HomeReservationServiceImpl implements HomeReservationService {
             return null;
         }
 
-        if(!canClientBook(currentUser.getId(), dto.getHouseId(), dto.getStartDate(), dto.getEndDate() )){
+        if(!canClientBook(userService.getCurrentUser().getId(), dto.getHouseId(), dto.getStartDate(), dto.getEndDate() )){
             return null;
         }
 
         HomeReservation reservation = new HomeReservation();
-        HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
-
-        reservation.setExtraServices(homeProfile.getExtraService());
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
         reservation.setHomeProfile(homeProfile);
-
+        reservation.setClientId(currentUser.getId());
+        reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
+        reservation.setExtraServices(dto.getExtraServices());
+        HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
 
         if(freeTerm != null && freeTerm.isAction()){
             reservation.setPrice(freeTerm.getActionPrice());
@@ -70,8 +70,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         else {
             reservation.setPrice(homeProfile.getPricelist());
         }
-        reservation.setClientId(currentUser.getId());
-        reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
+
 
         emailService.sendEmailForHouseReservation(currentUser, reservation);
 
@@ -279,6 +278,52 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
     public HomeReservation get(Long id) {
         return homeReservationRepository.findById(id).get();
+    }
+
+    @Override
+    public List<HomeReservation> getMyFinishedReservations() {
+        User user = userService.getCurrentUser();
+        List<HomeReservation> reservations = homeReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<HomeReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+
+        for(HomeReservation reservation: reservations){
+            if(reservation.getEndDate().before(today)){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<HomeReservation> getMyUpcomingReservatons() {
+        User user = userService.getCurrentUser();
+        List<HomeReservation> reservations = homeReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<HomeReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(HomeReservation reservation: reservations){
+            if(reservation.getStartDate().after(today)){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<HomeReservation> getMyInProgressReservations() {
+        User user = userService.getCurrentUser();
+        List<HomeReservation> reservations = homeReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<HomeReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(HomeReservation reservation: reservations){
+            if((reservation.getStartDate().before(today) || isDateEqual(reservation.getStartDate(), today)) && (reservation.getEndDate().after(today) || isDateEqual(reservation.getEndDate(), today))){
+                results.add(reservation);
+            }
+        }
+        return results;
     }
 
     public boolean isDateEqual(Date date1, Date date2) {

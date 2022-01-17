@@ -24,5 +24,8 @@ public interface HomeReservationService {
     List<HomeReservation> getAll();
     List<HomeReservation> getAllReservations(Long ownerId, Long houseId);
     HomeReservation get(Long id);
+    List<HomeReservation> getMyFinishedReservations();
+    List<HomeReservation> getMyUpcomingReservatons();
+    List<HomeReservation> getMyInProgressReservations();
 
 }

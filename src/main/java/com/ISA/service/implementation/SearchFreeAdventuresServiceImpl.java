@@ -26,7 +26,7 @@ public class SearchFreeAdventuresServiceImpl implements SearchFreeAdventuresServ
 
 
         for (AdventureFreeTerms term: freeTerms) {
-            if((dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getAdventureProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
+            if(term.isAction() != true && (dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getAdventureProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
 
                 if(!adventureExists(term.getAdventureProfile(), adventures)){
                     adventures.add(term.getAdventureProfile());

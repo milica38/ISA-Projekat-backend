@@ -14,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AdventureReservationServiceImpl implements AdventureReservationService {
@@ -154,6 +151,52 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     @Override
     public AdventureReservation get(Long id) {
         return adventureReservationRepository.findById(id).get();
+    }
+
+    @Override
+    public List<AdventureReservation> getMyFinishedReservations() {
+        User user = userService.getCurrentUser();
+        List<AdventureReservation> reservations = adventureReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<AdventureReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+
+        for(AdventureReservation reservation: reservations){
+            if(reservation.getEndDate().before(today)){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<AdventureReservation> getMyUpcomingReservatons() {
+        User user = userService.getCurrentUser();
+        List<AdventureReservation> reservations = adventureReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<AdventureReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(AdventureReservation reservation: reservations){
+            if(reservation.getStartDate().after(today)){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<AdventureReservation> getMyInProgressReservations() {
+        User user = userService.getCurrentUser();
+        List<AdventureReservation> reservations = adventureReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<AdventureReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(AdventureReservation reservation: reservations){
+            if((reservation.getStartDate().before(today) || isDateEqual(reservation.getStartDate(), today)) && (reservation.getEndDate().after(today) || isDateEqual(reservation.getEndDate(), today))){
+                results.add(reservation);
+            }
+        }
+        return results;
     }
 
     public boolean isDateEqual(Date date1, Date date2) {

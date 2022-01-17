@@ -58,7 +58,6 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         reservation.setPrice(boatProfile.getPricelist());
         reservation.setClientId(currentUser.getId());
 
-
         emailService.sendEmailForBoatReservation(currentUser, reservation);
 
         return reservationRepository.save(reservation);
@@ -230,6 +229,51 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     }
 
     @Override
+    public List<BoatReservation> getMyFinishedReservations() {
+        User user = userService.getCurrentUser();
+        List<BoatReservation> reservations = reservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<BoatReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(BoatReservation reservation: reservations){
+            if(reservation.getEndDate().before(today)){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<BoatReservation> getMyUpcomingReservatons() {
+        User user = userService.getCurrentUser();
+        List<BoatReservation> reservations = reservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<BoatReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(BoatReservation reservation: reservations){
+            if(reservation.getStartDate().after(today)){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<BoatReservation> getMyInProgressReservations() {
+        User user = userService.getCurrentUser();
+        List<BoatReservation> reservations = reservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<BoatReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(BoatReservation reservation: reservations){
+            if((reservation.getStartDate().before(today) || isDateEqual(reservation.getStartDate(), today)) && (reservation.getEndDate().after(today) || isDateEqual(reservation.getEndDate(), today))){
+                  results.add(reservation);
+            }
+        }
+        return results;
+    } 
+  
+   @Override
     public List<BoatReservation> getAllReservations(Long ownerId, Long boatId) {
 
         List<BoatReservation> reservations = reservationRepository.getAllByBoatProfileId(boatId);

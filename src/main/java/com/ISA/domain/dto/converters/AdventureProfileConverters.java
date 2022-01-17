@@ -16,7 +16,6 @@ public class AdventureProfileConverters {
         dto.setCancelConditions(adventureProfile.getCancelConditions());
         dto.setExtraService(adventureProfile.getExtraService());
         dto.setFishingEquipment(adventureProfile.getFishingEquipment());
-        dto.setFreeTerm(adventureProfile.getFreeTerm());
         dto.setInstructorBiography(adventureProfile.getInstructorBiography());
         dto.setMaxNumberOfPeople(adventureProfile.getMaxNumberOfPeople());
         dto.setName(adventureProfile.getName());
