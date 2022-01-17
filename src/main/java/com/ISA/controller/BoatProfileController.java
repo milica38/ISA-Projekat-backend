@@ -28,7 +28,7 @@ public class BoatProfileController {
         return new ResponseEntity<>(BoatProfileConverters.modelsToDTOs(boatProfiles), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('Client')")
+    @PreAuthorize("hasAuthority('Client') or hasAuthority('Boat owner')")
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         BoatProfile bp = boatProfileService.get(id);

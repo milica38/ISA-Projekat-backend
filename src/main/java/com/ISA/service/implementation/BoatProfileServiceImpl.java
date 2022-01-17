@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -129,7 +130,6 @@ public class BoatProfileServiceImpl implements BoatProfileService {
                     || profile.getBehaviourRules().toLowerCase().contains(dto.getSearchTerm().toLowerCase())){
                 if(!boatsExists(profile, results))
                     results.add(profile);
-
             }
         }
         return results;
@@ -148,8 +148,9 @@ public class BoatProfileServiceImpl implements BoatProfileService {
     @Override
     public boolean canOwnerEdit(Long boatId) {
         List<BoatReservation> reservations = reservationRepository.findAll();
+        Date today = new Date();
         for(BoatReservation reservation: reservations){
-            if(reservation.getBoatProfile().getId().equals(boatId)){
+            if(reservation.getBoatProfile().getId().equals(boatId) && ((reservation.getStartDate().before(today) || isDateEqual(reservation.getStartDate(), today) ) && (reservation.getEndDate().after(today) || isDateEqual(reservation.getEndDate(), today)) || reservation.getStartDate().after(today))){
                 return false;
             }
         }
@@ -159,11 +160,17 @@ public class BoatProfileServiceImpl implements BoatProfileService {
     @Override
     public boolean canOwnerDelete(Long boatId) {
         List<BoatReservation> reservations = reservationRepository.findAll();
+        Date today = new Date();
         for(BoatReservation reservation: reservations){
-            if(reservation.getBoatProfile().getId().equals(boatId)){
+            if(reservation.getBoatProfile().getId().equals(boatId) && ((reservation.getStartDate().before(today) || isDateEqual(reservation.getStartDate(), today) ) && (reservation.getEndDate().after(today) || isDateEqual(reservation.getEndDate(), today)) || reservation.getStartDate().after(today))){
                 return false;
             }
         }
         return true;
+    }
+
+    public boolean isDateEqual(Date date1, Date date2) {
+
+        return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
     }
 }

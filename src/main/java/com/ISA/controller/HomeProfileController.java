@@ -27,7 +27,7 @@ public class HomeProfileController {
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(homeProfiles), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('Client')")
+    @PreAuthorize("hasAuthority('Client') or hasAuthority('House owner')")
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         HomeProfile hp = homeProfileService.get(id);
