@@ -2,6 +2,7 @@ package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.HomeHistoryReservationDTO;
 import com.ISA.domain.dto.HomeReservationDTO;
+import com.ISA.domain.dto.UserDTO;
 import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.HomeReservation;
@@ -9,6 +10,7 @@ import com.ISA.domain.model.User;
 import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.repository.HomeProfileRepository;
 import com.ISA.repository.HomeReservationRepository;
+import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeReservationService;
 import com.ISA.service.definition.UserService;
@@ -29,6 +31,8 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     @Autowired
     private HomeFreeTermsRepository homeFreeTermsRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private EmailService emailService;
@@ -78,13 +82,11 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
         User currentUser = userService.getCurrentUser();
         List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAllByHomeProfileId(dto.getHouseId());
-        List<HomeFreeTerms> result = new ArrayList<>();
 
         if(isOverlapping(homeProfile.getId(), dto.getStartDate(), dto.getEndDate())){
             return null;
         }
-
-        if(!canClientBook(currentUser.getId(), dto.getHouseId(), dto.getStartDate(), dto.getEndDate() )){
+        if(freeTerms.isEmpty()){
             return null;
         }
 

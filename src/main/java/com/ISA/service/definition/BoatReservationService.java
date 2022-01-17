@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface BoatReservationService {
     BoatReservation add(BoatReservationDTO dto);
+    BoatReservation addByOwner(BoatReservationDTO dto, Long clientId);
     List<BoatProfile> findAll();
     boolean isOverlapping(long boatId, Date startDate, Date endDate);
     List<BoatReservation> getMyReservations();
@@ -22,5 +23,5 @@ public interface BoatReservationService {
     List<BoatReservation> getMyFinishedReservations();
     List<BoatReservation> getMyUpcomingReservatons();
     List<BoatReservation> getMyInProgressReservations();
-
+    List<BoatReservation> getAllReservations(Long ownerId, Long boatId);
 }

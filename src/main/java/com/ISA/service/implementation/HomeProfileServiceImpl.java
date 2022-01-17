@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -156,8 +157,9 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     @Override
     public boolean canOwnerDelete(Long houseId) {
         List<HomeReservation> reservations = reservationRepository.findAll();
+        Date today = new Date();
         for(HomeReservation reservation: reservations){
-            if(reservation.getHomeProfile().getId().equals(houseId)){
+            if(reservation.getHomeProfile().getId().equals(houseId) && ((reservation.getStartDate().before(today) || isDateEqual(reservation.getStartDate(), today) ) && (reservation.getEndDate().after(today) || isDateEqual(reservation.getEndDate(), today)) || reservation.getStartDate().after(today))){
                 return false;
             }
         }
@@ -167,14 +169,19 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     @Override
     public boolean canOwnerEdit(Long houseId) {
         List<HomeReservation> reservations = reservationRepository.findAll();
-        for(HomeReservation reservation: reservations){
-            if(reservation.getHomeProfile().getId().equals(houseId)){
+        Date today = new Date();
+        for (HomeReservation reservation : reservations) {
+            if (reservation.getHomeProfile().getId().equals(houseId) && ((reservation.getStartDate().before(today) || isDateEqual(reservation.getStartDate(), today) ) && (reservation.getEndDate().after(today) || isDateEqual(reservation.getEndDate(), today)) || reservation.getStartDate().after(today))) {
                 return false;
             }
         }
         return true;
     }
 
+    public boolean isDateEqual(Date date1, Date date2) {
+
+        return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
+    }
 
 
 }

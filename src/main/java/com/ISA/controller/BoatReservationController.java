@@ -1,9 +1,6 @@
 package com.ISA.controller;
 
-import com.ISA.domain.dto.BoatHistoryReservationDTO;
-import com.ISA.domain.dto.BoatReservationDTO;
-import com.ISA.domain.dto.HomeHistoryReservationDTO;
-import com.ISA.domain.dto.SearchFreeBoatsDTO;
+import com.ISA.domain.dto.*;
 import com.ISA.domain.dto.converters.BoatProfileConverters;
 import com.ISA.domain.model.*;
 import com.ISA.service.definition.BoatReservationService;
@@ -32,6 +29,13 @@ public class BoatReservationController {
     @PostMapping(path = "/book")
     public ResponseEntity<?> add(@RequestBody BoatReservationDTO dto) {
         BoatReservation reservation = reservationService.add(dto);
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/owner")
+    public ResponseEntity<?> addByOwner(@RequestBody BoatReservationDTO dto){
+        BoatReservation reservation = reservationService.addByOwner(dto, dto.getClientId());
+
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
@@ -112,5 +116,12 @@ public class BoatReservationController {
     public ResponseEntity<?> getMyInProgressReservations() {
         List<BoatReservation> reservations = reservationService.getMyInProgressReservations();
         return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getAllBoatReservations/{boatId}/{ownerId}")
+    public ResponseEntity<?> getAllReservations(@PathVariable Long boatId, @PathVariable Long ownerId){
+        List<BoatReservation> actions = reservationService.getAllReservations(ownerId, boatId);
+        return new ResponseEntity<>(actions, HttpStatus.OK);
+
     }
 }
