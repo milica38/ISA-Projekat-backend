@@ -43,6 +43,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     @Autowired
     private UserService userService;
 
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
     public HomeReservation add(HomeReservationDTO dto) {
@@ -81,11 +82,25 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         return homeReservationRepository.save(reservation);
     }
 
+    private List<HomeFreeTerms> getFree(List<HomeFreeTerms> allTerms, Date startDate, Date endDate) {
+        List<HomeFreeTerms> terms = new ArrayList<>();
+
+        for(HomeFreeTerms term: allTerms) {
+            if(startDate.after(term.getStartDate()) && endDate.before(term.getEndDate())) {
+                terms.add(term);
+            }
+        }
+
+        return terms;
+    }
+
     @Override
     public HomeReservation addByOwner(HomeReservationDTO dto, Long clientId) {
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
         User currentUser = userService.getCurrentUser();
         List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAllByHomeProfileId(dto.getHouseId());
+
+        freeTerms = getFree(freeTerms, dto.getStartDate(), dto.getEndDate());
 
         if(isOverlapping(homeProfile.getId(), dto.getStartDate(), dto.getEndDate())){
             return null;
@@ -254,6 +269,22 @@ public class HomeReservationServiceImpl implements HomeReservationService {
                     || (hr.getStartDate().equals(today) && hr.getEndDate().after(today)) || (hr.getStartDate().equals(today) && hr.getEndDate().equals(today))
                     )
             ) {
+                results.add(hr);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<HomeReservation> getAllReservationsForCharts(HomeHistoryReservationDTO dto) {
+
+        List<HomeReservation> all = homeReservationRepository.findAll();
+        List<HomeReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(HomeReservation hr : all) {
+            if(hr.getHomeProfile().getownerId().equals(currentUser.getId())) {
                 results.add(hr);
             }
         }
