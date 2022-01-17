@@ -49,6 +49,10 @@ public class BoatProfileController {
     public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody BoatProfileDTO dto) {
         BoatProfile bp = boatProfileService.edit(id, dto);
 
+        if(bp == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         return new ResponseEntity<>(BoatProfileConverters.modelToDTO(bp), HttpStatus.OK);
     }
 
