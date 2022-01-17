@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class HomeReservationServiceImpl implements HomeReservationService {
@@ -58,6 +59,13 @@ public class HomeReservationServiceImpl implements HomeReservationService {
             return null;
         }
 
+        if(currentUser.getPenalty() == 3){
+            return null;
+        }
+
+        long diffInMillies = Math.abs(dto.getEndDate().getTime() - dto.getStartDate().getTime());
+        long days = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
         HomeReservation reservation = new HomeReservation();
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
@@ -69,12 +77,15 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
 
         if(freeTerm != null && freeTerm.isAction()){
-            reservation.setPrice(freeTerm.getActionPrice());
+            reservation.setPrice(freeTerm.getActionPrice() * days );
         }
         else {
-            reservation.setPrice(homeProfile.getPricelist());
+            reservation.setPrice(homeProfile.getPricelist() * days);
         }
 
+        if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+            reservation.setPrice(reservation.getPrice() +  homeProfile.getExtraPrice() * days);
+        }
 
         emailService.sendEmailForHouseReservation(currentUser, reservation);
 
