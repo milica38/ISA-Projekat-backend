@@ -65,6 +65,32 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     }
 
     @Override
+    public BoatReservation addByOwner(BoatReservationDTO dto, Long clientId) {
+        BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
+        User currentUser = userService.getCurrentUser();
+        List<BoatFreeTerms> freeTerms = freeTermsRepository.findAllByBoatProfileId(dto.getBoatId());
+
+        if(isOverlapping(boatProfile.getId(), dto.getStartDate(), dto.getEndDate())){
+            return null;
+        }
+
+        if(freeTerms.isEmpty()){
+            return null;
+        }
+
+        BoatReservation reservation = new BoatReservation();
+        reservation.setExtraServices(boatProfile.getExtraService());
+        reservation.setCancelled(false);
+        reservation.setEndDate(dto.getEndDate());
+        reservation.setStartDate(dto.getStartDate());
+        reservation.setBoatProfile(boatProfile);
+        reservation.setPrice(boatProfile.getPricelist());
+        reservation.setClientId(currentUser.getId());
+
+        return reservationRepository.save(reservation);
+    }
+
+    @Override
     public List<BoatProfile> findAll() {
         return profileRepository.findAll();
     }
@@ -198,6 +224,21 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         for(BoatReservation br : all) {
             if(br.getBoatProfile().getownerId().equals(currentUser.getId()) && br.getEndDate().before(today)) {
                 results.add(br);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<BoatReservation> getAllReservations(Long ownerId, Long boatId) {
+
+        List<BoatReservation> reservations = reservationRepository.getAllByBoatProfileId(boatId);
+        User currentUser = userService.getCurrentUser();
+        List<BoatReservation> results = new ArrayList<>();
+
+        for (BoatReservation reservation : reservations) {
+            if (reservation.getBoatProfile().getId().equals(boatId) && reservation.getBoatProfile().getownerId().equals(currentUser.getId())) {
+                results.add(reservation);
             }
         }
         return results;
