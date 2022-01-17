@@ -14,6 +14,10 @@ import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.xml.crypto.Data;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import java.util.Optional;
@@ -204,5 +208,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).get();
+    }
+
+    public List<User> resetPenalty(){
+        List<User> users = userRepository.findAllByType("Client");
+        Date today = new Date();
+
+        for(User user: users){
+            if(today.getDate() == 1){
+                user.setPenalty(1L);
+                userRepository.save(user);
+            }
+        }
+        return users;
     }
 }

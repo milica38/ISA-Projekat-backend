@@ -23,6 +23,9 @@ public class User {
     private String type;
     private String status;
     private String registrationToken;
+    private Long penalty;
+    private String category;
+    private String reasonForDelete;
 
     public Long getId(){
         return id;
@@ -97,4 +100,10 @@ public class User {
     public void setStatus(String status) {
         this.status = status;
     }
+    public Long getPenalty(){return penalty;}
+    public void setPenalty(Long penalty){this.penalty = penalty;}
+    public String getCategory(){return category;}
+    public void setCategory(String category){this.category = category;}
+    public String getReasonForDelete(){return reasonForDelete;}
+    public void setReasonForDelete(String reasonForDelete){this.reasonForDelete = reasonForDelete;}
 }

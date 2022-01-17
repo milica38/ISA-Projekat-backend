@@ -6,6 +6,7 @@ import com.ISA.domain.model.HomeReviews;
 import com.ISA.domain.model.User;
 import com.ISA.repository.HomeReservationRepository;
 import com.ISA.repository.HomeReviewsRepository;
+import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.HomeReviewsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class HomeReviewsServiceImpl implements HomeReviewsService {
     @Autowired
     HomeReservationRepository homeReservationRepository;
 
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public HomeReviews add(HomeReviewsDTO dto) {
@@ -36,6 +39,16 @@ public class HomeReviewsServiceImpl implements HomeReviewsService {
         reviews.setAppear(dto.isAppear());
         reviews.setBadComment(dto.isBadComment());
         reviews.setHomeReservation(reservation);
+
+        if(dto.isAppear()) {
+            currentUser.setPenalty(currentUser.getPenalty() + 1);
+            userRepository.save(currentUser);
+        }
+
+        if(dto.isBadComment()) {
+            currentUser.setPenalty(currentUser.getPenalty() + 1);
+            userRepository.save(currentUser);
+        }
 
         return homeReviewsRepository.save(reviews);
     }
