@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface SubscriptionsRepository extends JpaRepository<Subscriptions, Long> {
     List<Subscriptions> findAllByClientTypeAndIsSubscribed(String type, boolean isSubscribed);
+    List<Subscriptions> findAllByClientIdAndIsSubscribed(Long clientId, boolean isSubscribed);
+    Subscriptions findByClientIdAndIsSubscribed(Long clientId, boolean isSubscribed);
 }

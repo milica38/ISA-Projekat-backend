@@ -46,7 +46,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
             return null;
         }
 
-        if(!canClientBook(currentUser.getId(), dto.getHouseId(), dto.getStartDate(), dto.getEndDate() )){
+        if(!canClientBook(userService.getCurrentUser().getId(), dto.getHouseId(), dto.getStartDate(), dto.getEndDate() )){
             return null;
         }
 
