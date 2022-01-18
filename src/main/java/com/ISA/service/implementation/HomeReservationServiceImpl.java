@@ -106,7 +106,6 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     @Override
     public HomeReservation addByOwner(HomeReservationDTO dto, Long clientId) {
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
-        User currentUser = userService.getCurrentUser();
         List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAllByHomeProfileId(dto.getHouseId());
 
         freeTerms = getFree(freeTerms, dto.getStartDate(), dto.getEndDate());
@@ -118,15 +117,28 @@ public class HomeReservationServiceImpl implements HomeReservationService {
             return null;
         }
 
+        long diffInMillies = Math.abs(dto.getEndDate().getTime() - dto.getStartDate().getTime());
+        long days = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
         HomeReservation reservation = new HomeReservation();
-        reservation.setExtraServices(homeProfile.getExtraService());
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
         reservation.setHomeProfile(homeProfile);
-        reservation.setPrice(homeProfile.getPricelist());
         reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
         reservation.setClientId(dto.getClientId());
+
+        HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
+        if(freeTerm != null && freeTerm.isAction()){
+            reservation.setPrice(freeTerm.getActionPrice() * days );
+        }
+        else {
+            reservation.setPrice(homeProfile.getPricelist() * days);
+        }
+
+        if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+            reservation.setPrice(reservation.getPrice() +  homeProfile.getExtraPrice() * days);
+        }
 
         return homeReservationRepository.save(reservation);
     }
