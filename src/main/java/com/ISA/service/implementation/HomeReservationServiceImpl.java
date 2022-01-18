@@ -2,7 +2,6 @@ package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.HomeHistoryReservationDTO;
 import com.ISA.domain.dto.HomeReservationDTO;
-import com.ISA.domain.dto.UserDTO;
 import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.HomeReservation;
@@ -15,7 +14,6 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeReservationService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mapping.AccessOptions;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -59,7 +57,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
             return null;
         }
 
-        if(currentUser.getPenalty() == 3){
+        if(currentUser.getPenalty() >= 3){
             return null;
         }
 

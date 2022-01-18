@@ -2,20 +2,18 @@ package com.ISA.service.implementation;
 
 import com.ISA.config.SecurityUtils;
 import com.ISA.domain.dto.ChangePasswordDTO;
-import com.ISA.domain.dto.HomeFreeTermsDTO;
 import com.ISA.domain.dto.RegistrationDTO;
 import com.ISA.domain.dto.UserDTO;
-import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.User;
 import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -210,13 +208,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).get();
     }
 
+    @Scheduled(cron = "0 1 0 0 * ?")
     public List<User> resetPenalty(){
         List<User> users = userRepository.findAllByType("Client");
         Date today = new Date();
 
         for(User user: users){
             if(today.getDate() == 1){
-                user.setPenalty(1L);
+                user.setPenalty(0L);
                 userRepository.save(user);
             }
         }
