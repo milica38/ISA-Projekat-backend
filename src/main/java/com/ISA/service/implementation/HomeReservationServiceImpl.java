@@ -86,7 +86,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         List<HomeFreeTerms> terms = new ArrayList<>();
 
         for(HomeFreeTerms term: allTerms) {
-            if(startDate.after(term.getStartDate()) && endDate.before(term.getEndDate())) {
+            if((startDate.after(term.getStartDate()) || isDateEqual(startDate, term.getStartDate())) && (endDate.before(term.getEndDate()) || isDateEqual(endDate, term.getEndDate()))) {
                 terms.add(term);
             }
         }
@@ -116,7 +116,6 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         reservation.setStartDate(dto.getStartDate());
         reservation.setHomeProfile(homeProfile);
         reservation.setPrice(homeProfile.getPricelist());
-        reservation.setClientId(currentUser.getId());
         reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
         reservation.setClientId(dto.getClientId());
 
@@ -153,7 +152,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
                 continue;
             }
 
-           if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getHomeProfile().getId().equals(houseId)) {
+           if((isDateEqual(startDate, reservation.getStartDate()) || isDateEqual(endDate, reservation.getEndDate()) || (isDateEqual(startDate, reservation.getEndDate())) ||  (isDateEqual(endDate, reservation.getStartDate()))) && reservation.getHomeProfile().getId().equals(houseId)) {
                 return true;
             }
 
@@ -265,8 +264,8 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
         for(HomeReservation hr : all) {
             if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && (
-                    (hr.getStartDate().before(today) && hr.getEndDate().after(today)) || (hr.getStartDate().before(today) && hr.getEndDate().equals(today))
-                    || (hr.getStartDate().equals(today) && hr.getEndDate().after(today)) || (hr.getStartDate().equals(today) && hr.getEndDate().equals(today))
+                    (hr.getStartDate().before(today) && hr.getEndDate().after(today)) || (hr.getStartDate().before(today) &&  isDateEqual(hr.getEndDate(), today))
+                    || (isDateEqual(hr.getStartDate(), today) && hr.getEndDate().after(today)) || (isDateEqual(hr.getStartDate(), today) &&  isDateEqual(hr.getEndDate(), today))
                     )
             ) {
                 results.add(hr);
