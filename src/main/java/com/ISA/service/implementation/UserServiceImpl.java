@@ -55,6 +55,8 @@ public class UserServiceImpl implements UserService {
         user.setSurname(registrationDTO.getSurname());
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setRegistrationToken(generateRandomToken());
+        user.setCategory("Silver");
+        user.setPenalty(0L);
         user.setType("Client");
         user.setStatus("Waiting");
 
@@ -154,6 +156,7 @@ public class UserServiceImpl implements UserService {
             optionalUser.get().setPassword(userDTO.getPassword());
         }
 
+
         return userRepository.save(optionalUser.get());
     }
 
@@ -187,14 +190,6 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    public  String getUserInfo(Long id){
-        Optional<User> user = userRepository.findById(id);
-        String name = user.get().getName();
-        String surname = user.get().getSurname();
-
-        return name + surname;
-    }
-
     @Override
     public boolean delete(Long id) {
         Optional<User> user = userRepository.findById(getCurrentUser().getId());
@@ -215,10 +210,17 @@ public class UserServiceImpl implements UserService {
 
         for(User user: users){
             if(today.getDate() == 1){
+                System.out.println("==============================");
+                System.out.println(user.getId());
+                System.out.println("Stari penali");
+                System.out.println(user.getPenalty());
                 user.setPenalty(0L);
+                System.out.println("Novi penali");
+                System.out.println(user.getPenalty());
                 userRepository.save(user);
             }
         }
         return users;
     }
+
 }

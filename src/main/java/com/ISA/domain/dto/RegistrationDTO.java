@@ -12,7 +12,9 @@ public class RegistrationDTO {
     private String phoneNumber;
     private String description;
     private String type;
-    private String ownerType;
+    private String category;
+    private Long penalty;
+
 
     public String getName(){
         return name;
@@ -66,5 +68,9 @@ public class RegistrationDTO {
     public void setDescription(String description){
         this.description = description;
     }
+    public Long getPenalty(){return penalty;}
+    public void setPenalty(Long penalty){this.penalty = penalty;}
+    public String getCategory(){return category;}
+    public void setCategory(String category){this.category = category;}
 
 }
