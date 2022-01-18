@@ -140,6 +140,13 @@ public class HomeReservationServiceImpl implements HomeReservationService {
             reservation.setPrice(reservation.getPrice() +  homeProfile.getExtraPrice() * days);
         }
 
+        List<User> clients = userRepository.findAllByType("Client");
+        for(User client: clients){
+            if(reservation.getClientId().equals(client.getId())){
+                emailService.sendEmailForHouseReservation(client, reservation);
+            }
+        }
+
         return homeReservationRepository.save(reservation);
     }
   

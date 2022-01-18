@@ -6,6 +6,7 @@ import com.ISA.domain.model.*;
 import com.ISA.repository.BoatFreeTermsRepository;
 import com.ISA.repository.BoatProfileRepository;
 import com.ISA.repository.BoatReservationRepository;
+import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.BoatReservationService;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
@@ -26,6 +27,9 @@ public class BoatReservationServiceImpl implements BoatReservationService {
 
     @Autowired
     private  BoatProfileRepository profileRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private BoatFreeTermsRepository freeTermsRepository;
@@ -86,6 +90,12 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         reservation.setPrice(boatProfile.getPricelist());
         reservation.setClientId(dto.getClientId());
 
+        List<User> clients = userRepository.findAllByType("Client");
+        for(User client: clients){
+            if(reservation.getClientId().equals(client.getId())){
+                emailService.sendEmailForBoatReservation(client, reservation);
+            }
+        }
         return reservationRepository.save(reservation);
     }
 
