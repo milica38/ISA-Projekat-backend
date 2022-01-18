@@ -84,7 +84,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         reservation.setStartDate(dto.getStartDate());
         reservation.setBoatProfile(boatProfile);
         reservation.setPrice(boatProfile.getPricelist());
-        reservation.setClientId(currentUser.getId());
+        reservation.setClientId(dto.getClientId());
 
         return reservationRepository.save(reservation);
     }

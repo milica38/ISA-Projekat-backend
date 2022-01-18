@@ -90,6 +90,13 @@ public class HomeReservationController {
         List<HomeReservation> reservations = homeReservationService.getAllHistoryReservationsForMyHouses(dto);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
+
+    @PostMapping(path = "/myReservationsForCharts")
+    public ResponseEntity<?> getReservationsForCharts(@RequestBody HomeHistoryReservationDTO dto)
+    {
+        List<HomeReservation> reservations = homeReservationService.getAllReservationsForCharts(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
   
     @PreAuthorize("hasAuthority('Client') or hasAuthority('House owner')")
     @GetMapping(path = "/{id}")
