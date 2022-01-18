@@ -18,7 +18,7 @@ public class BoatReservation {
     private double price;
     private boolean cancelled;
     private int numberOfDays;
-    private int numberOfPeople;
+    private String numberOfPeople;
     @ManyToOne
     private BoatProfile boatProfile;
     private Long clientId;
@@ -37,8 +37,8 @@ public class BoatReservation {
     public void setCancelled(boolean cancelled){ this.cancelled = cancelled; }
     public int getNumberOfDays() {return numberOfDays;}
     public void setNumberOfDays(int numberOfDays){this.numberOfDays = numberOfDays;}
-    public int getNumberOfPeople(){return  numberOfPeople;}
-    public void  setNumberOfPeople(int numberOfPeople){this.numberOfPeople = numberOfPeople;}
+    public String getNumberOfPeople(){return  numberOfPeople;}
+    public void  setNumberOfPeople(String numberOfPeople){this.numberOfPeople = numberOfPeople;}
     public BoatProfile getBoatProfile(){return boatProfile;}
     public void setBoatProfile(BoatProfile boatProfile) {
         this.boatProfile = boatProfile;

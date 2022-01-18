@@ -24,6 +24,7 @@ public class AdventureProfile {
     private String fishingEquipment;
     private double priceList;
     private String extraService;
+    private double extraPrice;
     private String cancelConditions;
     private boolean deleted;
     private int rateCounter;
@@ -64,5 +65,11 @@ public class AdventureProfile {
     public void setRateCounter(int rateCounter){this.rateCounter = rateCounter;}
     public double getAvgRate(){return avgRate;}
     public void setAvgRate(double avgRate){this.avgRate = avgRate;}
+    public double getExtraPrice() {
+        return extraPrice;
+    }
+    public void setExtraPrice(double extraPrice) {
+        this.extraPrice = extraPrice;
+    }
 
 }

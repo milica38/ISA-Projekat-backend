@@ -43,8 +43,8 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     private UserService userService;
 
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public HomeReservation add(HomeReservationDTO dto) {
 
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();

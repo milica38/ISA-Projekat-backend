@@ -13,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AdventureReservationServiceImpl implements AdventureReservationService {
@@ -34,7 +37,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     @Autowired
     private UserService userService;
 
-
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
     public AdventureReservation add(AdventureReservationDTO dto) {
 
@@ -49,18 +52,48 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
             return null;
         }
 
+        if(currentUser.getPenalty() >= 3){
+            return null;
+        }
+
+        long diffInMillies = Math.abs(dto.getEndDate().getTime() - dto.getStartDate().getTime());
+        long days = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
         AdventureReservation reservation = new AdventureReservation();
-        reservation.setExtraServices(dto.getExtraServices());
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
         reservation.setClientId(currentUser.getId());
         reservation.setAdventureProfile(adventureProfile);
-        adventureProfile.setPriceList(dto.getPrice());
+        reservation.setExtraServices(dto.getExtraServices());
+        AdventureFreeTerms freeTerm = getDates(reservation.getAdventureProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
+
+        if(freeTerm != null && freeTerm.isAction()){
+            reservation.setPrice(freeTerm.getActionPrice() * days );
+        }
+        else {
+            reservation.setPrice(adventureProfile.getPriceList() * days);
+        }
+
+        if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+            reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
+        }
 
         emailService.sendEmailForAdventureReservation(currentUser, reservation);
 
         return adventureReservationRepository.save(reservation);
+    }
+
+    public AdventureFreeTerms getDates(Long adventureId, Date startDate, Date endDate) {
+        List<AdventureFreeTerms> freeTerms = freeTermsRepository.findAllByAdventureProfileId(adventureId);
+        AdventureFreeTerms result = null;
+
+        for (AdventureFreeTerms term : freeTerms) {
+            if (term.getAdventureProfile().getId().equals(adventureId) && (isDateEqual(term.getStartDate(), startDate) || term.getStartDate().before(startDate)) && (isDateEqual(term.getEndDate(), endDate) || term.getEndDate().after(endDate)))
+                result = term;
+
+        }
+        return result;
     }
 
     @Override
@@ -79,7 +112,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
                 continue;
             }
 
-            if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getAdventureProfile().getId().equals(adventureId)) {
+            if((isDateEqual(startDate, reservation.getStartDate()) || isDateEqual(endDate, reservation.getEndDate()))|| (isDateEqual(startDate, reservation.getEndDate()) || isDateEqual(endDate, reservation.getStartDate())) && reservation.getAdventureProfile().getId().equals(adventureId)) {
                 return true;
             }
 
@@ -112,7 +145,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         calendar.add(Calendar.DATE, -3);
         Date lastDayToCancel = calendar.getTime();
 
-        if(lastDayToCancel.before(today))
+        if(lastDayToCancel.before(today) || reservation.get().getEndDate().before(today))
             return false;
 
         reservation.get().setCancelled(true);
@@ -132,18 +165,9 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         List<AdventureReservation> reservations = adventureReservationRepository.findAll();
 
         for(AdventureReservation reservation: reservations){
-            System.out.println("==============================");
-            System.out.println(reservation.getId());
-            System.out.println(reservation.getCancelled());
-            System.out.println(reservation.getAdventureProfile().getId().equals(adventureId));
-            System.out.println(reservation.getClientId().equals(currentClientId));
-            System.out.println(isDateEqual(reservation.getStartDate(), startDate));
-            System.out.println(isDateEqual(reservation.getEndDate(), endDate));
-
             if(reservation.getCancelled() && reservation.getAdventureProfile().getId().equals(adventureId) && reservation.getClientId().equals(currentClientId) && isDateEqual(reservation.getStartDate(), startDate) && isDateEqual(reservation.getEndDate(), endDate)){
                 return false;
             }
-
         }
         return true;
     }
