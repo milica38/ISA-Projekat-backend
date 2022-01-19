@@ -3,26 +3,27 @@ package com.ISA.domain.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "home_subscriptions")
-public class Subscriptions {
+@Table(name = "adventure_subscriptions")
+public class AdventureSubscriptions {
+
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
     private Long id;
     @ManyToOne
-    private HomeProfile homeProfile;
+    private AdventureProfile adventureProfile;
     @ManyToOne
     private User client;
     private boolean isSubscribed;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public HomeProfile getHomeProfile() {
-        return homeProfile;
+    public AdventureProfile getAdventureProfile() {
+        return adventureProfile;
     }
-    public void setHomeProfile(HomeProfile homeProfile) {
-        this.homeProfile = homeProfile;
+    public void setAdventureProfile(AdventureProfile adventureProfile) {
+        this.adventureProfile = adventureProfile;
     }
     public User getClient(){return client;}
     public void setClient(User client){this.client = client;}

@@ -1,10 +1,10 @@
 package com.ISA.controller;
 
+import com.ISA.domain.dto.AdventureSubscriptionsDTO;
 import com.ISA.domain.dto.BoatSubscriptionsDTO;
 import com.ISA.domain.dto.SubscriptionsDTO;
-import com.ISA.domain.model.BoatSubscriptions;
-import com.ISA.domain.model.HomeReservation;
-import com.ISA.domain.model.Subscriptions;
+import com.ISA.domain.model.*;
+import com.ISA.service.definition.AdventureSubscriptionsService;
 import com.ISA.service.definition.BoatSubscriptionsService;
 import com.ISA.service.definition.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,9 @@ public class SubscriptionsController {
 
     @Autowired
     private BoatSubscriptionsService boatSubscriptionsService;
+
+    @Autowired
+    private AdventureSubscriptionsService adventureSubscriptionsService;
 
     @PreAuthorize("hasAuthority('Client')")
     @PutMapping(path = "/subscribe/{id}")
@@ -67,6 +70,28 @@ public class SubscriptionsController {
     @GetMapping(path = "/mySubscribedBoatProfiles")
     public ResponseEntity<?> getMySubscribedBoatProfiles() {
         List<BoatSubscriptions> subscriptions = boatSubscriptionsService.getMySubscriptions();
+        return new ResponseEntity<>(subscriptions, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @PutMapping(path = "/subscribeAdventure/{id}")
+    public ResponseEntity<?> subscribeOnAdventureUser(@PathVariable Long id, @RequestBody AdventureSubscriptionsDTO dto) {
+        AdventureSubscriptions subscription = adventureSubscriptionsService.subscribeUser(id, dto);
+
+        return new ResponseEntity<>(subscription, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @PutMapping(path = "/unsubscribeAdventure/{id}")
+    public ResponseEntity<?> unSubscribeUserFromAdventure(@PathVariable Long id, @RequestBody AdventureSubscriptionsDTO dto) {
+        adventureSubscriptionsService.unSubscribeUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/mySubscribedAdventureProfiles")
+    public ResponseEntity<?> getMySubscribedAdventureProfiles() {
+        List<AdventureSubscriptions> subscriptions = adventureSubscriptionsService.getMySubscriptions();
         return new ResponseEntity<>(subscriptions, HttpStatus.OK);
     }
 }
