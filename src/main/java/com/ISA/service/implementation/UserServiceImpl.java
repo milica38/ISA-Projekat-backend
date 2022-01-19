@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         user.setSurname(registrationDTO.getSurname());
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setRegistrationToken(generateRandomToken());
-        user.setCategory("Silver");
+        user.setCategory("Regular");
         user.setPenalty(0L);
         user.setType("Client");
         user.setStatus("Waiting");

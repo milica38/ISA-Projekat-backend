@@ -68,6 +68,8 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         hp.setPricelist(homeProfileDTO.getPricelist());
         hp.setLongitude(homeProfileDTO.getLongitude());
         hp.setLatitude(homeProfileDTO.getLatitude());
+        hp.setAvgRate(0L);
+        hp.setRateCounter(0);
 
         return homeProfileRepository.save(hp);
     }

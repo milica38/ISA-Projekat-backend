@@ -68,6 +68,9 @@ public class BoatProfileServiceImpl implements BoatProfileService {
         bp.setType(boatProfileDTO.getType());
         bp.setLatitude(boatProfileDTO.getLatitude());
         bp.setLongitude(boatProfileDTO.getLongitude());
+        bp.setRateCounter(0);
+        bp.setAvgRate(0L);
+
         return boatProfileRepository.save(bp);
     }
 

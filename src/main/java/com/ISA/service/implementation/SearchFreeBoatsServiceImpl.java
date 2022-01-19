@@ -25,7 +25,7 @@ public class SearchFreeBoatsServiceImpl implements SearchFreeBoatsService {
         List<BoatFreeTerms> freeTerms = freeTermsRepository.findAll();
 
         for (BoatFreeTerms term: freeTerms) {
-            if(term.isAction() != true && (dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getBoatProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
+            if(term.isAction() != true && (dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getBoatProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase()) && term.getBoatProfile().getCapacity() >= dto.getCapacity()){
 
                 if(!boatExists(term.getBoatProfile(), boats)){
                     boats.add(term.getBoatProfile());
