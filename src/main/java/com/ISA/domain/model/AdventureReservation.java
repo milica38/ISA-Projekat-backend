@@ -22,6 +22,7 @@ public class AdventureReservation {
     private AdventureProfile adventureProfile;
 
 
+    public void  setNumberOfPeople(int numberOfPeople){this.numberOfPeople = numberOfPeople;}
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
     public Date getStartDate(){ return startDate; }

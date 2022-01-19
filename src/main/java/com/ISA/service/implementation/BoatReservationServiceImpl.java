@@ -73,6 +73,8 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         reservation.setClientId(currentUser.getId());
         reservation.setNumberOfPeople(boatProfile.getCapacity());
         reservation.setExtraServices(dto.getExtraServices());
+        reservation.setNumberOfPeople(boatProfile.getCapacity());
+        reservation.setNumberOfDays((int) days);
         BoatFreeTerms freeTerm = getDates(reservation.getBoatProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
 
         if(freeTerm != null && freeTerm.isAction()){

@@ -66,6 +66,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         reservation.setClientId(currentUser.getId());
         reservation.setAdventureProfile(adventureProfile);
         reservation.setExtraServices(dto.getExtraServices());
+        reservation.setNumberOfPeople(adventureProfile.getMaxNumberOfPeople());
         AdventureFreeTerms freeTerm = getDates(reservation.getAdventureProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
 
         if(freeTerm != null && freeTerm.isAction()){
