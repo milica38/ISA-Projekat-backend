@@ -81,7 +81,7 @@ public class AdventureReservationController {
     @PreAuthorize("hasAuthority('Client')")
     @GetMapping(path = "/myUpcomingReservations")
     public ResponseEntity<?> getMyUpcomingReservations() {
-        List<AdventureReservation> reservations = reservationService.getMyUpcomingReservatons();
+        List<AdventureReservation> reservations = reservationService.getMyUpcomingReservations();
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 

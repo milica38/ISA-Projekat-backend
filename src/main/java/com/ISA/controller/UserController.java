@@ -76,7 +76,7 @@ public class UserController {
         User user = customUserService.findUserByEmail(loginDTO.getEmail());
         userServiceImpl.resetPenalty();
 
-        if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+        if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword()) || !loginDTO.getEmail().equals(user.getEmail())) {
             return  ResponseEntity.ok(HttpStatus.UNAUTHORIZED);
         }
 

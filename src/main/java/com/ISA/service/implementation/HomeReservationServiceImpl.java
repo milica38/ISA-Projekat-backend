@@ -359,7 +359,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     }
 
     @Override
-    public List<HomeReservation> getMyUpcomingReservatons() {
+    public List<HomeReservation> getMyUpcomingReservations() {
         User user = userService.getCurrentUser();
         List<HomeReservation> reservations = homeReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
         List<HomeReservation> results = new ArrayList<>();

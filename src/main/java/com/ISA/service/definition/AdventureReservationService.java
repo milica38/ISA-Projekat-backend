@@ -17,6 +17,6 @@ public interface AdventureReservationService {
     boolean canClientBook(Long currentClientId, Long adventureId, Date startDate, Date endDate);
     AdventureReservation get(Long id);
     List<AdventureReservation> getMyFinishedReservations();
-    List<AdventureReservation> getMyUpcomingReservatons();
+    List<AdventureReservation> getMyUpcomingReservations();
     List<AdventureReservation> getMyInProgressReservations();
 }

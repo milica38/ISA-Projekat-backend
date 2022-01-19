@@ -282,7 +282,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     }
 
     @Override
-    public List<BoatReservation> getMyUpcomingReservatons() {
+    public List<BoatReservation> getMyUpcomingReservations() {
         User user = userService.getCurrentUser();
         List<BoatReservation> reservations = reservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
         List<BoatReservation> results = new ArrayList<>();

@@ -126,8 +126,8 @@ public class BoatProfileServiceImpl implements BoatProfileService {
 
         for(BoatProfile profile: boats){
             if(profile.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || profile.getAddress().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
-            || profile.getFishingEquipment().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
-                    || profile.getBehaviourRules().toLowerCase().contains(dto.getSearchTerm().toLowerCase())){
+                || profile.getFishingEquipment().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || profile.getBehaviourRules().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || profile.getCancelConditions().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
+                || profile.getExtraService().toLowerCase().contains(dto.getSearchTerm().toLowerCase())){
                 if(!boatsExists(profile, results))
                     results.add(profile);
             }

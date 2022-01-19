@@ -194,7 +194,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     }
 
     @Override
-    public List<AdventureReservation> getMyUpcomingReservatons() {
+    public List<AdventureReservation> getMyUpcomingReservations() {
         User user = userService.getCurrentUser();
         List<AdventureReservation> reservations = adventureReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
         List<AdventureReservation> results = new ArrayList<>();

@@ -12,10 +12,7 @@ import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class HomeProfileServiceImpl implements HomeProfileService {
@@ -133,7 +130,9 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         List<HomeProfile> results = new ArrayList<>();
 
         for(HomeProfile home: homes){
-            if(home.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || home.getAddress().toLowerCase().contains(dto.getSearchTerm().toLowerCase()))
+            if(home.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || home.getBehaviourRules().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) ||
+                    home.getExtraService().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || home.getAddress().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
+            || home.getPromoDescription().toLowerCase().contains(dto.getSearchTerm().toLowerCase()))
             {
                 if(!homeExists(home, results)){
                     results.add(home);
