@@ -7,6 +7,8 @@ import com.ISA.domain.dto.UserDTO;
 import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.User;
 
+import java.util.List;
+
 public interface UserService {
 
     User clientRegistration(RegistrationDTO registrationDTO);
@@ -18,6 +20,6 @@ public interface UserService {
     User changePassword(ChangePasswordDTO changePasswordDTO);
     boolean delete(Long id);
     User findById(Long id);
-
+    List<User> findAllByType();
 
 }

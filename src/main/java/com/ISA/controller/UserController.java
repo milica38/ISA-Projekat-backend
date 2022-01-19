@@ -91,6 +91,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getCurrentUser(), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/usersByType")
+    public ResponseEntity<?> findAllByType() {
+        return new ResponseEntity<>(userService.findAllByType(), HttpStatus.OK);
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getUserInfo(@PathVariable Long id){
         User user = userService.findById(id);

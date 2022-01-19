@@ -203,6 +203,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).get();
     }
 
+    @Override
+    public List<User> findAllByType() {
+        return userRepository.findAllByType("Client");
+    }
+
     @Scheduled(cron = "0 1 0 0 * ?")
     public List<User> resetPenalty(){
         List<User> users = userRepository.findAllByType("Client");
