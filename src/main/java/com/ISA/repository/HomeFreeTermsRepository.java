@@ -12,4 +12,5 @@ public interface HomeFreeTermsRepository extends JpaRepository<HomeFreeTerms, Lo
      List<HomeFreeTerms> findAll();
      List<HomeFreeTerms> findAllByHomeProfileId(Long homeProfileId);
      List<HomeFreeTerms> findAllByIsAction(boolean isAction);
+     HomeFreeTerms findByIdAndIsAction(Long id, boolean isAction);
 }

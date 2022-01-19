@@ -1,13 +1,13 @@
 package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.HomeFreeTermsDTO;
-import com.ISA.domain.dto.HomeProfileDTO;
 import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.User;
 import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.repository.HomeProfileRepository;
 import com.ISA.service.definition.HomeFreeTermsService;
+import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ISA.repository.UserRepository;
@@ -26,6 +26,9 @@ public class HomeFreeTermsServiceImpl implements HomeFreeTermsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private EmailService emailService;
@@ -63,8 +66,6 @@ public class HomeFreeTermsServiceImpl implements HomeFreeTermsService {
         }
 
         HomeFreeTerms homeFreeTerms = new HomeFreeTerms();
-
-
         homeFreeTerms.setStartDate(homeFreeTermsDTO.getStartDate());
         homeFreeTerms.setEndDate(homeFreeTermsDTO.getEndDate());
         homeFreeTerms.setHomeProfile(homeProfile);
@@ -72,6 +73,5 @@ public class HomeFreeTermsServiceImpl implements HomeFreeTermsService {
         homeFreeTerms.setAction(homeFreeTermsDTO.isAction());
         return homeFreeTermsRepository.save(homeFreeTerms);
     }
-
 
 }

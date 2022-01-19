@@ -25,8 +25,25 @@ public class BoatProfileDTO {
     private double extraPrice;
     private Long ownerId;
     private String searchTerm;
+    private double latitude;
+    private double longitude;
+    private double avgRate;
 
+    public double getLatitude() {
+        return latitude;
+    }
 
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public Long getownerId(){ return ownerId; }
     public void setOwnerId(Long id){
@@ -112,5 +129,6 @@ public class BoatProfileDTO {
     }
     public String getSearchTerm(){return searchTerm;}
     public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
-
+    public double getAvgRate(){return avgRate;}
+    public void setAvgRate(double avgRate){this.avgRate = avgRate;}
 }

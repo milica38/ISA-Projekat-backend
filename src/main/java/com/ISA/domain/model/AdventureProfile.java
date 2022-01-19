@@ -27,9 +27,15 @@ public class AdventureProfile {
     private String extraService;
     private String cancelConditions;
     private boolean deleted;
+    private int rateCounter;
+    private double avgRate;
+    private long instructorId;
+
 
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id;}
+    public Long getInstructorId(){ return instructorId; }
+    public void setInstructorId(Long instructorId){ this.instructorId = instructorId;}
     public String getName(){ return name; }
     public void setName(String name){ this.name = name; }
     public String getAddress(){ return address; }
@@ -60,5 +66,9 @@ public class AdventureProfile {
     public void setCancelConditions(String cancelConditions){ this.cancelConditions = cancelConditions; }
     public boolean getDeleted(){ return deleted; }
     public void setDeleted(boolean deleted){ this.deleted = deleted; }
+    public int getRateCounter(){return rateCounter;}
+    public void setRateCounter(int rateCounter){this.rateCounter = rateCounter;}
+    public double getAvgRate(){return avgRate;}
+    public void setAvgRate(double avgRate){this.avgRate = avgRate;}
 
 }

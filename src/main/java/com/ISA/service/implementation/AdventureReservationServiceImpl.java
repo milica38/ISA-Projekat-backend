@@ -1,7 +1,9 @@
 package com.ISA.service.implementation;
 
+import com.ISA.domain.dto.AdventureHistoryReservationsDTO;
 import com.ISA.domain.dto.AdventureProfileDTO;
 import com.ISA.domain.dto.AdventureReservationDTO;
+import com.ISA.domain.dto.HomeHistoryReservationDTO;
 import com.ISA.domain.model.*;
 import com.ISA.repository.AdventureFreeTermsRepository;
 import com.ISA.repository.AdventureProfileRepository;
@@ -14,9 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AdventureReservationServiceImpl implements AdventureReservationService {
@@ -107,12 +107,18 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     public boolean cancel(Long id) {
 
         Optional<AdventureReservation> reservation = adventureReservationRepository.findById(id);
-        Date today = new Date();
 
-        if(reservation.get().getStartDate().before(today))
+        Date today = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(reservation.get().getStartDate());
+        calendar.add(Calendar.DATE, -3);
+        Date lastDayToCancel = calendar.getTime();
+
+        if(lastDayToCancel.before(today))
             return false;
 
         reservation.get().setCancelled(true);
+
         adventureReservationRepository.save(reservation.get());
         return true;
     }
@@ -144,9 +150,83 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         return true;
     }
 
+    @Override
+    public AdventureReservation get(Long id) {
+        return adventureReservationRepository.findById(id).get();
+    }
+
     public boolean isDateEqual(Date date1, Date date2) {
 
         return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
 
     }
+
+
+    public List<AdventureReservation> getAllAdventureReservations(Long instructorId, Long adventureId) {
+
+        List<AdventureReservation> reservations = adventureReservationRepository.getAllByAdventureProfileId(adventureId);
+        User currentUser = userService.getCurrentUser();
+        List<AdventureReservation> results = new ArrayList<>();
+
+        for (AdventureReservation reservation : reservations) {
+            if (reservation.getAdventureProfile().getId().equals(adventureId) && reservation.getAdventureProfile().getInstructorId().equals(currentUser.getId())) {
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+
+    public List<AdventureReservation> getAllReservationsForMyAdventures(AdventureHistoryReservationsDTO dto) {
+
+        List<AdventureReservation> all = adventureReservationRepository.findAll();
+        List<AdventureReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(AdventureReservation ar : all) {
+            if(ar.getAdventureProfile().getInstructorId().equals(currentUser.getId()) && ar.getStartDate().after(today)) {
+                results.add(ar);
+            }
+        }
+
+        return results;
+    }
+
+
+    public List<AdventureReservation> getAllHistoryReservationsForMyAdventures(AdventureHistoryReservationsDTO dto) {
+
+        List<AdventureReservation> all = adventureReservationRepository.findAll();
+        List<AdventureReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(AdventureReservation ar : all) {
+            if(ar.getAdventureProfile().getInstructorId().equals(currentUser.getId()) && ar.getEndDate().before(today)) {
+                results.add(ar);
+            }
+        }
+        return results;
+    }
+
+
+    public List<AdventureReservation> getAllTodayReservationsForMyAdventures(AdventureHistoryReservationsDTO dto) {
+
+        List<AdventureReservation> all = adventureReservationRepository.findAll();
+        List<AdventureReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(AdventureReservation ar : all) {
+            if(ar.getAdventureProfile().getInstructorId().equals(currentUser.getId()) && (
+                    (ar.getStartDate().before(today) && ar.getEndDate().after(today)) || (ar.getStartDate().before(today) && ar.getEndDate().equals(today))
+                            || (ar.getStartDate().equals(today) && ar.getEndDate().after(today)) || (ar.getStartDate().equals(today) && ar.getEndDate().equals(today))
+            )
+            ) {
+                results.add(ar);
+            }
+        }
+        return results;
+    }
+
 }

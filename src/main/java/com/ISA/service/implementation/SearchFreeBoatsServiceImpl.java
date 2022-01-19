@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class SearchFreeBoatsServiceImpl implements SearchFreeBoatsService {
 
 
         for (BoatFreeTerms term: freeTerms) {
-            if(dto.getStartDate().after(term.getStartDate()) &&  dto.getEndDate().before(term.getEndDate()) && term.getBoatProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
+            if((dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getBoatProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
 
                 if(!boatExists(term.getBoatProfile(), boats)){
                     boats.add(term.getBoatProfile());
@@ -43,5 +44,11 @@ public class SearchFreeBoatsServiceImpl implements SearchFreeBoatsService {
                 return true;
         }
         return false;
+    }
+
+    public boolean isDateEqual(Date date1, Date date2) {
+
+        return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
+
     }
 }

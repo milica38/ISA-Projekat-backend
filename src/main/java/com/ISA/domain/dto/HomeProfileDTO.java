@@ -18,6 +18,25 @@ public class HomeProfileDTO {
     private Long ownerId;
     private double extraPrice;
     private String searchTerm;
+    private double latitude;
+    private double longitude;
+    private double avgRate;
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public double getExtraPrice() {
         return extraPrice;
@@ -97,4 +116,6 @@ public class HomeProfileDTO {
     }
     public String getSearchTerm(){return searchTerm;}
     public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
+    public double getAvgRate(){return avgRate;}
+    public void setAvgRate(double avgRate){this.avgRate = avgRate;}
 }

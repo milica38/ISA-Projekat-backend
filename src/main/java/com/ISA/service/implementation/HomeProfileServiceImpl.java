@@ -54,7 +54,6 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     @Override
     public HomeProfile add(HomeProfileDTO homeProfileDTO) {
 
-
         HomeProfile hp = new HomeProfile();
 
         hp.setExtraPrice(homeProfileDTO.getExtraPrice());
@@ -69,6 +68,9 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         hp.setNumberOfBeds(homeProfileDTO.getNumberOfBeds());
         hp.setNumberOfRooms(homeProfileDTO.getNumberOfRooms());
         hp.setPricelist(homeProfileDTO.getPricelist());
+        hp.setLongitude(homeProfileDTO.getLongitude());
+        hp.setLatitude(homeProfileDTO.getLatitude());
+
         return homeProfileRepository.save(hp);
     }
 
@@ -79,6 +81,8 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         if(!canOwnerDelete(id)){
             return null;
         }
+        optionalHomeProfile.get().setLatitude(homeProfileDTO.getLatitude());
+        optionalHomeProfile.get().setLongitude(homeProfileDTO.getLongitude());
         optionalHomeProfile.get().setExtraPrice(homeProfileDTO.getExtraPrice());
         optionalHomeProfile.get().setName(homeProfileDTO.getName());
         optionalHomeProfile.get().setAddress(homeProfileDTO.getAddress());

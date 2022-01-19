@@ -18,18 +18,17 @@ import java.util.List;
 public class HomeComplaintsServiceImpl implements HomeComplaintsService {
 
     @Autowired
-    HomeReservationRepository homeReservationRepository;
+    private HomeReservationRepository homeReservationRepository;
 
     @Autowired
-    HomeComplaintsRepository homeComplaintsRepository;
+    private HomeComplaintsRepository homeComplaintsRepository;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
 
     @Override
     public boolean canUserSendComplaints(Long currentClientId, Long houseReservationId) {
-        User currentUser = userService.getCurrentUser();
         List<HomeReservation> reservations = homeReservationRepository.findAll();
 
         Date currentDate = new Date();

@@ -5,6 +5,7 @@ import com.ISA.domain.model.AdventureProfile;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.repository.AdventureProfileRepository;
 import com.ISA.service.definition.AdventureProfileService;
+import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
 
     @Autowired
     private AdventureProfileRepository adventureProfileRepository;
+
+    @Autowired
+    private UserService userService;
 
 
     @Override
@@ -39,6 +43,7 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
 
         AdventureProfile ap = new AdventureProfile();
         ap.setId(adventureProfileDTO.getId());
+        ap.setInstructorId(userService.getCurrentUser().getId());
         ap.setName(adventureProfileDTO.getName());
         ap.setAddress(adventureProfileDTO.getAddress());
         ap.setLatitude(adventureProfileDTO.getLatitude());
@@ -79,6 +84,9 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
         optionalAdventureProfile.get().setPriceList(adventureProfileDTO.getPricelist());
         optionalAdventureProfile.get().setExtraService(adventureProfileDTO.getExtraService());
         optionalAdventureProfile.get().setCancelConditions(adventureProfileDTO.getCancelConditions());
+        if(adventureProfileDTO.getInstructorId() != null) {
+            optionalAdventureProfile.get().setInstructorId(adventureProfileDTO.getInstructorId());
+        }
 
         return adventureProfileRepository.save(optionalAdventureProfile.get());
     }

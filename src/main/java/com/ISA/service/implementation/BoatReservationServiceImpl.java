@@ -1,5 +1,6 @@
 package com.ISA.service.implementation;
 
+import com.ISA.domain.dto.BoatHistoryReservationDTO;
 import com.ISA.domain.dto.BoatReservationDTO;
 import com.ISA.domain.model.*;
 import com.ISA.repository.BoatFreeTermsRepository;
@@ -11,7 +12,8 @@ import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -104,12 +106,19 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     public boolean cancel(Long id) {
 
         Optional<BoatReservation> reservation = reservationRepository.findById(id);
-        Date today = new Date();
 
-        if(reservation.get().getStartDate().before(today))
+        Date today = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(reservation.get().getStartDate());
+        calendar.add(Calendar.DATE, -3);
+
+        Date lastDayToCancel = calendar.getTime();
+
+        if(lastDayToCancel.before(today))
             return false;
 
         reservation.get().setCancelled(true);
+
         reservationRepository.save(reservation.get());
         return true;
     }
@@ -143,6 +152,55 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     @Override
     public BoatReservation get(Long id) {
         return reservationRepository.findById(id).get();
+    }
+
+    @Override
+    public List<BoatReservation> getAllReservationsForMyBoats(BoatHistoryReservationDTO dto) {
+        List<BoatReservation> all = reservationRepository.findAll();
+        List<BoatReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(BoatReservation br : all) {
+            if(br.getBoatProfile().getownerId().equals(currentUser.getId()) && br.getStartDate().after(today)) {
+                results.add(br);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<BoatReservation> getAllTodayReservationsForMyBoats(BoatHistoryReservationDTO dto) {
+        List<BoatReservation> all = reservationRepository.findAll();
+        List<BoatReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(BoatReservation br : all) {
+            if(br.getBoatProfile().getownerId().equals(currentUser.getId()) && (
+                    (br.getStartDate().before(today) && br.getEndDate().after(today)) || (br.getStartDate().before(today) && br.getEndDate().equals(today))
+                            || (br.getStartDate().equals(today) && br.getEndDate().after(today)) || (br.getStartDate().equals(today) && br.getEndDate().equals(today))
+            )
+            ) {
+                results.add(br);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<BoatReservation> getAllHistoryReservationsForMyBoats(BoatHistoryReservationDTO dto) {
+        List<BoatReservation> all = reservationRepository.findAll();
+        List<BoatReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(BoatReservation br : all) {
+            if(br.getBoatProfile().getownerId().equals(currentUser.getId()) && br.getEndDate().before(today)) {
+                results.add(br);
+            }
+        }
+        return results;
     }
 
     public boolean isDateEqual(Date date1, Date date2) {

@@ -37,7 +37,15 @@ public class AdventureFreeTermsServiceImpl implements AdventureFreeTermsService 
 
         List<AdventureFreeTerms> freeTerms = freeTermsRepository.findAllByAdventureProfileId(adventureFreeTermsDTO.getAdventureId());
         for(AdventureFreeTerms freeTerm: freeTerms) {
-            if(adventureFreeTermsDTO.getStartDate().equals(freeTerm.getStartDate()) && adventureFreeTermsDTO.getEndDate().equals(freeTerm.getEndDate())){
+            if(adventureFreeTermsDTO.getStartDate().equals(freeTerm.getStartDate()) || adventureFreeTermsDTO.getEndDate().equals(freeTerm.getEndDate()) || adventureFreeTermsDTO.getStartDate().equals(freeTerm.getEndDate()) || adventureFreeTermsDTO.getEndDate().equals(freeTerm.getStartDate()) && adventureFreeTermsDTO.getAdventureId().equals(freeTerm.getAdventureProfile().getId())){
+                return null;
+            }
+
+            if(adventureFreeTermsDTO.getStartDate().after(freeTerm.getStartDate()) && adventureFreeTermsDTO.getStartDate().before(freeTerm.getEndDate()) && adventureFreeTermsDTO.getAdventureId().equals(freeTerm.getAdventureProfile().getId())){
+                return null;
+            }
+
+            if(adventureFreeTermsDTO.getEndDate().after(freeTerm.getStartDate()) && adventureFreeTermsDTO.getEndDate().before(freeTerm.getEndDate()) && adventureFreeTermsDTO.getAdventureId().equals(freeTerm.getAdventureProfile().getId())){
                 return null;
             }
         }

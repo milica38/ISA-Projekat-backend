@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface AdventureReservationRepository extends JpaRepository<AdventureReservation, Long> {
     List<AdventureReservation> getAllByClientIdAndCancelled(Long clientId, boolean cancelled);
-
+    List<AdventureReservation> getAllByAdventureProfileId(Long adventureProfileId);
 }
