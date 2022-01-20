@@ -99,7 +99,6 @@ public class HomeReservationServiceImpl implements HomeReservationService {
                 terms.add(term);
             }
         }
-
         return terms;
     }
 
@@ -146,7 +145,6 @@ public class HomeReservationServiceImpl implements HomeReservationService {
                 emailService.sendEmailForHouseReservation(client, reservation);
             }
         }
-
         return homeReservationRepository.save(reservation);
     }
   

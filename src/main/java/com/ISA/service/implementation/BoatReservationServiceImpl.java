@@ -104,11 +104,22 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         return result;
     }
 
+    private List<BoatFreeTerms> getFree(List<BoatFreeTerms> allTerms, Date startDate, Date endDate) {
+        List<BoatFreeTerms> terms = new ArrayList<>();
+
+        for(BoatFreeTerms term: allTerms) {
+            if((startDate.after(term.getStartDate()) || isDateEqual(startDate, term.getStartDate())) && (endDate.before(term.getEndDate()) || isDateEqual(endDate, term.getEndDate()))) {
+                terms.add(term);
+            }
+        }
+        return terms;
+    }
+
     @Override
     public BoatReservation addByOwner(BoatReservationDTO dto, Long clientId) {
         BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
-        User currentUser = userService.getCurrentUser();
         List<BoatFreeTerms> freeTerms = freeTermsRepository.findAllByBoatProfileId(dto.getBoatId());
+        freeTerms = getFree(freeTerms, dto.getStartDate(), dto.getEndDate());
 
         if(isOverlapping(boatProfile.getId(), dto.getStartDate(), dto.getEndDate())){
             return null;
@@ -118,14 +129,27 @@ public class BoatReservationServiceImpl implements BoatReservationService {
             return null;
         }
 
+        long diffInMillies = Math.abs(dto.getEndDate().getTime() - dto.getStartDate().getTime());
+        long days = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
         BoatReservation reservation = new BoatReservation();
-        reservation.setExtraServices(boatProfile.getExtraService());
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
         reservation.setBoatProfile(boatProfile);
-        reservation.setPrice(boatProfile.getPricelist());
         reservation.setClientId(dto.getClientId());
+
+        BoatFreeTerms freeTerm = getDates(reservation.getBoatProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
+        if(freeTerm != null && freeTerm.isAction()){
+            reservation.setPrice(freeTerm.getActionPrice() * days );
+        }
+        else {
+            reservation.setPrice(boatProfile.getPricelist() * days);
+        }
+
+        if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+            reservation.setPrice(reservation.getPrice() +  boatProfile.getExtraPrice() * days);
+        }
 
         List<User> clients = userRepository.findAllByType("Client");
         for(User client: clients){
