@@ -328,6 +328,21 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         return results;
     }
 
+    @Override
+    public List<BoatReservation> getAllReservationsForCharts(BoatHistoryReservationDTO dto) {
+        List<BoatReservation> all = reservationRepository.findAll();
+        List<BoatReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(BoatReservation br : all) {
+            if(br.getBoatProfile().getownerId().equals(currentUser.getId())) {
+                results.add(br);
+            }
+        }
+        return results;
+    }
+
     public boolean isDateEqual(Date date1, Date date2) {
 
         return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();

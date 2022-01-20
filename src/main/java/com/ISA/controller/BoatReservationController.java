@@ -124,4 +124,11 @@ public class BoatReservationController {
         return new ResponseEntity<>(actions, HttpStatus.OK);
 
     }
+
+    @PostMapping(path = "/boatReservationsForCharts")
+    public ResponseEntity<?> getReservationsForCharts(@RequestBody BoatHistoryReservationDTO dto)
+    {
+        List<BoatReservation> reservations = reservationService.getAllReservationsForCharts(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
 }

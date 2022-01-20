@@ -273,9 +273,13 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         List<HomeReservation> results = new ArrayList<>();
         User currentUser = userService.getCurrentUser();
         Date today = new Date();
+        Calendar calendar = Calendar.getInstance();
 
         for(HomeReservation hr : all) {
-            if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && hr.getEndDate().before(today)) {
+            calendar.setTime(hr.getEndDate());
+            calendar.add(Calendar.DATE, 1);
+            Date lastDay = calendar.getTime();
+            if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && lastDay.before(today)) {
                 results.add(hr);
             }
         }

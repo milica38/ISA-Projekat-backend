@@ -2,6 +2,7 @@ package com.ISA.service.definition;
 
 import com.ISA.domain.dto.BoatHistoryReservationDTO;
 import com.ISA.domain.dto.BoatReservationDTO;
+import com.ISA.domain.dto.HomeHistoryReservationDTO;
 import com.ISA.domain.model.*;
 
 import java.util.Date;
@@ -24,4 +25,5 @@ public interface BoatReservationService {
     List<BoatReservation> getMyUpcomingReservations();
     List<BoatReservation> getMyInProgressReservations();
     List<BoatReservation> getAllReservations(Long ownerId, Long boatId);
+    List<BoatReservation> getAllReservationsForCharts(BoatHistoryReservationDTO dto);
 }
