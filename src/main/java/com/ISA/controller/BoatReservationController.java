@@ -32,6 +32,7 @@ public class BoatReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping(path = "/owner")
     public ResponseEntity<?> addByOwner(@RequestBody BoatReservationDTO dto){
         BoatReservation reservation = reservationService.addByOwner(dto, dto.getClientId());
@@ -76,6 +77,7 @@ public class BoatReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping(path = "/myReservationsForMyBoats")
     public ResponseEntity<?> getReservationsForMyBoats(@RequestBody BoatHistoryReservationDTO dto)
     {
@@ -83,6 +85,7 @@ public class BoatReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping(path = "/myTodayReservationsForMyBoats")
     public ResponseEntity<?> getTodayReservationsForMyBoats(@RequestBody BoatHistoryReservationDTO dto)
     {
@@ -90,6 +93,7 @@ public class BoatReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping(path = "/myHistoryReservationsForMyBoats")
     public ResponseEntity<?> getHistoryReservationsForMyBoats(@RequestBody BoatHistoryReservationDTO dto)
     {
@@ -118,6 +122,7 @@ public class BoatReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @GetMapping(path = "/getAllBoatReservations/{boatId}/{ownerId}")
     public ResponseEntity<?> getAllReservations(@PathVariable Long boatId, @PathVariable Long ownerId){
         List<BoatReservation> actions = reservationService.getAllReservations(ownerId, boatId);
@@ -125,6 +130,7 @@ public class BoatReservationController {
 
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping(path = "/boatReservationsForCharts")
     public ResponseEntity<?> getReservationsForCharts(@RequestBody BoatHistoryReservationDTO dto)
     {

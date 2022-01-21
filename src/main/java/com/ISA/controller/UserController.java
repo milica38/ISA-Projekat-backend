@@ -11,6 +11,7 @@ import com.ISA.service.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -95,6 +96,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getCurrentUser(), HttpStatus.OK);
     }
 
+
     @GetMapping(path = "/usersByType")
     public ResponseEntity<?> findAllByType() {
         return new ResponseEntity<>(userService.findAllByType(), HttpStatus.OK);
@@ -106,6 +108,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner')")
     @PutMapping()
     public ResponseEntity<?> edit(@RequestBody UserDTO dto) {
         User user = userService.edit(dto);
@@ -119,7 +122,7 @@ public class UserController {
         return new RedirectView("http://localhost:4200");
     }
 
-
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner')")
     @PostMapping(path = "/password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
         User user = userService.changePassword(changePasswordDTO);
@@ -131,13 +134,14 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean delete = userService.delete(id);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Boat owner')")
     @PostMapping(path = "/filterUsers")
     public ResponseEntity<?> filterUsers(@RequestBody UserDTO dto){
         List<User> users = userService.filterUsers(dto);

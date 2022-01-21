@@ -34,6 +34,7 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner')")
     @PostMapping(path = "/owner")
     public ResponseEntity<?> addByOwner(@RequestBody HomeReservationDTO dto){
         HomeReservation reservation = homeReservationService.addByOwner(dto, dto.getClientId());
@@ -77,6 +78,7 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner')")
     @PostMapping(path = "/myTodayReservationsForMyHouses")
     public ResponseEntity<?> getTodayReservationsForMyHouses(@RequestBody HomeHistoryReservationDTO dto)
     {
@@ -84,6 +86,7 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner')")
     @PostMapping(path = "/myHistoryReservationsForMyHouses")
     public ResponseEntity<?> getHistoryReservationsForMyHouses(@RequestBody HomeHistoryReservationDTO dto)
     {
@@ -91,6 +94,7 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner')")
     @PostMapping(path = "/myReservationsForCharts")
     public ResponseEntity<?> getReservationsForCharts(@RequestBody HomeHistoryReservationDTO dto)
     {
@@ -105,6 +109,7 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('House owner')")
     @GetMapping(path = "/getAllReservations/{houseId}/{ownerId}")
     public ResponseEntity<?> getAllReservations(@PathVariable Long houseId, @PathVariable Long ownerId){
         List<HomeReservation> actions = homeReservationService.getAllReservations(ownerId, houseId);
