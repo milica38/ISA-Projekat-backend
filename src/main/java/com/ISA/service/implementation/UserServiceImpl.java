@@ -4,6 +4,7 @@ import com.ISA.config.SecurityUtils;
 import com.ISA.domain.dto.ChangePasswordDTO;
 import com.ISA.domain.dto.RegistrationDTO;
 import com.ISA.domain.dto.UserDTO;
+import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.User;
 import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.repository.UserRepository;
@@ -14,11 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -208,6 +205,32 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAllByType("Client");
     }
 
+    @Override
+    public List<User> filterUsers(UserDTO dto) {
+        List<User> clients = userRepository.findAllByType("Client");
+        List<User> results = new ArrayList<>();
+
+        for(User user: clients){
+            if(user.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || user.getSurname().toLowerCase().contains(dto.getSearchTerm().toLowerCase())){
+                if(!userExists(user, results)){
+                    results.add(user);
+                }
+            }
+        }
+        return results;
+    }
+
+    public boolean userExists(User user, List<User> users) {
+
+        for(User client: users){
+            if(client.getId().equals(user.getId())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     @Scheduled(cron = "0 1 0 0 * ?")
     public List<User> resetPenalty(){
         List<User> users = userRepository.findAllByType("Client");
@@ -227,5 +250,9 @@ public class UserServiceImpl implements UserService {
         }
         return users;
     }
+
+
+
+
 
 }

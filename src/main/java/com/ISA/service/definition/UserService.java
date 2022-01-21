@@ -21,5 +21,6 @@ public interface UserService {
     boolean delete(Long id);
     User findById(Long id);
     List<User> findAllByType();
+    List<User> filterUsers(UserDTO dto);
 
 }
