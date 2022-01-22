@@ -23,6 +23,9 @@ public class AdventureProfileConverters {
         dto.setPromoDescription(adventureProfile.getPromoDescription());
         dto.setId(adventureProfile.getId());
         dto.setAvgRate(adventureProfile.getAvgRate());
+        dto.setLatitude(adventureProfile.getLatitude());
+        dto.setLongitude(adventureProfile.getLongitude());
+        dto.setExtraPrice(adventureProfile.getExtraPrice());
 
 
         return dto;

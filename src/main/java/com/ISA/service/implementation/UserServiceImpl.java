@@ -2,7 +2,6 @@ package com.ISA.service.implementation;
 
 import com.ISA.config.SecurityUtils;
 import com.ISA.domain.dto.ChangePasswordDTO;
-import com.ISA.domain.dto.HomeFreeTermsDTO;
 import com.ISA.domain.dto.RegistrationDTO;
 import com.ISA.domain.dto.UserDTO;
 import com.ISA.domain.model.HomeProfile;
@@ -12,11 +11,13 @@ import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private HomeFreeTermsRepository homeFreeTermsRepository;
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public User clientRegistration(RegistrationDTO registrationDTO) {
 
         Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
@@ -53,6 +55,8 @@ public class UserServiceImpl implements UserService {
         user.setSurname(registrationDTO.getSurname());
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setRegistrationToken(generateRandomToken());
+        user.setCategory("Regular");
+        user.setPenalty(0L);
         user.setType("Client");
         user.setStatus("Waiting");
 
@@ -61,6 +65,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public User houseOwnerRegistration(RegistrationDTO registrationDTO) {
 
         Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
@@ -87,6 +93,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public User boatOwnerRegistration(RegistrationDTO registrationDTO) {
 
         Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
@@ -120,6 +128,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public User edit(UserDTO userDTO) {
 
         Optional<User> optionalUser = userRepository.findById(getCurrentUser().getId());
@@ -151,6 +160,7 @@ public class UserServiceImpl implements UserService {
         if (userDTO.getPassword() != null && !userDTO.getPassword().equals("")){
             optionalUser.get().setPassword(userDTO.getPassword());
         }
+
 
         return userRepository.save(optionalUser.get());
     }
@@ -185,14 +195,6 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    public  String getUserInfo(Long id){
-        Optional<User> user = userRepository.findById(id);
-        String name = user.get().getName();
-        String surname = user.get().getSurname();
-
-        return name + surname;
-    }
-
     @Override
     public boolean delete(Long id) {
         Optional<User> user = userRepository.findById(getCurrentUser().getId());
@@ -205,4 +207,53 @@ public class UserServiceImpl implements UserService {
     public User findById(Long id) {
         return userRepository.findById(id).get();
     }
+
+    @Override
+    public List<User> findAllByType() {
+        return userRepository.findAllByType("Client");
+    }
+
+    @Override
+    public List<User> filterUsers(UserDTO dto) {
+        List<User> clients = userRepository.findAllByType("Client");
+        List<User> results = new ArrayList<>();
+
+        for(User user: clients){
+            if(user.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || user.getSurname().toLowerCase().contains(dto.getSearchTerm().toLowerCase())){
+                if(!userExists(user, results)){
+                    results.add(user);
+                }
+            }
+        }
+        return results;
+    }
+
+    public boolean userExists(User user, List<User> users) {
+
+        for(User client: users){
+            if(client.getId().equals(user.getId())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    @Scheduled(cron = "0 1 0 0 * ?")
+    public List<User> resetPenalty(){
+        List<User> users = userRepository.findAllByType("Client");
+        Date today = new Date();
+        for(User user: users){
+            if(today.getDate() == 22){
+                user.setPenalty(0L);
+                userRepository.save(user);
+            }
+        }
+        return users;
+    }
+
+
+
+
+
 }

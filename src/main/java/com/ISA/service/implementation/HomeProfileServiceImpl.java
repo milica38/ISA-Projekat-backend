@@ -11,11 +11,10 @@ import com.ISA.service.definition.HomeProfileService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class HomeProfileServiceImpl implements HomeProfileService {
@@ -71,10 +70,14 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         hp.setPricelist(homeProfileDTO.getPricelist());
         hp.setLongitude(homeProfileDTO.getLongitude());
         hp.setLatitude(homeProfileDTO.getLatitude());
+        hp.setAvgRate(0L);
+        hp.setRateCounter(0);
 
         return homeProfileRepository.save(hp);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public HomeProfile edit(Long id, HomeProfileDTO homeProfileDTO) {
 
         Optional<HomeProfile> optionalHomeProfile = homeProfileRepository.findById(id);
@@ -109,6 +112,7 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public boolean delete(Long id) {
         Optional<HomeProfile> optionalHomeProfile = homeProfileRepository.findById(id);
         if(!canOwnerDelete(optionalHomeProfile.get().getId())){
@@ -133,7 +137,9 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         List<HomeProfile> results = new ArrayList<>();
 
         for(HomeProfile home: homes){
-            if(home.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || home.getAddress().toLowerCase().contains(dto.getSearchTerm().toLowerCase()))
+            if(home.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || home.getBehaviourRules().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) ||
+                    home.getExtraService().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || home.getAddress().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
+            || home.getPromoDescription().toLowerCase().contains(dto.getSearchTerm().toLowerCase()))
             {
                 if(!homeExists(home, results)){
                     results.add(home);

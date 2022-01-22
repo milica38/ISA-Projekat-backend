@@ -8,6 +8,7 @@ public class SearchFreeAdventuresDTO {
     private Date startDate;
     private Date endDate;
     private String address;
+    private int maxNumberOfPeople;
 
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
@@ -21,4 +22,6 @@ public class SearchFreeAdventuresDTO {
     public void setAddress(String address) {
         this.address = address;
     }
+    public int getMaxNumberOfPeople(){ return maxNumberOfPeople; }
+    public void setMaxNumberOfPeople(int maxNumberOfPeople){ this.maxNumberOfPeople = maxNumberOfPeople; }
 }

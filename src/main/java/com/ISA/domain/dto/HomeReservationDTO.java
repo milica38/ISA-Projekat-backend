@@ -9,6 +9,7 @@ public class HomeReservationDTO {
     private Date endDate;
     private String extraServices;
     private double price;
+    private boolean writed;
     private boolean cancelled;
     private int numberOfDays;
     private int numberOfPeople;
@@ -16,6 +17,8 @@ public class HomeReservationDTO {
     private long clientId;
     private String status;
 
+    public boolean getWrited(){ return writed; }
+    public boolean setWrited(boolean writed) { return this.writed = writed; }
     public long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
     public Date getStartDate(){ return startDate; }

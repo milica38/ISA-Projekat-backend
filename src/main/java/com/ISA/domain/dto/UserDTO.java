@@ -11,9 +11,15 @@ public class UserDTO {
     private String phoneNumber;
     private String description;
     private String type;
-    private String ownerType;
     private String password;
+    private String reasonForDelete;
+    private String category;
+    private String searchTerm;
 
+
+
+    public String getSearchTerm(){return searchTerm;}
+    public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
     public  String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
     public Long getId(){
@@ -76,11 +82,9 @@ public class UserDTO {
     public void setType(String type){
         this.type = type;
     }
-    public String getOwnerType(){
-        return  ownerType;
-    }
-    public void setOwnerType(String ownerType){
-        this.ownerType = ownerType;
-    }
+    public String getCategory(){return category;}
+    public void setCategory(String category){this.category = category;}
+    public String getReasonForDelete(){return reasonForDelete;}
+    public void setReasonForDelete(String reasonForDelete){this.reasonForDelete = reasonForDelete;}
 
 }

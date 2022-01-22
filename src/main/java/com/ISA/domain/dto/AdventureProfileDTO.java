@@ -16,12 +16,19 @@ public class AdventureProfileDTO {
     private String fishingEquipment;
     private double pricelist;
     private String extraService;
+    private double extraPrice;
     private String cancelConditions;
     private boolean deleted;
     private String searchTerm;
     private double avgRate;
 
 
+    public double getExtraPrice() {
+        return extraPrice;
+    }
+    public void setExtraPrice(double extraPrice) {
+        this.extraPrice = extraPrice;
+    }
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id;}
     public String getName(){ return name; }

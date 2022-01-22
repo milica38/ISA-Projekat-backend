@@ -23,7 +23,7 @@ public class BoatProfile {
     private String interiorImage;
     @Column(columnDefinition = "TEXT")
     private String exteriorImage;
-    private String capacity;
+    private int capacity;
     private String behaviourRules;
     private double pricelist;
     private String extraService;
@@ -36,6 +36,12 @@ public class BoatProfile {
     private double longitude;
     private int rateCounter;
     private double avgRate;
+
+    @Version
+    private Integer version;
+
+    public Integer getVersion() { return version;}
+    public void setVersion(Integer version) { this.version = version; }
 
     public double getLatitude() {
         return latitude;
@@ -77,8 +83,8 @@ public class BoatProfile {
     public void  setFishingEquipment(String fishingEquipment) { this.fishingEquipment = fishingEquipment; }
     public String getCancelConditions() { return  cancelConditions; }
     public void  setCancelConditions(String cancelConditions) { this.cancelConditions = cancelConditions; }
-    public String getCapacity() { return  capacity; }
-    public void setCapacity(String capacity) { this.capacity = capacity; }
+    public int getCapacity() { return  capacity; }
+    public void setCapacity(int capacity) { this.capacity = capacity; }
     public String getNavEquipment() { return navEquipment; }
     public void setNavEquipment(String navEquipment) { this.navEquipment = navEquipment; }
     public Long getId(){

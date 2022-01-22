@@ -2,14 +2,15 @@ package com.ISA.service.definition;
 
 import com.ISA.domain.dto.BoatHistoryReservationDTO;
 import com.ISA.domain.dto.BoatReservationDTO;
+import com.ISA.domain.dto.HomeHistoryReservationDTO;
 import com.ISA.domain.model.*;
 
 import java.util.Date;
 import java.util.List;
 
 public interface BoatReservationService {
-    BoatReservation add(BoatReservationDTO dto);
-    BoatReservation addByOwner(BoatReservationDTO dto, Long clientId);
+    BoatReservation add(BoatReservationDTO dto) throws Exception;
+    BoatReservation addByOwner(BoatReservationDTO dto, Long clientId) throws Exception;
     List<BoatProfile> findAll();
     boolean isOverlapping(long boatId, Date startDate, Date endDate);
     List<BoatReservation> getMyReservations();
@@ -21,7 +22,8 @@ public interface BoatReservationService {
     List<BoatReservation> getAllTodayReservationsForMyBoats(BoatHistoryReservationDTO dto);
     List<BoatReservation> getAllHistoryReservationsForMyBoats(BoatHistoryReservationDTO dto);
     List<BoatReservation> getMyFinishedReservations();
-    List<BoatReservation> getMyUpcomingReservatons();
+    List<BoatReservation> getMyUpcomingReservations();
     List<BoatReservation> getMyInProgressReservations();
     List<BoatReservation> getAllReservations(Long ownerId, Long boatId);
+    List<BoatReservation> getAllReservationsForCharts(BoatHistoryReservationDTO dto);
 }

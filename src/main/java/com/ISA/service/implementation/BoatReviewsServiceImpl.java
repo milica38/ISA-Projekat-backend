@@ -3,13 +3,17 @@ package com.ISA.service.implementation;
 import com.ISA.domain.dto.BoatReviewsDTO;
 import com.ISA.domain.model.BoatReservation;
 import com.ISA.domain.model.BoatReviews;
+import com.ISA.domain.model.HomeReviews;
 import com.ISA.domain.model.User;
 import com.ISA.repository.BoatReservationRepository;
 import com.ISA.repository.BoatReviewsRepository;
+import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.BoatReviewsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BoatReviewsServiceImpl implements BoatReviewsService {
@@ -21,6 +25,9 @@ public class BoatReviewsServiceImpl implements BoatReviewsService {
     UserService userService;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     BoatReservationRepository boatReservationRepository;
 
     @Override
@@ -28,13 +35,30 @@ public class BoatReviewsServiceImpl implements BoatReviewsService {
 
         BoatReservation reservation = boatReservationRepository.findById(dto.getBoatReservationId()).get();
         User currentUser = userService.getCurrentUser();
+        List<BoatReviews> writedReviews = boatReviewsRepository.findAll();
 
+        for(BoatReviews b: writedReviews){
+            if(b.getBoatReservation().getCancelled() || b.getBoatReservation().getWrited()){
+                return null;
+            }
+        }
         BoatReviews reviews = new BoatReviews();
         reviews.setContent(dto.getContent());
         reviews.setOwnerId(currentUser.getId());
         reviews.setAppear(dto.isAppear());
         reviews.setBadComment(dto.isBadComment());
         reviews.setBoatReservation(reservation);
+        reviews.getBoatReservation().setWrited(true);
+
+        if(dto.isAppear()) {
+            currentUser.setPenalty(currentUser.getPenalty() + 1);
+            userRepository.save(currentUser);
+        }
+
+        if(dto.isBadComment()) {
+            currentUser.setPenalty(currentUser.getPenalty() + 1);
+            userRepository.save(currentUser);
+        }
 
         return boatReviewsRepository.save(reviews);
     }

@@ -27,13 +27,14 @@ public class BoatReservationController {
 
     @PreAuthorize("hasAuthority('Client')")
     @PostMapping(path = "/book")
-    public ResponseEntity<?> add(@RequestBody BoatReservationDTO dto) {
+    public ResponseEntity<?> add(@RequestBody BoatReservationDTO dto) throws Exception{
         BoatReservation reservation = reservationService.add(dto);
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping(path = "/owner")
-    public ResponseEntity<?> addByOwner(@RequestBody BoatReservationDTO dto){
+    public ResponseEntity<?> addByOwner(@RequestBody BoatReservationDTO dto) throws Exception{
         BoatReservation reservation = reservationService.addByOwner(dto, dto.getClientId());
 
         return new ResponseEntity<>(reservation, HttpStatus.OK);
@@ -76,6 +77,7 @@ public class BoatReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping(path = "/myReservationsForMyBoats")
     public ResponseEntity<?> getReservationsForMyBoats(@RequestBody BoatHistoryReservationDTO dto)
     {
@@ -83,6 +85,7 @@ public class BoatReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping(path = "/myTodayReservationsForMyBoats")
     public ResponseEntity<?> getTodayReservationsForMyBoats(@RequestBody BoatHistoryReservationDTO dto)
     {
@@ -90,6 +93,7 @@ public class BoatReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping(path = "/myHistoryReservationsForMyBoats")
     public ResponseEntity<?> getHistoryReservationsForMyBoats(@RequestBody BoatHistoryReservationDTO dto)
     {
@@ -107,7 +111,7 @@ public class BoatReservationController {
     @PreAuthorize("hasAuthority('Client')")
     @GetMapping(path = "/myUpcomingReservations")
     public ResponseEntity<?> getMyUpcomingReservations() {
-        List<BoatReservation> reservations = reservationService.getMyUpcomingReservatons();
+        List<BoatReservation> reservations = reservationService.getMyUpcomingReservations();
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
@@ -118,10 +122,19 @@ public class BoatReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Boat owner')")
     @GetMapping(path = "/getAllBoatReservations/{boatId}/{ownerId}")
     public ResponseEntity<?> getAllReservations(@PathVariable Long boatId, @PathVariable Long ownerId){
         List<BoatReservation> actions = reservationService.getAllReservations(ownerId, boatId);
         return new ResponseEntity<>(actions, HttpStatus.OK);
 
+    }
+
+    @PreAuthorize("hasAuthority('Boat owner')")
+    @PostMapping(path = "/boatReservationsForCharts")
+    public ResponseEntity<?> getReservationsForCharts(@RequestBody BoatHistoryReservationDTO dto)
+    {
+        List<BoatReservation> reservations = reservationService.getAllReservationsForCharts(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 }

@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 public interface HomeReservationService {
-    HomeReservation add(HomeReservationDTO dto);
-    HomeReservation addByOwner(HomeReservationDTO dto, Long clientId);
+    HomeReservation add(HomeReservationDTO dto) throws Exception;
+    HomeReservation addByOwner(HomeReservationDTO dto, Long clientId) throws Exception;
     List<HomeProfile> findAll();
     boolean isOverlapping(long houseId, Date startDate, Date endDate);
     List<HomeReservation> getMyReservations();
@@ -21,11 +21,12 @@ public interface HomeReservationService {
     List<HomeReservation> getAllReservationsForMyHouses(HomeHistoryReservationDTO dto);
     List<HomeReservation> getAllTodayReservationsForMyHouses(HomeHistoryReservationDTO dto);
     List<HomeReservation> getAllHistoryReservationsForMyHouses(HomeHistoryReservationDTO dto);
+    List<HomeReservation> getAllReservationsForCharts(HomeHistoryReservationDTO dto);
     List<HomeReservation> getAll();
     List<HomeReservation> getAllReservations(Long ownerId, Long houseId);
     HomeReservation get(Long id);
     List<HomeReservation> getMyFinishedReservations();
-    List<HomeReservation> getMyUpcomingReservatons();
+    List<HomeReservation> getMyUpcomingReservations();
     List<HomeReservation> getMyInProgressReservations();
 
 }
