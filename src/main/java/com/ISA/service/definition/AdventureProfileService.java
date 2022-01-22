@@ -16,5 +16,6 @@ public interface AdventureProfileService {
     List<AdventureProfile> getAllNotDeleted();
     List<AdventureProfile> filterAdventures(AdventureProfileDTO dto);
     boolean adventureExists(AdventureProfile profile, List<AdventureProfile> profiles);
+    List<AdventureProfile> getMyNotDeletedAdventures();
 
 }

@@ -2,7 +2,6 @@ package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.SubscriptionsDTO;
 import com.ISA.domain.model.*;
-import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.repository.HomeProfileRepository;
 import com.ISA.repository.SubscriptionsRepository;
 import com.ISA.service.definition.SubscriptionService;
@@ -40,6 +39,8 @@ public class SubscriptionsServiceImpl implements SubscriptionService {
 
         return subscriptionsRepository.save(subscription);
     }
+
+
 
     @Override
     public boolean unSubscribeUser(Long id) {

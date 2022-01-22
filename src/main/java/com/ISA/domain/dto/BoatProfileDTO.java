@@ -16,7 +16,7 @@ public class BoatProfileDTO {
     private String promoDescription;
     private String interiorImage;
     private String exteriorImage;
-    private String capacity;
+    private int capacity;
     private String behaviourRules;
     private double pricelist;
     private String extraService;
@@ -69,8 +69,8 @@ public class BoatProfileDTO {
     public void  setFishingEquipment(String fishingEquipment) { this.fishingEquipment = fishingEquipment; }
     public String getCancelConditions() { return  cancelConditions; }
     public void  setCancelConditions(String cancelConditions) { this.cancelConditions = cancelConditions; }
-    public String getCapacity() { return  capacity; }
-    public void setCapacity(String capacity) { this.capacity = capacity; }
+    public int getCapacity() { return  capacity; }
+    public void setCapacity(int capacity) { this.capacity = capacity; }
     public String getNavEquipment() { return navEquipment; }
     public void setNavEquipment(String navEquipment) { this.navEquipment = navEquipment; }
     public Long getId(){

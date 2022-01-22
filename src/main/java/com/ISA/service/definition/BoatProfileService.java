@@ -19,4 +19,5 @@ public interface BoatProfileService {
     boolean boatsExists(BoatProfile boat, List<BoatProfile> boats);
     boolean canOwnerEdit(Long boatId);
     boolean canOwnerDelete(Long boatId);
+    boolean deleteBoat(Long id);
 }

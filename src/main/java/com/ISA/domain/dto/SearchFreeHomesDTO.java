@@ -7,6 +7,7 @@ public class SearchFreeHomesDTO {
     private Date startDate;
     private Date endDate;
     private String address;
+    private int numberOfBeds;
 
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
@@ -19,5 +20,11 @@ public class SearchFreeHomesDTO {
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+    public int getNumberOfBeds(){
+        return numberOfBeds;
+    }
+    public void setNumberOfBeds(int numberOfBeds){
+        this.numberOfBeds = numberOfBeds;
     }
 }

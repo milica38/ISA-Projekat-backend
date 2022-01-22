@@ -7,6 +7,8 @@ import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.service.definition.SearchFreeHomesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -17,13 +19,14 @@ public class SearchFreeHomesServiceImpl implements SearchFreeHomesService {
     HomeFreeTermsRepository homeFreeTermsRepository;
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public List<HomeProfile> findAllFree(SearchFreeHomesDTO dto) {
 
         List<HomeProfile> homes = new ArrayList<>();
         List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAll();
 
         for (HomeFreeTerms term: freeTerms) {
-            if(term.isAction() != true && (dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getHomeProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
+            if(term.isAction() != true && (dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getHomeProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase()) && term.getHomeProfile().getNumberOfBeds() >= dto.getNumberOfBeds()){
 
                 if(!homeExists(term.getHomeProfile(), homes)){
                     homes.add(term.getHomeProfile());

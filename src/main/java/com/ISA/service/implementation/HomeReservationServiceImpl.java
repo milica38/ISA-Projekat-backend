@@ -2,7 +2,6 @@ package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.HomeHistoryReservationDTO;
 import com.ISA.domain.dto.HomeReservationDTO;
-import com.ISA.domain.dto.UserDTO;
 import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.HomeReservation;
@@ -15,12 +14,12 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeReservationService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mapping.AccessOptions;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class HomeReservationServiceImpl implements HomeReservationService {
@@ -43,20 +42,29 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     @Autowired
     private UserService userService;
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+
     @Override
-    public HomeReservation add(HomeReservationDTO dto) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public HomeReservation add(HomeReservationDTO dto) throws Exception{
 
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
         User currentUser = userService.getCurrentUser();
 
         if(isOverlapping(homeProfile.getId(), dto.getStartDate(), dto.getEndDate())){
-            return null;
+          return null;
         }
 
         if(!canClientBook(userService.getCurrentUser().getId(), dto.getHouseId(), dto.getStartDate(), dto.getEndDate() )){
             return null;
         }
+
+        if(currentUser.getPenalty() >= 3){
+            throw new Exception("Number of penalties is 3 or more");
+
+        }
+
+        long diffInMillies = Math.abs(dto.getEndDate().getTime() - dto.getStartDate().getTime());
+        long days = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
         HomeReservation reservation = new HomeReservation();
         reservation.setCancelled(false);
@@ -69,23 +77,39 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
 
         if(freeTerm != null && freeTerm.isAction()){
-            reservation.setPrice(freeTerm.getActionPrice());
+            reservation.setPrice(freeTerm.getActionPrice() * days );
         }
         else {
-            reservation.setPrice(homeProfile.getPricelist());
+            reservation.setPrice(homeProfile.getPricelist() * days);
         }
 
+        if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+            reservation.setPrice(reservation.getPrice() +  homeProfile.getExtraPrice() * days);
+        }
 
         emailService.sendEmailForHouseReservation(currentUser, reservation);
 
         return homeReservationRepository.save(reservation);
     }
 
+    private List<HomeFreeTerms> getFree(List<HomeFreeTerms> allTerms, Date startDate, Date endDate) {
+        List<HomeFreeTerms> terms = new ArrayList<>();
+
+        for(HomeFreeTerms term: allTerms) {
+            if((startDate.after(term.getStartDate()) || isDateEqual(startDate, term.getStartDate())) && (endDate.before(term.getEndDate()) || isDateEqual(endDate, term.getEndDate()))) {
+                terms.add(term);
+            }
+        }
+        return terms;
+    }
+
     @Override
-    public HomeReservation addByOwner(HomeReservationDTO dto, Long clientId) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public HomeReservation addByOwner(HomeReservationDTO dto, Long clientId) throws Exception {
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
-        User currentUser = userService.getCurrentUser();
         List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAllByHomeProfileId(dto.getHouseId());
+
+        freeTerms = getFree(freeTerms, dto.getStartDate(), dto.getEndDate());
 
         if(isOverlapping(homeProfile.getId(), dto.getStartDate(), dto.getEndDate())){
             return null;
@@ -94,17 +118,35 @@ public class HomeReservationServiceImpl implements HomeReservationService {
             return null;
         }
 
+        long diffInMillies = Math.abs(dto.getEndDate().getTime() - dto.getStartDate().getTime());
+        long days = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
         HomeReservation reservation = new HomeReservation();
-        reservation.setExtraServices(homeProfile.getExtraService());
         reservation.setCancelled(false);
         reservation.setEndDate(dto.getEndDate());
         reservation.setStartDate(dto.getStartDate());
         reservation.setHomeProfile(homeProfile);
-        reservation.setPrice(homeProfile.getPricelist());
-        reservation.setClientId(currentUser.getId());
         reservation.setNumberOfPeople(homeProfile.getNumberOfBeds());
         reservation.setClientId(dto.getClientId());
 
+        HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
+        if(freeTerm != null && freeTerm.isAction()){
+            reservation.setPrice(freeTerm.getActionPrice() * days );
+        }
+        else {
+            reservation.setPrice(homeProfile.getPricelist() * days);
+        }
+
+        if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+            reservation.setPrice(reservation.getPrice() +  homeProfile.getExtraPrice() * days);
+        }
+
+        List<User> clients = userRepository.findAllByType("Client");
+        for(User client: clients){
+            if(reservation.getClientId().equals(client.getId())){
+                emailService.sendEmailForHouseReservation(client, reservation);
+            }
+        }
         return homeReservationRepository.save(reservation);
     }
   
@@ -138,7 +180,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
                 continue;
             }
 
-           if((startDate.equals(reservation.getStartDate()) || endDate.equals(reservation.getEndDate()) || (startDate.equals(reservation.getEndDate())) ||  (endDate.equals(reservation.getStartDate()))) && reservation.getHomeProfile().getId().equals(houseId)) {
+           if((isDateEqual(startDate, reservation.getStartDate()) || isDateEqual(endDate, reservation.getEndDate()) || (isDateEqual(startDate, reservation.getEndDate())) ||  (isDateEqual(endDate, reservation.getStartDate()))) && reservation.getHomeProfile().getId().equals(houseId)) {
                 return true;
             }
 
@@ -231,9 +273,13 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         List<HomeReservation> results = new ArrayList<>();
         User currentUser = userService.getCurrentUser();
         Date today = new Date();
+        Calendar calendar = Calendar.getInstance();
 
         for(HomeReservation hr : all) {
-            if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && hr.getEndDate().before(today)) {
+            calendar.setTime(hr.getEndDate());
+            calendar.add(Calendar.DATE, 1);
+            Date lastDay = calendar.getTime();
+            if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && lastDay.before(today)) {
                 results.add(hr);
             }
         }
@@ -250,10 +296,26 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
         for(HomeReservation hr : all) {
             if(hr.getHomeProfile().getownerId().equals(currentUser.getId()) && (
-                    (hr.getStartDate().before(today) && hr.getEndDate().after(today)) || (hr.getStartDate().before(today) && hr.getEndDate().equals(today))
-                    || (hr.getStartDate().equals(today) && hr.getEndDate().after(today)) || (hr.getStartDate().equals(today) && hr.getEndDate().equals(today))
+                    (hr.getStartDate().before(today) && hr.getEndDate().after(today)) || (hr.getStartDate().before(today) &&  isDateEqual(hr.getEndDate(), today))
+                    || (isDateEqual(hr.getStartDate(), today) && hr.getEndDate().after(today)) || (isDateEqual(hr.getStartDate(), today) &&  isDateEqual(hr.getEndDate(), today))
                     )
             ) {
+                results.add(hr);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<HomeReservation> getAllReservationsForCharts(HomeHistoryReservationDTO dto) {
+
+        List<HomeReservation> all = homeReservationRepository.findAll();
+        List<HomeReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(HomeReservation hr : all) {
+            if(hr.getHomeProfile().getownerId().equals(currentUser.getId())) {
                 results.add(hr);
             }
         }
@@ -301,7 +363,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     }
 
     @Override
-    public List<HomeReservation> getMyUpcomingReservatons() {
+    public List<HomeReservation> getMyUpcomingReservations() {
         User user = userService.getCurrentUser();
         List<HomeReservation> reservations = homeReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
         List<HomeReservation> results = new ArrayList<>();

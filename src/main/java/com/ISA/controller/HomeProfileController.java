@@ -75,5 +75,11 @@ public class HomeProfileController {
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(profiles), HttpStatus.OK);
     }
 
+    @PostMapping(path = "/deleteThisHome/{id}")
+    public ResponseEntity<?> deleteHome(@PathVariable Long id){
+        homeProfileService.deleteHome(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

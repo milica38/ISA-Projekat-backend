@@ -49,6 +49,10 @@ public class BoatProfileController {
     public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody BoatProfileDTO dto) {
         BoatProfile bp = boatProfileService.edit(id, dto);
 
+        if(bp == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         return new ResponseEntity<>(BoatProfileConverters.modelToDTO(bp), HttpStatus.OK);
     }
 
@@ -72,6 +76,12 @@ public class BoatProfileController {
     public ResponseEntity<?> filterBoats(@RequestBody BoatProfileDTO dto){
         List<BoatProfile> boats = boatProfileService.filterBoats(dto);
         return new ResponseEntity<>(BoatProfileConverters.modelsToDTOs(boats), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/deleteThisBoat/{id}")
+    public ResponseEntity<?> deleteBoat(@PathVariable Long id){
+        boatProfileService.deleteBoat(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

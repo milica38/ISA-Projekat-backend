@@ -7,6 +7,8 @@ import com.ISA.repository.BoatFreeTermsRepository;
 import com.ISA.service.definition.SearchFreeBoatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,13 +21,14 @@ public class SearchFreeBoatsServiceImpl implements SearchFreeBoatsService {
     BoatFreeTermsRepository freeTermsRepository;
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public List<BoatProfile> findAllFree(SearchFreeBoatsDTO dto) {
 
         List<BoatProfile> boats = new ArrayList<>();
         List<BoatFreeTerms> freeTerms = freeTermsRepository.findAll();
 
         for (BoatFreeTerms term: freeTerms) {
-            if(term.isAction() != true && (dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getBoatProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase())){
+            if(term.isAction() != true && (dto.getStartDate().after(term.getStartDate()) || isDateEqual(dto.getStartDate(), term.getStartDate())) &&  (dto.getEndDate().before(term.getEndDate()) || isDateEqual(dto.getEndDate(), term.getEndDate())) && term.getBoatProfile().getAddress().toLowerCase().contains(dto.getAddress().toLowerCase()) && term.getBoatProfile().getCapacity() >= dto.getCapacity()){
 
                 if(!boatExists(term.getBoatProfile(), boats)){
                     boats.add(term.getBoatProfile());

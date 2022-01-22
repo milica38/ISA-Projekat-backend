@@ -16,6 +16,7 @@ public class AdventureProfileDTO {
     private String fishingEquipment;
     private double pricelist;
     private String extraService;
+    private double extraPrice;
     private String cancelConditions;
     private boolean deleted;
     private String searchTerm;
@@ -23,6 +24,12 @@ public class AdventureProfileDTO {
     private long instructorId;
 
 
+    public double getExtraPrice() {
+        return extraPrice;
+    }
+    public void setExtraPrice(double extraPrice) {
+        this.extraPrice = extraPrice;
+    }
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id;}
     public Long getInstructorId(){ return instructorId; }

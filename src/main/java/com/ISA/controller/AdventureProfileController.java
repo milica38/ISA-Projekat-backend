@@ -60,6 +60,12 @@ public class AdventureProfileController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping(path = "/my")
+    public ResponseEntity<?> getMyAdventures() {
+        List<AdventureProfile> result = adventureProfileService.getMyNotDeletedAdventures();
+        return new ResponseEntity<>(AdventureProfileConverters.modelsToDTOs(result), HttpStatus.OK);
+    }
+
     //@PreAuthorize("hasAuthority('Instructor')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {

@@ -3,6 +3,7 @@ package com.ISA.service.implementation;
 import com.ISA.domain.dto.AdventureProfileDTO;
 import com.ISA.domain.model.AdventureProfile;
 import com.ISA.domain.model.HomeProfile;
+import com.ISA.domain.model.User;
 import com.ISA.repository.AdventureProfileRepository;
 import com.ISA.service.definition.AdventureProfileService;
 import com.ISA.service.definition.UserService;
@@ -99,6 +100,13 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
         optionalAdventureProfile.get().setDeleted(true);
         adventureProfileRepository.save(optionalAdventureProfile.get());
         return true;
+    }
+
+
+    public List<AdventureProfile> getMyNotDeletedAdventures() {
+        User user = userService.getCurrentUser();
+
+        return adventureProfileRepository.findAllByInstructorIdAndDeleted(user.getId(), false);
     }
 
     @Override

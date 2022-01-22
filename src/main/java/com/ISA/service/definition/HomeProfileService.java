@@ -20,4 +20,5 @@ public interface HomeProfileService {
     boolean canOwnerDelete(Long houseId);
     boolean canOwnerEdit(Long houseId);
 
+
 }

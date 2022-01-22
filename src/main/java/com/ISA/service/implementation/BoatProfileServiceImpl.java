@@ -8,6 +8,8 @@ import com.ISA.service.definition.BoatProfileService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,9 +70,14 @@ public class BoatProfileServiceImpl implements BoatProfileService {
         bp.setType(boatProfileDTO.getType());
         bp.setLatitude(boatProfileDTO.getLatitude());
         bp.setLongitude(boatProfileDTO.getLongitude());
+        bp.setRateCounter(0);
+        bp.setAvgRate(0L);
+
         return boatProfileRepository.save(bp);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public BoatProfile edit(Long id, BoatProfileDTO boatProfileDTO) {
 
         Optional<BoatProfile> optionalBoatProfile = boatProfileRepository.findById(id);
@@ -107,6 +114,7 @@ public class BoatProfileServiceImpl implements BoatProfileService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public boolean delete(Long id) {
 
         Optional<BoatProfile> optionalBoatProfile = boatProfileRepository.findById(id);
@@ -126,8 +134,8 @@ public class BoatProfileServiceImpl implements BoatProfileService {
 
         for(BoatProfile profile: boats){
             if(profile.getName().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || profile.getAddress().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
-            || profile.getFishingEquipment().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
-                    || profile.getBehaviourRules().toLowerCase().contains(dto.getSearchTerm().toLowerCase())){
+                || profile.getFishingEquipment().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || profile.getBehaviourRules().toLowerCase().contains(dto.getSearchTerm().toLowerCase()) || profile.getCancelConditions().toLowerCase().contains(dto.getSearchTerm().toLowerCase())
+                || profile.getExtraService().toLowerCase().contains(dto.getSearchTerm().toLowerCase())){
                 if(!boatsExists(profile, results))
                     results.add(profile);
             }
@@ -172,5 +180,17 @@ public class BoatProfileServiceImpl implements BoatProfileService {
     public boolean isDateEqual(Date date1, Date date2) {
 
         return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();
+    }
+
+    public boolean deleteBoat(Long id)
+    {
+        Optional<BoatProfile> boat = boatProfileRepository.findById(id);
+
+        if(boat.isEmpty()){
+            return false;
+        }
+        boat.get().setDeleted(true);
+        boatProfileRepository.save(boat.get());
+        return true;
     }
 }
