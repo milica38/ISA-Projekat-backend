@@ -17,12 +17,15 @@ public class HomeReservation {
     private String extraServices;
     private double price;
     private boolean cancelled;
+    private boolean writed;
     private int numberOfPeople;
     @ManyToOne
     private HomeProfile homeProfile;
     private Long clientId;
 
 
+    public boolean getWrited(){ return writed; }
+    public boolean setWrited(boolean writed) { return this.writed = writed; }
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
     public Date getStartDate(){ return startDate; }

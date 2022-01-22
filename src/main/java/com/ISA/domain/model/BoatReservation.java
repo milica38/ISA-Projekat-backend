@@ -17,12 +17,15 @@ public class BoatReservation {
     private String extraServices;
     private double price;
     private boolean cancelled;
+    private boolean writed;
     private int numberOfDays;
     private int numberOfPeople;
     @ManyToOne
     private BoatProfile boatProfile;
     private Long clientId;
 
+    public boolean getWrited(){ return writed; }
+    public void setWrited(boolean writed){ this.writed = writed; }
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
     public Date getStartDate(){ return startDate; }

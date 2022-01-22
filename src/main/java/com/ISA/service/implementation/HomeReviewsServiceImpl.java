@@ -12,6 +12,9 @@ import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class HomeReviewsServiceImpl implements HomeReviewsService {
 
@@ -32,6 +35,13 @@ public class HomeReviewsServiceImpl implements HomeReviewsService {
 
         HomeReservation reservation = homeReservationRepository.findById(dto.getHomeReservationId()).get();
         User currentUser = userService.getCurrentUser();
+        List <HomeReviews> writedReviews = homeReviewsRepository.findAll();
+
+        for(HomeReviews r: writedReviews){
+            if(r.getHomeReservation().getCancelled() || r.getHomeReservation().getWrited()){
+                return null;
+            }
+        }
 
         HomeReviews reviews = new HomeReviews();
         reviews.setContent(dto.getContent());
@@ -39,6 +49,7 @@ public class HomeReviewsServiceImpl implements HomeReviewsService {
         reviews.setAppear(dto.isAppear());
         reviews.setBadComment(dto.isBadComment());
         reviews.setHomeReservation(reservation);
+        reviews.getHomeReservation().setWrited(true);
 
         if(dto.isAppear()) {
             currentUser.setPenalty(currentUser.getPenalty() + 1);

@@ -10,11 +10,14 @@ public class BoatReservationDTO {
     private String extraServices;
     private double price;
     private boolean cancelled;
+    private boolean writed;
     private int numberOfDays;
     private int numberOfPeople;
     private long boatId;
     private long clientId;
 
+    public boolean getWrited(){ return writed; }
+    public void setWrited(boolean writed){ this.writed = writed; }
     public long getId(){ return id; }
     public void setId(Long id){ this.id = id; }
     public Date getStartDate(){ return startDate; }
