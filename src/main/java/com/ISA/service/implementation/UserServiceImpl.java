@@ -11,11 +11,14 @@ import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -59,10 +62,12 @@ public class UserServiceImpl implements UserService {
         user.setPenalty(0L);
         user.setType("Client");
         user.setStatus("Waiting");
-
         emailService.sendEmailForRegistration(user);
-
-        return userRepository.save(user);
+        try{
+            return userRepository.save(user);
+        }catch(PessimisticLockingFailureException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+        }
     }
 
     @Override
@@ -89,8 +94,12 @@ public class UserServiceImpl implements UserService {
         user.setRegistrationToken(generateRandomToken());
         user.setType("House owner");
         user.setStatus("Waiting");
-
-        return userRepository.save(user);
+        user.setPenalty(0L);
+        try{
+            return userRepository.save(user);
+        }catch(PessimisticLockingFailureException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+        }
     }
 
     @Override
@@ -116,8 +125,13 @@ public class UserServiceImpl implements UserService {
         user.setDescription(registrationDTO.getDescription());
         user.setType("Boat owner");
         user.setStatus("Waiting");
+        user.setPenalty(0L);
         user.setRegistrationToken(generateRandomToken());
-        return userRepository.save(user);
+        try{
+            return userRepository.save(user);
+        }catch(PessimisticLockingFailureException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+        }
     }
 
     @Override
