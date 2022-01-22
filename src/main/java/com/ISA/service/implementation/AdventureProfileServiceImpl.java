@@ -9,6 +9,8 @@ import com.ISA.service.definition.AdventureProfileService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,8 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+
     public AdventureProfile edit(AdventureProfileDTO adventureProfileDTO) {
 
         Optional<AdventureProfile> optionalAdventureProfile = adventureProfileRepository.findById(adventureProfileDTO.getId());
