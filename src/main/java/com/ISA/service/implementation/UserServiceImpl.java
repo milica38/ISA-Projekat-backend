@@ -244,7 +244,7 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAllByType("Client");
         Date today = new Date();
         for(User user: users){
-            if(today.getDate() == 22){
+            if(today.getDate() == 1){
                 user.setPenalty(0L);
                 userRepository.save(user);
             }
