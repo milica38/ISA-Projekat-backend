@@ -36,7 +36,17 @@ npm install
 ~~~
 ng serve
 ~~~
-
+## Logging data
+###### Clients
+- urukalomilica@gmail.com , password: ftn
+- dunjagojkovic999@gmail.com , password: ftn
+###### House owners
+- houseowner1@gmail.com , password: ftn
+- houseowner2@gmail.com , password: ftn
+###### Boat owners
+- boatowner1@gmail.com , password: ftn
+- boatowner2@gmail.com , password: ftn
+<br><br>
 ## Resources <br>
 - [Material design](docs/https://material.angular.io/.md)
 - [Charts](docs/https://www.npmjs.com/package/angular2-chartjs.md)
