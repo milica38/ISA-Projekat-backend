@@ -7,6 +7,8 @@ import com.ISA.repository.AdventureFreeTermsRepository;
 import com.ISA.service.definition.SearchFreeAdventuresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +21,7 @@ public class SearchFreeAdventuresServiceImpl implements SearchFreeAdventuresServ
     AdventureFreeTermsRepository freeTermsRepository;
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public List<AdventureProfile> findAllFree(SearchFreeAdventuresDTO dto) {
 
         List<AdventureProfile> adventures = new ArrayList<>();

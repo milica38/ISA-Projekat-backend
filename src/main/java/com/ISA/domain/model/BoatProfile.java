@@ -37,6 +37,12 @@ public class BoatProfile {
     private int rateCounter;
     private double avgRate;
 
+    @Version
+    private Integer version;
+
+    public Integer getVersion() { return version;}
+    public void setVersion(Integer version) { this.version = version; }
+
     public double getLatitude() {
         return latitude;
     }

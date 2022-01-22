@@ -30,23 +30,23 @@ public class HomeProfile {
     private int rateCounter;
     private double avgRate;
 
+    @Version
+    private Integer version;
 
+    public Integer getVersion() { return version;}
+    public void setVersion(Integer version) { this.version = version; }
     public double getLatitude() {
         return latitude;
     }
-
     public double getLongitude() {
         return longitude;
     }
-
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
-
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-
     public double getExtraPrice() {
         return extraPrice;
     }

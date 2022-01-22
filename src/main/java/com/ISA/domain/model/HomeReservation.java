@@ -23,6 +23,12 @@ public class HomeReservation {
     private HomeProfile homeProfile;
     private Long clientId;
 
+    @Version
+    private Integer version;
+
+    public Integer getVersion() { return version;}
+    public void setVersion(Integer version) { this.version = version; }
+
 
     public boolean getWrited(){ return writed; }
     public boolean setWrited(boolean writed) { return this.writed = writed; }

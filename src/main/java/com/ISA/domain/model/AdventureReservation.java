@@ -22,6 +22,11 @@ public class AdventureReservation {
     private AdventureProfile adventureProfile;
 
 
+    @Version
+    private Integer version;
+
+    public Integer getVersion() { return version;}
+    public void setVersion(Integer version) { this.version = version; }
     public void  setNumberOfPeople(int numberOfPeople){this.numberOfPeople = numberOfPeople;}
     public Long getId(){ return id; }
     public void setId(Long id){ this.id = id; }

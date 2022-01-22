@@ -243,16 +243,9 @@ public class UserServiceImpl implements UserService {
     public List<User> resetPenalty(){
         List<User> users = userRepository.findAllByType("Client");
         Date today = new Date();
-
         for(User user: users){
-            if(today.getDate() == 1){
-                System.out.println("==============================");
-                System.out.println(user.getId());
-                System.out.println("Stari penali");
-                System.out.println(user.getPenalty());
+            if(today.getDate() == 22){
                 user.setPenalty(0L);
-                System.out.println("Novi penali");
-                System.out.println(user.getPenalty());
                 userRepository.save(user);
             }
         }

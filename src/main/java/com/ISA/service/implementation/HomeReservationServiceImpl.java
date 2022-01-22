@@ -59,7 +59,8 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         }
 
         if(currentUser.getPenalty() >= 3){
-            return null;
+            throw new Exception("Number of penalties is 3 or more");
+
         }
 
         long diffInMillies = Math.abs(dto.getEndDate().getTime() - dto.getStartDate().getTime());

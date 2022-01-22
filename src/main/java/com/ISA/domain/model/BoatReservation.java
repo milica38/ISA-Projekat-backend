@@ -24,6 +24,13 @@ public class BoatReservation {
     private BoatProfile boatProfile;
     private Long clientId;
 
+
+    @Version
+    private Integer version;
+
+    public Integer getVersion() { return version;}
+    public void setVersion(Integer version) { this.version = version; }
+
     public boolean getWrited(){ return writed; }
     public void setWrited(boolean writed){ this.writed = writed; }
     public Long getId(){ return id; }

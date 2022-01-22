@@ -7,6 +7,8 @@ import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.service.definition.SearchFreeHomesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -17,6 +19,7 @@ public class SearchFreeHomesServiceImpl implements SearchFreeHomesService {
     HomeFreeTermsRepository homeFreeTermsRepository;
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public List<HomeProfile> findAllFree(SearchFreeHomesDTO dto) {
 
         List<HomeProfile> homes = new ArrayList<>();

@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @RestController
@@ -30,7 +32,12 @@ public class HomeReservationController {
     @PreAuthorize("hasAuthority('Client')")
     @PostMapping()
     public ResponseEntity<?> add(@RequestBody HomeReservationDTO dto) throws Exception {
-        HomeReservation reservation = homeReservationService.add(dto);
+        HomeReservation reservation = null;
+        try {
+            reservation = homeReservationService.add(dto);
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
