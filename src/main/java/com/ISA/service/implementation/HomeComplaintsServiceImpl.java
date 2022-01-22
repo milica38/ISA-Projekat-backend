@@ -1,5 +1,6 @@
 package com.ISA.service.implementation;
 
+import com.ISA.domain.dto.BoatComplaintsDTO;
 import com.ISA.domain.dto.HomeComplaintsDTO;
 import com.ISA.domain.model.*;
 import com.ISA.repository.HomeComplaintsRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HomeComplaintsServiceImpl implements HomeComplaintsService {
@@ -64,5 +66,13 @@ public class HomeComplaintsServiceImpl implements HomeComplaintsService {
     public List<HomeComplaints> getAllComplaintsByComplaintResponse()
     {
         return homeComplaintsRepository.findAllByComplaintResponse("");
+    }
+
+    public HomeComplaints responseToComplaint(HomeComplaintsDTO dto){
+        Optional<HomeComplaints> optionalHomeComplaints = homeComplaintsRepository.findById(dto.getId());
+
+        optionalHomeComplaints.get().setComplaintResponse(dto.getComplaintResponse());
+        return homeComplaintsRepository.save(optionalHomeComplaints.get());
+
     }
 }

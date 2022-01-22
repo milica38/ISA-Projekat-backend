@@ -1,5 +1,6 @@
 package com.ISA.service.definition;
 
+import com.ISA.domain.dto.AdventureComplaintsDTO;
 import com.ISA.domain.dto.BoatComplaintsDTO;
 import com.ISA.domain.model.AdventureComplaints;
 import com.ISA.domain.model.BoatComplaints;
@@ -11,4 +12,5 @@ public interface BoatComplaintsService {
     BoatComplaints add(BoatComplaintsDTO dto);
     List<BoatComplaints> getAllBoatComplaints();
     List<BoatComplaints>  getAllComplaintsByComplaintResponse();
+    BoatComplaints responseToComplaint(BoatComplaintsDTO dto);
 }

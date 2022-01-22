@@ -1,8 +1,10 @@
 package com.ISA.controller;
 
 import com.ISA.domain.dto.AdventureComplaintsDTO;
+import com.ISA.domain.dto.AdventureProfileDTO;
 import com.ISA.domain.dto.HomeComplaintsDTO;
 import com.ISA.domain.model.AdventureComplaints;
+import com.ISA.domain.model.AdventureProfile;
 import com.ISA.domain.model.AdventureReservation;
 import com.ISA.domain.model.HomeComplaints;
 import com.ISA.service.definition.AdventureComplaintsService;
@@ -40,5 +42,11 @@ public class AdventureComplaintsController {
     @GetMapping(path = "/allComplaintsWithoutResponse")
     public ResponseEntity<?> getAllComplaintsByComplaintResponse() {
         return new ResponseEntity<>(adventureComplaintsService.getAllComplaintsByComplaintResponse(), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/responseToComplaint/{id}")
+    public ResponseEntity<?> responseToComplaint(@PathVariable Long id, @RequestBody AdventureComplaintsDTO dto) {
+        AdventureComplaints ac = adventureComplaintsService.responseToComplaint(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

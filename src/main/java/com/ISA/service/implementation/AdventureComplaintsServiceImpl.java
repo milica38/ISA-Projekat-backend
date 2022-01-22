@@ -2,6 +2,7 @@ package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.AdventureComplaintsDTO;
 import com.ISA.domain.dto.AdventureHistoryReservationsDTO;
+import com.ISA.domain.dto.AdventureReviewsDTO;
 import com.ISA.domain.model.*;
 import com.ISA.repository.AdventureComplaintsRepository;
 import com.ISA.repository.AdventureReservationRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdventureComplaintsServiceImpl implements AdventureComplaintsService {
@@ -65,6 +67,14 @@ public class AdventureComplaintsServiceImpl implements AdventureComplaintsServic
 
     public List<AdventureComplaints> getAllComplaintsByComplaintResponse()
     {
-        return complaintsRepository.findAllByComplaintResponse("");
+        return complaintsRepository.findAllByComplaintResponse(null);
+    }
+
+    public AdventureComplaints responseToComplaint(AdventureComplaintsDTO dto){
+        Optional<AdventureComplaints> optionalAdventureComplaints = complaintsRepository.findById(dto.getId());
+
+        optionalAdventureComplaints.get().setComplaintResponse(dto.getComplaintResponse());
+        return complaintsRepository.save(optionalAdventureComplaints.get());
+
     }
 }

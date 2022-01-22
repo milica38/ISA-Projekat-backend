@@ -1,5 +1,6 @@
 package com.ISA.controller;
 
+import com.ISA.domain.dto.AdventureComplaintsDTO;
 import com.ISA.domain.dto.HomeComplaintsDTO;
 import com.ISA.domain.model.AdventureComplaints;
 import com.ISA.domain.model.HomeComplaints;
@@ -35,6 +36,12 @@ public class HomeComplaintsController {
     @GetMapping(path = "/allComplaintsWithoutResponse")
     public ResponseEntity<?> getAllComplaintsByComplaintResponse() {
         return new ResponseEntity<>(homeComplaintsService.getAllComplaintsByComplaintResponse(), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/responseToComplaint/{id}")
+    public ResponseEntity<?> responseToComplaint(@PathVariable Long id, @RequestBody HomeComplaintsDTO dto) {
+        HomeComplaints hc = homeComplaintsService.responseToComplaint(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

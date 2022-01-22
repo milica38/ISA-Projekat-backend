@@ -1,5 +1,6 @@
 package com.ISA.controller;
 
+import com.ISA.domain.dto.AdventureComplaintsDTO;
 import com.ISA.domain.dto.BoatComplaintsDTO;
 import com.ISA.domain.model.AdventureComplaints;
 import com.ISA.domain.model.BoatComplaints;
@@ -36,5 +37,11 @@ public class BoatComplaintsController {
     @GetMapping(path = "/allComplaintsWithoutResponse")
     public ResponseEntity<?> getAllComplaintsByComplaintResponse() {
         return new ResponseEntity<>(boatComplaintsService.getAllComplaintsByComplaintResponse(), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/responseToComplaint/{id}")
+    public ResponseEntity<?> responseToComplaint(@PathVariable Long id, @RequestBody BoatComplaintsDTO dto) {
+        BoatComplaints bc = boatComplaintsService.responseToComplaint(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
