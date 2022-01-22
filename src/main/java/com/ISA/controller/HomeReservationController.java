@@ -36,7 +36,7 @@ public class HomeReservationController {
 
     @PreAuthorize("hasAuthority('House owner')")
     @PostMapping(path = "/owner")
-    public ResponseEntity<?> addByOwner(@RequestBody HomeReservationDTO dto){
+    public ResponseEntity<?> addByOwner(@RequestBody HomeReservationDTO dto) throws Exception{
         HomeReservation reservation = homeReservationService.addByOwner(dto, dto.getClientId());
 
         return new ResponseEntity<>(reservation, HttpStatus.OK);

@@ -104,7 +104,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public HomeReservation addByOwner(HomeReservationDTO dto, Long clientId) {
+    public HomeReservation addByOwner(HomeReservationDTO dto, Long clientId) throws Exception {
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
         List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAllByHomeProfileId(dto.getHouseId());
 

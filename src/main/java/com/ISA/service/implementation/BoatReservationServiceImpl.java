@@ -45,7 +45,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public BoatReservation add(BoatReservationDTO dto) {
+    public BoatReservation add(BoatReservationDTO dto) throws Exception {
 
         BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
         User currentUser = userService.getCurrentUser();
@@ -117,7 +117,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public BoatReservation addByOwner(BoatReservationDTO dto, Long clientId) {
+    public BoatReservation addByOwner(BoatReservationDTO dto, Long clientId) throws Exception {
         BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
         List<BoatFreeTerms> freeTerms = freeTermsRepository.findAllByBoatProfileId(dto.getBoatId());
         freeTerms = getFree(freeTerms, dto.getStartDate(), dto.getEndDate());

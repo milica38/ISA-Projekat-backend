@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface HomeReservationService {
     HomeReservation add(HomeReservationDTO dto) throws Exception;
-    HomeReservation addByOwner(HomeReservationDTO dto, Long clientId);
+    HomeReservation addByOwner(HomeReservationDTO dto, Long clientId) throws Exception;
     List<HomeProfile> findAll();
     boolean isOverlapping(long houseId, Date startDate, Date endDate);
     List<HomeReservation> getMyReservations();

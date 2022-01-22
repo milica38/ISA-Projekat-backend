@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 public interface BoatReservationService {
-    BoatReservation add(BoatReservationDTO dto);
-    BoatReservation addByOwner(BoatReservationDTO dto, Long clientId);
+    BoatReservation add(BoatReservationDTO dto) throws Exception;
+    BoatReservation addByOwner(BoatReservationDTO dto, Long clientId) throws Exception;
     List<BoatProfile> findAll();
     boolean isOverlapping(long boatId, Date startDate, Date endDate);
     List<BoatReservation> getMyReservations();

@@ -27,14 +27,14 @@ public class BoatReservationController {
 
     @PreAuthorize("hasAuthority('Client')")
     @PostMapping(path = "/book")
-    public ResponseEntity<?> add(@RequestBody BoatReservationDTO dto) {
+    public ResponseEntity<?> add(@RequestBody BoatReservationDTO dto) throws Exception{
         BoatReservation reservation = reservationService.add(dto);
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('Boat owner')")
     @PostMapping(path = "/owner")
-    public ResponseEntity<?> addByOwner(@RequestBody BoatReservationDTO dto){
+    public ResponseEntity<?> addByOwner(@RequestBody BoatReservationDTO dto) throws Exception{
         BoatReservation reservation = reservationService.addByOwner(dto, dto.getClientId());
 
         return new ResponseEntity<>(reservation, HttpStatus.OK);
