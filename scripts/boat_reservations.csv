@@ -1,0 +1,7 @@
+"id","cancelled","client_id","end_date","extra_services","number_of_days","number_of_people","price","start_date","version","writed","boat_profile_id"
+1,False,1,"2022-01-10 00:00:00","Radio",3,3,252,"2022-01-07 00:00:00",1,False,8
+2,False,1,"2022-04-14 00:00:00","No extra service",1,3,80,"2022-04-13 00:00:00",0,False,8
+3,False,2,"2022-01-29 00:00:00","No extra service",1,3,80,"2022-01-11 00:00:00",0,False,8
+4,False,2,"2022-02-17 00:00:00","Mini bar",1,7,132,"2022-02-16 00:00:00",0,False,6
+5,False,2,"2022-02-03 00:00:00",NULL,0,0,160,"2022-02-01 00:00:00",0,False,8
+6,False,1,"2022-02-28 00:00:00",NULL,15,3,840,"2022-02-13 00:00:00",0,False,7

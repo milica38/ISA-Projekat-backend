@@ -14,10 +14,14 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeReservationService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -47,7 +51,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public HomeReservation add(HomeReservationDTO dto) throws Exception{
 
-        HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
+        HomeProfile homeProfile = homeProfileRepository.getLockId(dto.getHouseId());
         User currentUser = userService.getCurrentUser();
 
         if(isOverlapping(homeProfile.getId(), dto.getStartDate(), dto.getEndDate())){
@@ -89,7 +93,11 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
         emailService.sendEmailForHouseReservation(currentUser, reservation);
 
-        return homeReservationRepository.save(reservation);
+        try{
+            return homeReservationRepository.save(reservation);
+        }catch(PessimisticLockingFailureException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+        }
     }
 
     private List<HomeFreeTerms> getFree(List<HomeFreeTerms> allTerms, Date startDate, Date endDate) {
@@ -106,7 +114,7 @@ public class HomeReservationServiceImpl implements HomeReservationService {
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public HomeReservation addByOwner(HomeReservationDTO dto, Long clientId) throws Exception {
-        HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
+        HomeProfile homeProfile = homeProfileRepository.getLockId(dto.getHouseId());
         List<HomeFreeTerms> freeTerms = homeFreeTermsRepository.findAllByHomeProfileId(dto.getHouseId());
 
         freeTerms = getFree(freeTerms, dto.getStartDate(), dto.getEndDate());
@@ -147,7 +155,12 @@ public class HomeReservationServiceImpl implements HomeReservationService {
                 emailService.sendEmailForHouseReservation(client, reservation);
             }
         }
-        return homeReservationRepository.save(reservation);
+
+        try{
+            return homeReservationRepository.save(reservation);
+        }catch(PessimisticLockingFailureException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+        }
     }
   
     public HomeFreeTerms getDates(Long houseId, Date startDate, Date endDate) {

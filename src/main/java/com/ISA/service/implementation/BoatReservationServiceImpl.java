@@ -11,9 +11,12 @@ import com.ISA.service.definition.BoatReservationService;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,7 +50,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public BoatReservation add(BoatReservationDTO dto) throws Exception {
 
-        BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
+        BoatProfile boatProfile = profileRepository.getLockId(dto.getBoatId());
         User currentUser = userService.getCurrentUser();
 
         if(isOverlapping(boatProfile.getId(), dto.getStartDate(), dto.getEndDate())){
@@ -89,7 +92,11 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         }
         emailService.sendEmailForBoatReservation(currentUser, reservation);
 
-        return reservationRepository.save(reservation);
+        try{
+            return reservationRepository.save(reservation);
+        }catch(PessimisticLockingFailureException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+        }
     }
 
     public BoatFreeTerms getDates(Long boatId, Date startDate, Date endDate) {
@@ -118,7 +125,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public BoatReservation addByOwner(BoatReservationDTO dto, Long clientId) throws Exception {
-        BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
+        BoatProfile boatProfile = profileRepository.getLockId(dto.getBoatId());
         List<BoatFreeTerms> freeTerms = freeTermsRepository.findAllByBoatProfileId(dto.getBoatId());
         freeTerms = getFree(freeTerms, dto.getStartDate(), dto.getEndDate());
 
@@ -158,7 +165,12 @@ public class BoatReservationServiceImpl implements BoatReservationService {
                 emailService.sendEmailForBoatReservation(client, reservation);
             }
         }
-        return reservationRepository.save(reservation);
+
+        try{
+            return reservationRepository.save(reservation);
+        }catch(PessimisticLockingFailureException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+        }
     }
 
     @Override

@@ -10,11 +10,13 @@ import com.ISA.service.definition.AdventureReservationService;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -41,7 +43,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     @Override
     public AdventureReservation add(AdventureReservationDTO dto) {
 
-        AdventureProfile adventureProfile = profileRepository.findById(dto.getAdventureId()).get();
+        AdventureProfile adventureProfile = profileRepository.getLockId(dto.getAdventureId());
         User currentUser = userService.getCurrentUser();
 
         if(isOverlapping(adventureProfile.getId(), dto.getStartDate(), dto.getEndDate())){
@@ -82,7 +84,11 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
 
         emailService.sendEmailForAdventureReservation(currentUser, reservation);
 
-        return adventureReservationRepository.save(reservation);
+        try{
+            return adventureReservationRepository.save(reservation);
+        }catch(PessimisticLockingFailureException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Try again later!");
+        }
     }
 
     public AdventureFreeTerms getDates(Long adventureId, Date startDate, Date endDate) {
