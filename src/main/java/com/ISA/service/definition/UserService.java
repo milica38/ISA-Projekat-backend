@@ -26,6 +26,7 @@ public interface UserService {
     Boolean deleteUser(Long id);
     User changePassword(ChangePasswordDTO changePasswordDTO);
     boolean delete(Long id);
+    User findById(Long id);
 
 
 }

@@ -22,4 +22,7 @@ public interface AdventureReservationService {
     List<AdventureReservation> getAllTodayReservationsForMyAdventures(AdventureHistoryReservationsDTO dto);
     List<AdventureReservation> getAllHistoryReservationsForMyAdventures(AdventureHistoryReservationsDTO dto);
     List<AdventureReservation> getAllAdventureReservations(Long instructorId, Long adventureId);
+    List<AdventureReservation> getMyFinishedReservations();
+    List<AdventureReservation> getMyUpcomingReservatons();
+    List<AdventureReservation> getMyInProgressReservations();
 }

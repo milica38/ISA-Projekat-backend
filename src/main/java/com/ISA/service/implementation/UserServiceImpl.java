@@ -242,16 +242,17 @@ public class UserServiceImpl implements UserService {
         return uuid;
     }
 
-    public Boolean findUserByToken(String token){
+    public Boolean findUserByToken(String token) {
         Optional<User> user = userRepository.findUserByRegistrationToken(token);
 
-        if(user == null){
-           return false;
+        if (user == null) {
+            return false;
         }
         user.get().setStatus("Active");
         userRepository.save(user.get());
         return true;
     }
+
 
     public Boolean registrationApproved(Long id){
         Optional<User> user = userRepository.findById(id);
@@ -299,11 +300,26 @@ public class UserServiceImpl implements UserService {
 
 
 
+
+    public  String getUserInfo(Long id){
+        Optional<User> user = userRepository.findById(id);
+        String name = user.get().getName();
+        String surname = user.get().getSurname();
+
+        return name + surname;
+    }
+
+
     @Override
     public boolean delete(Long id) {
         Optional<User> user = userRepository.findById(getCurrentUser().getId());
         user.get().setStatus("Pending");
         userRepository.save(user.get());
         return true;
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).get();
     }
 }

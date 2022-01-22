@@ -12,7 +12,6 @@ public class AdventureProfileDTO {
     private String instructorBiography;
     private String ambientImage;
     private int maxNumberOfPeople;
-    private Date freeTerm;
     private String behaviourRules;
     private String fishingEquipment;
     private double pricelist;
@@ -44,8 +43,6 @@ public class AdventureProfileDTO {
     public void setAmbientImage(String ambientImage){ this.ambientImage = ambientImage; }
     public int getMaxNumberOfPeople(){ return maxNumberOfPeople; }
     public void setMaxNumberOfPeople(int maxNumberOfPeople){ this.maxNumberOfPeople = maxNumberOfPeople; }
-    public Date getFreeTerm(){ return freeTerm; }
-    public void setFreeTerm(Date freeTerm){ this.freeTerm = freeTerm; }
     public String getBehaviourRules(){ return behaviourRules; }
     public void setBehaviourRules(String behaviourRules){ this.behaviourRules = behaviourRules; }
     public String getFishingEquipment(){ return fishingEquipment; }

@@ -73,6 +73,7 @@ public class AdventureReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+
     @PostMapping(path = "/myReservationsForMyAdventures")
     public ResponseEntity<?> getReservationsForMyAdventures(@RequestBody AdventureHistoryReservationsDTO dto)
     {
@@ -99,6 +100,27 @@ public class AdventureReservationController {
         List<AdventureReservation> actions = reservationService.getAllAdventureReservations(instructorId, adventureId);
         return new ResponseEntity<>(actions, HttpStatus.OK);
     }
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myFinishedReservations")
+    public ResponseEntity<?> getMyFinishedReservations() {
+        List<AdventureReservation> reservations = reservationService.getMyFinishedReservations();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myUpcomingReservations")
+    public ResponseEntity<?> getMyUpcomingReservations() {
+        List<AdventureReservation> reservations = reservationService.getMyUpcomingReservatons();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('Client')")
+    @GetMapping(path = "/myInProgressReservations")
+    public ResponseEntity<?> getMyInProgressReservations() {
+        List<AdventureReservation> reservations = reservationService.getMyInProgressReservations();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
 
 
 }

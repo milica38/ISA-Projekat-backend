@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoatEvaluationsServiceImpl implements BoatEvaluationsService {
@@ -68,5 +69,41 @@ public class BoatEvaluationsServiceImpl implements BoatEvaluationsService {
 
         boatProfileRepository.save(reservation.getBoatProfile());
         return boatEvaluationsRepository.save(evaluation);
+    }
+
+
+    public List<BoatEvaluations> getAllBoatEvaluations() {
+
+        return boatEvaluationsRepository.findAll();
+
+    }
+
+    public List<BoatEvaluations> getAllEvaluationsByApprovedAndDeclined()
+    {
+        return boatEvaluationsRepository.findAllEvaluationsByIsApprovedAndIsDeclined(false, false);
+    }
+
+    public Boolean evaluationApproved(Long id){
+        Optional<BoatEvaluations> evaluation = boatEvaluationsRepository.findById(id);
+
+        if(evaluation.isEmpty()){
+            return false;
+        }
+        evaluation.get().setApproved(true);
+        //emailService.sendEmailForRegistrationApproved(user.get());
+        boatEvaluationsRepository.save(evaluation.get());
+        return true;
+    }
+
+    public Boolean evaluationDeclined(Long id)
+    {
+        Optional<BoatEvaluations> evaluation = boatEvaluationsRepository.findById(id);
+
+        if(evaluation.isEmpty()){
+            return false;
+        }
+        evaluation.get().setDeclined(true);
+        boatEvaluationsRepository.save(evaluation.get());
+        return true;
     }
 }

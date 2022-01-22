@@ -1,9 +1,7 @@
 package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.HomeEvaluationsDTO;
-import com.ISA.domain.model.HomeEvaluations;
-import com.ISA.domain.model.HomeReservation;
-import com.ISA.domain.model.User;
+import com.ISA.domain.model.*;
 import com.ISA.repository.HomeEvaluationsRepository;
 import com.ISA.repository.HomeProfileRepository;
 import com.ISA.repository.HomeReservationRepository;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HomeEvaluationsServiceImpl implements HomeEvaluationsService {
@@ -73,4 +72,41 @@ public class HomeEvaluationsServiceImpl implements HomeEvaluationsService {
 
         return homeEvaluationsRepository.save(evaluation);
     }
+
+
+    public List<HomeEvaluations> getAllHomeEvaluations() {
+
+        return homeEvaluationsRepository.findAll();
+
+    }
+
+    public List<HomeEvaluations> getAllEvaluationsByApprovedAndDeclined()
+    {
+        return homeEvaluationsRepository.findAllEvaluationsByIsApprovedAndIsDeclined(false, false);
+    }
+
+    public Boolean evaluationApproved(Long id){
+        Optional<HomeEvaluations> evaluation = homeEvaluationsRepository.findById(id);
+
+        if(evaluation.isEmpty()){
+            return false;
+        }
+        evaluation.get().setApproved(true);
+        //emailService.sendEmailForRegistrationApproved(user.get());
+        homeEvaluationsRepository.save(evaluation.get());
+        return true;
+    }
+
+    public Boolean evaluationDeclined(Long id)
+    {
+        Optional<HomeEvaluations> evaluation = homeEvaluationsRepository.findById(id);
+
+        if(evaluation.isEmpty()){
+            return false;
+        }
+        evaluation.get().setDeclined(true);
+        homeEvaluationsRepository.save(evaluation.get());
+        return true;
+    }
+
 }

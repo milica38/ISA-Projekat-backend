@@ -9,6 +9,9 @@ import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class AdventureReviewsServiceImpl implements AdventureReviewsService {
     @Autowired
@@ -36,4 +39,29 @@ public class AdventureReviewsServiceImpl implements AdventureReviewsService {
 
         return adventureReviewsRepository.save(reviews);
     }
+
+    public List<AdventureReviews> getAllAdventureReviews() {
+
+        return adventureReviewsRepository.findAll();
+
+    }
+
+    public List<AdventureReviews> getAllReviewsByOnePenalty()
+    {
+        return adventureReviewsRepository.findAllReviewsByOnePenalty(false);
+    }
+
+    public Boolean strikeOnePenalty(Long id){
+        Optional<AdventureReviews> review = adventureReviewsRepository.findById(id);
+
+        if(review.isEmpty()){
+            return false;
+        }
+        review.get().setPenalty(true);
+        //emailService.sendEmailForRegistrationApproved(user.get());
+        adventureReviewsRepository.save(review.get());
+        return true;
+    }
+
+
 }

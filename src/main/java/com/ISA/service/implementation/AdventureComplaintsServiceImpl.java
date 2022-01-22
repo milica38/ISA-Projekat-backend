@@ -1,6 +1,7 @@
 package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.AdventureComplaintsDTO;
+import com.ISA.domain.dto.AdventureHistoryReservationsDTO;
 import com.ISA.domain.model.*;
 import com.ISA.repository.AdventureComplaintsRepository;
 import com.ISA.repository.AdventureReservationRepository;
@@ -9,6 +10,7 @@ import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,5 +55,16 @@ public class AdventureComplaintsServiceImpl implements AdventureComplaintsServic
         complaints.setAdventureReservation(reservation);
 
         return complaintsRepository.save(complaints);
+    }
+
+    public List<AdventureComplaints> getAllAdventureComplaints() {
+
+      return complaintsRepository.findAll();
+
+    }
+
+    public List<AdventureComplaints> getAllComplaintsByComplaintResponse()
+    {
+        return complaintsRepository.findAllByComplaintResponse("");
     }
 }

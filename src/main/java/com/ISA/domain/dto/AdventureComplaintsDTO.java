@@ -6,6 +6,7 @@ public class AdventureComplaintsDTO {
     private String content;
     private Long clientId;
     private Long adventureReservationId;
+    private String complaintResponse;
 
     public Long getId(){return id;}
     public void setId(Long id){this.id = id;}
@@ -15,4 +16,6 @@ public class AdventureComplaintsDTO {
     public void setClientId(Long clientId){this.clientId = clientId;}
     public Long getAdventureReservationId(){return  adventureReservationId;}
     public void setAdventureReservationId(Long adventureReservationId){this.adventureReservationId = adventureReservationId;}
+    public String getComplaintResponse(){return complaintResponse;}
+    public void setComplaintResponse(String complaintResponse){this.complaintResponse = complaintResponse;}
 }

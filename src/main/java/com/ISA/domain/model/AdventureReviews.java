@@ -17,6 +17,7 @@ public class AdventureReviews {
     private AdventureReservation adventureReservation;
     private boolean isAppear;
     private boolean isBadComment;
+    private boolean onePenalty;
 
     public boolean isAppear() {
         return isAppear;
@@ -33,6 +34,10 @@ public class AdventureReviews {
     public void setBadComment(boolean badComment) {
         isBadComment = badComment;
     }
+
+    public boolean onePenalty() { return onePenalty; }
+
+    public void setPenalty(boolean penalty) {onePenalty = penalty;}
 
     public Long getId(){return id;}
     public void setId(Long id){this.id = id;}

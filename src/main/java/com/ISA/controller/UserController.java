@@ -5,6 +5,7 @@ import com.ISA.domain.dto.*;
 import com.ISA.domain.model.User;
 import com.ISA.security.TokenUtil;
 import com.ISA.service.definition.UserService;
+import com.ISA.service.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
     private TokenUtil tokenUtils;
@@ -110,6 +114,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getCurrentUser(), HttpStatus.OK);
     }
 
+
     @GetMapping(path = "/userStatus")
     public ResponseEntity<?> getNullStatusUsers() {
         return new ResponseEntity<>(userService.getNullStatusUsers(), HttpStatus.OK);
@@ -118,6 +123,13 @@ public class UserController {
     @GetMapping(path = "/allUsers")
     public ResponseEntity<?> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> getUserInfo(@PathVariable Long id){
+        User user = userService.findById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+
     }
 
     @PutMapping()

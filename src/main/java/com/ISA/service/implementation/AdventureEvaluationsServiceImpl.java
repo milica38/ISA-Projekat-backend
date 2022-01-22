@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdventureEvaluationsServiceImpl implements AdventureEvaluationsService {
@@ -68,5 +69,41 @@ public class AdventureEvaluationsServiceImpl implements AdventureEvaluationsServ
 
         adventureProfileRepository.save(reservation.getAdventureProfile());
         return adventureEvaluationsRepository.save(evaluation);
+    }
+
+
+    public List<AdventureEvaluations> getAllAdventureEvaluations() {
+
+        return adventureEvaluationsRepository.findAll();
+
+    }
+
+    public List<AdventureEvaluations> getAllEvaluationsByApprovedAndDeclined()
+    {
+        return adventureEvaluationsRepository.findAllEvaluationsByIsApprovedAndIsDeclined(false, false);
+    }
+
+    public Boolean evaluationApproved(Long id){
+        Optional<AdventureEvaluations> evaluation = adventureEvaluationsRepository.findById(id);
+
+        if(evaluation.isEmpty()){
+            return false;
+        }
+        evaluation.get().setApproved(true);
+        //emailService.sendEmailForRegistrationApproved(user.get());
+        adventureEvaluationsRepository.save(evaluation.get());
+        return true;
+    }
+
+    public Boolean evaluationDeclined(Long id)
+    {
+        Optional<AdventureEvaluations> evaluation = adventureEvaluationsRepository.findById(id);
+
+        if(evaluation.isEmpty()){
+            return false;
+        }
+        evaluation.get().setDeclined(true);
+        adventureEvaluationsRepository.save(evaluation.get());
+        return true;
     }
 }

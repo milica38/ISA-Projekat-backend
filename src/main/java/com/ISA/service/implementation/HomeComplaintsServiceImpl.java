@@ -1,9 +1,7 @@
 package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.HomeComplaintsDTO;
-import com.ISA.domain.model.HomeComplaints;
-import com.ISA.domain.model.HomeReservation;
-import com.ISA.domain.model.User;
+import com.ISA.domain.model.*;
 import com.ISA.repository.HomeComplaintsRepository;
 import com.ISA.repository.HomeReservationRepository;
 import com.ISA.service.definition.HomeComplaintsService;
@@ -55,5 +53,16 @@ public class HomeComplaintsServiceImpl implements HomeComplaintsService {
         complaints.setHomeReservation(reservation);
 
         return homeComplaintsRepository.save(complaints);
+    }
+
+    public List<HomeComplaints> getAllHomeComplaints() {
+
+        return homeComplaintsRepository.findAll();
+
+    }
+
+    public List<HomeComplaints> getAllComplaintsByComplaintResponse()
+    {
+        return homeComplaintsRepository.findAllByComplaintResponse("");
     }
 }

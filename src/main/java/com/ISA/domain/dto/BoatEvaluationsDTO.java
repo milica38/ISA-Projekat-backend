@@ -7,6 +7,8 @@ public class BoatEvaluationsDTO {
     private Long rate;
     private Long clientId;
     private Long boatReservationId;
+    private boolean isApproved;
+    private boolean isDeclined;
 
     public Long getId(){return id;}
     public void setId(Long id){this.id = id;}
@@ -18,4 +20,8 @@ public class BoatEvaluationsDTO {
     public void setBoatReservationId(Long boatReservationId){this.boatReservationId = boatReservationId;}
     public Long getRate(){return rate;}
     public void setRate(Long rate){this.rate = rate;}
+    public boolean getIsApproved(){return isApproved;}
+    public void setApproved(boolean approved){ isApproved = approved;}
+    public boolean getIsDeclined(){return isDeclined;}
+    public void setDeclined(boolean declined){ isDeclined= declined;}
 }

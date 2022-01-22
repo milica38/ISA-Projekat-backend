@@ -58,8 +58,33 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         reservation.setPrice(boatProfile.getPricelist());
         reservation.setClientId(currentUser.getId());
 
-
         emailService.sendEmailForBoatReservation(currentUser, reservation);
+
+        return reservationRepository.save(reservation);
+    }
+
+    @Override
+    public BoatReservation addByOwner(BoatReservationDTO dto, Long clientId) {
+        BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
+        User currentUser = userService.getCurrentUser();
+        List<BoatFreeTerms> freeTerms = freeTermsRepository.findAllByBoatProfileId(dto.getBoatId());
+
+        if(isOverlapping(boatProfile.getId(), dto.getStartDate(), dto.getEndDate())){
+            return null;
+        }
+
+        if(freeTerms.isEmpty()){
+            return null;
+        }
+
+        BoatReservation reservation = new BoatReservation();
+        reservation.setExtraServices(boatProfile.getExtraService());
+        reservation.setCancelled(false);
+        reservation.setEndDate(dto.getEndDate());
+        reservation.setStartDate(dto.getStartDate());
+        reservation.setBoatProfile(boatProfile);
+        reservation.setPrice(boatProfile.getPricelist());
+        reservation.setClientId(currentUser.getId());
 
         return reservationRepository.save(reservation);
     }
@@ -198,6 +223,66 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         for(BoatReservation br : all) {
             if(br.getBoatProfile().getownerId().equals(currentUser.getId()) && br.getEndDate().before(today)) {
                 results.add(br);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<BoatReservation> getMyFinishedReservations() {
+        User user = userService.getCurrentUser();
+        List<BoatReservation> reservations = reservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<BoatReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(BoatReservation reservation: reservations){
+            if(reservation.getEndDate().before(today)){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<BoatReservation> getMyUpcomingReservatons() {
+        User user = userService.getCurrentUser();
+        List<BoatReservation> reservations = reservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<BoatReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(BoatReservation reservation: reservations){
+            if(reservation.getStartDate().after(today)){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<BoatReservation> getMyInProgressReservations() {
+        User user = userService.getCurrentUser();
+        List<BoatReservation> reservations = reservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<BoatReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(BoatReservation reservation: reservations){
+            if((reservation.getStartDate().before(today) || isDateEqual(reservation.getStartDate(), today)) && (reservation.getEndDate().after(today) || isDateEqual(reservation.getEndDate(), today))){
+                  results.add(reservation);
+            }
+        }
+        return results;
+    } 
+  
+   @Override
+    public List<BoatReservation> getAllReservations(Long ownerId, Long boatId) {
+
+        List<BoatReservation> reservations = reservationRepository.getAllByBoatProfileId(boatId);
+        User currentUser = userService.getCurrentUser();
+        List<BoatReservation> results = new ArrayList<>();
+
+        for (BoatReservation reservation : reservations) {
+            if (reservation.getBoatProfile().getId().equals(boatId) && reservation.getBoatProfile().getownerId().equals(currentUser.getId())) {
+                results.add(reservation);
             }
         }
         return results;

@@ -155,6 +155,52 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         return adventureReservationRepository.findById(id).get();
     }
 
+    @Override
+    public List<AdventureReservation> getMyFinishedReservations() {
+        User user = userService.getCurrentUser();
+        List<AdventureReservation> reservations = adventureReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<AdventureReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+
+        for(AdventureReservation reservation: reservations){
+            if(reservation.getEndDate().before(today)){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<AdventureReservation> getMyUpcomingReservatons() {
+        User user = userService.getCurrentUser();
+        List<AdventureReservation> reservations = adventureReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<AdventureReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(AdventureReservation reservation: reservations){
+            if(reservation.getStartDate().after(today)){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public List<AdventureReservation> getMyInProgressReservations() {
+        User user = userService.getCurrentUser();
+        List<AdventureReservation> reservations = adventureReservationRepository.getAllByClientIdAndCancelled(user.getId(), false);
+        List<AdventureReservation> results = new ArrayList<>();
+        Date today = new Date();
+
+        for(AdventureReservation reservation: reservations){
+            if((reservation.getStartDate().before(today) || isDateEqual(reservation.getStartDate(), today)) && (reservation.getEndDate().after(today) || isDateEqual(reservation.getEndDate(), today))){
+                results.add(reservation);
+            }
+        }
+        return results;
+    }
+
     public boolean isDateEqual(Date date1, Date date2) {
 
         return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();

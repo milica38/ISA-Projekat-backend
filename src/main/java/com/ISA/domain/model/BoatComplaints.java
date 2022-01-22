@@ -15,6 +15,7 @@ public class BoatComplaints {
     private Long clientId;
     @ManyToOne
     private BoatReservation boatReservation;
+    private String complaintResponse;
 
     public Long getId(){return id;}
     public void setId(Long id){this.id = id;}
@@ -24,5 +25,7 @@ public class BoatComplaints {
     public void setClientId(Long clientId){this.clientId = clientId;}
     public BoatReservation getBoatReservation(){return  boatReservation;}
     public void setBoatReservation(BoatReservation boatReservation){this.boatReservation = boatReservation;}
+    public String getComplaintResponse(){return complaintResponse;}
+    public void setComplaintResponse(String complaintResponse){this.complaintResponse = complaintResponse;}
 
 }

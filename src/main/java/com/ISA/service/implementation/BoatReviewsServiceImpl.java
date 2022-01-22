@@ -1,6 +1,7 @@
 package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.BoatReviewsDTO;
+import com.ISA.domain.model.AdventureReviews;
 import com.ISA.domain.model.BoatReservation;
 import com.ISA.domain.model.BoatReviews;
 import com.ISA.domain.model.User;
@@ -10,6 +11,9 @@ import com.ISA.service.definition.BoatReviewsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoatReviewsServiceImpl implements BoatReviewsService {
@@ -37,5 +41,28 @@ public class BoatReviewsServiceImpl implements BoatReviewsService {
         reviews.setBoatReservation(reservation);
 
         return boatReviewsRepository.save(reviews);
+    }
+
+    public List<BoatReviews> getAllBoatReviews() {
+
+        return boatReviewsRepository.findAll();
+
+    }
+
+    public List<BoatReviews> getAllReviewsByOnePenalty()
+    {
+        return boatReviewsRepository.findAllReviewsByOnePenalty(false);
+    }
+
+    public Boolean strikeOnePenalty(Long id){
+        Optional<BoatReviews> review = boatReviewsRepository.findById(id);
+
+        if(review.isEmpty()){
+            return false;
+        }
+        review.get().setPenalty(true);
+        //emailService.sendEmailForRegistrationApproved(user.get());
+        boatReviewsRepository.save(review.get());
+        return true;
     }
 }

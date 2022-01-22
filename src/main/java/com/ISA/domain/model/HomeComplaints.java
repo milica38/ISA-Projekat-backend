@@ -15,6 +15,7 @@ public class HomeComplaints {
     private Long clientId;
     @ManyToOne
     private HomeReservation homeReservation;
+    private String complaintResponse;
 
     public Long getId(){return id;}
     public void setId(Long id){this.id = id;}
@@ -24,5 +25,7 @@ public class HomeComplaints {
     public void setClientId(Long clientId){this.clientId = clientId;}
     public HomeReservation getHomeReservation(){return  homeReservation;}
     public void setHomeReservation(HomeReservation homeReservation){this.homeReservation = homeReservation;}
+    public String getComplaintResponse(){return complaintResponse;}
+    public void setComplaintResponse(String complaintResponse){this.complaintResponse = complaintResponse;}
 
 }

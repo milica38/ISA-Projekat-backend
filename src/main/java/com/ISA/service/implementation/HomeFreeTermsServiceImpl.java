@@ -3,9 +3,11 @@ package com.ISA.service.implementation;
 import com.ISA.domain.dto.HomeFreeTermsDTO;
 import com.ISA.domain.model.HomeFreeTerms;
 import com.ISA.domain.model.HomeProfile;
+import com.ISA.domain.model.Subscriptions;
 import com.ISA.domain.model.User;
 import com.ISA.repository.HomeFreeTermsRepository;
 import com.ISA.repository.HomeProfileRepository;
+import com.ISA.repository.SubscriptionsRepository;
 import com.ISA.service.definition.HomeFreeTermsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class HomeFreeTermsServiceImpl implements HomeFreeTermsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SubscriptionsRepository subscriptionsRepository;
 
     @Autowired
     private UserService userService;
@@ -58,11 +63,11 @@ public class HomeFreeTermsServiceImpl implements HomeFreeTermsService {
             }
         }
 
-        List<User> users = userRepository.findAllByType("Client");
+        List<Subscriptions> subscribedUsers = subscriptionsRepository.findAllByClientTypeAndIsSubscribed("Client", true);
         HomeProfile homeProfile = homeProfileRepository.findById(homeFreeTermsDTO.getHouseId()).get();
 
-        for(User user: users) {
-            emailService.sendEmailForHouseAction(user, homeProfile);
+        for(Subscriptions subscription: subscribedUsers) {
+            emailService.sendEmailForHouseAction(subscription.getClient(), homeProfile);
         }
 
         HomeFreeTerms homeFreeTerms = new HomeFreeTerms();

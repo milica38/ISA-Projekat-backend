@@ -1,6 +1,7 @@
 package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.HomeReviewsDTO;
+import com.ISA.domain.model.AdventureReviews;
 import com.ISA.domain.model.HomeReservation;
 import com.ISA.domain.model.HomeReviews;
 import com.ISA.domain.model.User;
@@ -10,6 +11,9 @@ import com.ISA.service.definition.HomeReviewsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HomeReviewsServiceImpl implements HomeReviewsService {
@@ -38,5 +42,28 @@ public class HomeReviewsServiceImpl implements HomeReviewsService {
         reviews.setHomeReservation(reservation);
 
         return homeReviewsRepository.save(reviews);
+    }
+
+    public List<HomeReviews> getAllHomeReviews() {
+
+        return homeReviewsRepository.findAll();
+
+    }
+
+    public List<HomeReviews> getAllReviewsByOnePenalty()
+    {
+        return homeReviewsRepository.findAllReviewsByOnePenalty(false);
+    }
+
+    public Boolean strikeOnePenalty(Long id){
+        Optional<HomeReviews> review = homeReviewsRepository.findById(id);
+
+        if(review.isEmpty()){
+            return false;
+        }
+        review.get().setPenalty(true);
+        //emailService.sendEmailForRegistrationApproved(user.get());
+        homeReviewsRepository.save(review.get());
+        return true;
     }
 }

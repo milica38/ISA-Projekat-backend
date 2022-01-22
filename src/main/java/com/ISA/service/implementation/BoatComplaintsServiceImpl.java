@@ -54,4 +54,15 @@ public class BoatComplaintsServiceImpl implements BoatComplaintsService {
         complaints.setBoatReservation(reservation);
 
         return boatComplaintsRepository.save(complaints);    }
+
+    public List<BoatComplaints> getAllBoatComplaints() {
+
+        return boatComplaintsRepository.findAll();
+
+    }
+
+    public List<BoatComplaints> getAllComplaintsByComplaintResponse()
+    {
+        return boatComplaintsRepository.findAllByComplaintResponse("");
+    }
 }

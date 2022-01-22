@@ -6,6 +6,7 @@ public class HomeComplaintsDTO {
     private String content;
     private Long clientId;
     private Long homeReservationId;
+    private String complaintResponse;
 
     public Long getId(){return id;}
     public void setId(Long id){this.id = id;}
@@ -15,5 +16,7 @@ public class HomeComplaintsDTO {
     public void setClientId(Long clientId){this.clientId = clientId;}
     public Long getHomeReservationId(){return  homeReservationId;}
     public void setHomeReservationId(Long homeReservationId){this.homeReservationId = homeReservationId;}
+    public String getComplaintResponse(){return complaintResponse;}
+    public void setComplaintResponse(String complaintResponse){this.complaintResponse = complaintResponse;}
 
 }

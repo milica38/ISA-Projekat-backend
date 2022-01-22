@@ -1,9 +1,12 @@
 package com.ISA.controller;
 
 import com.ISA.domain.dto.HomeProfileDTO;
+import com.ISA.domain.dto.SubscriptionsDTO;
 import com.ISA.domain.dto.converters.HomeProfileConverters;
 import com.ISA.domain.model.HomeProfile;
+import com.ISA.domain.model.Subscriptions;
 import com.ISA.service.definition.HomeProfileService;
+import com.ISA.service.definition.SubscriptionService;
 import com.ISA.service.implementation.HomeProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,13 +24,14 @@ public class HomeProfileController {
     @Autowired
     private HomeProfileServiceImpl homeProfileService;
 
+
     @GetMapping(path = "/home-profiles")
     public ResponseEntity<?> getAll() {
         List<HomeProfile> homeProfiles = homeProfileService.getAllNotDeleted();
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(homeProfiles), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('Client')")
+    @PreAuthorize("hasAuthority('Client') or hasAuthority('House owner')")
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         HomeProfile hp = homeProfileService.get(id);
@@ -70,5 +74,6 @@ public class HomeProfileController {
         List<HomeProfile> profiles = homeProfileService.filterHomes(dto);
         return new ResponseEntity<>(HomeProfileConverters.modelsToDTOs(profiles), HttpStatus.OK);
     }
+
 
 }
