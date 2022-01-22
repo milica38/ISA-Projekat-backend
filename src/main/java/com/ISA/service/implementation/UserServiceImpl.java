@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private HomeFreeTermsRepository homeFreeTermsRepository;
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public User clientRegistration(RegistrationDTO registrationDTO) {
 
         Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
@@ -62,6 +65,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public User houseOwnerRegistration(RegistrationDTO registrationDTO) {
 
         Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
@@ -88,6 +93,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public User boatOwnerRegistration(RegistrationDTO registrationDTO) {
 
         Optional<User> optionalUser = userRepository.findByEmail(registrationDTO.getEmail());
@@ -121,6 +128,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public User edit(UserDTO userDTO) {
 
         Optional<User> optionalUser = userRepository.findById(getCurrentUser().getId());

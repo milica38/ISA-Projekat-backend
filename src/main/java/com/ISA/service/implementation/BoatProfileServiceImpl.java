@@ -8,6 +8,8 @@ import com.ISA.service.definition.BoatProfileService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,6 +76,8 @@ public class BoatProfileServiceImpl implements BoatProfileService {
         return boatProfileRepository.save(bp);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public BoatProfile edit(Long id, BoatProfileDTO boatProfileDTO) {
 
         Optional<BoatProfile> optionalBoatProfile = boatProfileRepository.findById(id);
@@ -110,6 +114,7 @@ public class BoatProfileServiceImpl implements BoatProfileService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public boolean delete(Long id) {
 
         Optional<BoatProfile> optionalBoatProfile = boatProfileRepository.findById(id);

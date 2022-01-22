@@ -116,6 +116,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public BoatReservation addByOwner(BoatReservationDTO dto, Long clientId) {
         BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
         List<BoatFreeTerms> freeTerms = freeTermsRepository.findAllByBoatProfileId(dto.getBoatId());

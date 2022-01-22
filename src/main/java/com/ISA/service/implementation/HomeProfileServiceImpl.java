@@ -11,6 +11,8 @@ import com.ISA.service.definition.HomeProfileService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -74,6 +76,8 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         return homeProfileRepository.save(hp);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public HomeProfile edit(Long id, HomeProfileDTO homeProfileDTO) {
 
         Optional<HomeProfile> optionalHomeProfile = homeProfileRepository.findById(id);
@@ -108,6 +112,7 @@ public class HomeProfileServiceImpl implements HomeProfileService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public boolean delete(Long id) {
         Optional<HomeProfile> optionalHomeProfile = homeProfileRepository.findById(id);
         if(!canOwnerDelete(optionalHomeProfile.get().getId())){
