@@ -45,13 +45,13 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public HomeReservation add(HomeReservationDTO dto) {
+    public HomeReservation add(HomeReservationDTO dto) throws Exception{
 
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
         User currentUser = userService.getCurrentUser();
 
         if(isOverlapping(homeProfile.getId(), dto.getStartDate(), dto.getEndDate())){
-            return null;
+            throw new Exception("Preklapajuci termin");
         }
 
         if(!canClientBook(userService.getCurrentUser().getId(), dto.getHouseId(), dto.getStartDate(), dto.getEndDate() )){

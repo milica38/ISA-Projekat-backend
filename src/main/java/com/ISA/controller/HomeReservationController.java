@@ -29,7 +29,7 @@ public class HomeReservationController {
 
     @PreAuthorize("hasAuthority('Client')")
     @PostMapping()
-    public ResponseEntity<?> add(@RequestBody HomeReservationDTO dto) {
+    public ResponseEntity<?> add(@RequestBody HomeReservationDTO dto) throws Exception {
         HomeReservation reservation = homeReservationService.add(dto);
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
