@@ -137,4 +137,12 @@ public class BoatReservationController {
         List<BoatReservation> reservations = reservationService.getAllReservationsForCharts(dto);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @PostMapping(path = "/allBoatReservationsForCharts")
+    public ResponseEntity<?> getAllBoatReservationsForCharts(@RequestBody BoatHistoryReservationDTO dto)
+    {
+        List<BoatReservation> reservations = reservationService.getAllBoatReservationsForCharts(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
 }

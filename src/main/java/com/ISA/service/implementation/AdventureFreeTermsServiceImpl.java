@@ -17,7 +17,8 @@ public class AdventureFreeTermsServiceImpl implements AdventureFreeTermsService 
     @Autowired
     private AdventureFreeTermsRepository freeTermsRepository;
 
-
+    @Autowired
+    private AdventureSubscriptionsRepository adventureSubscriptionsRepository;
 
     @Autowired
     private AdventureProfileRepository adventureProfileRepository;
@@ -50,11 +51,12 @@ public class AdventureFreeTermsServiceImpl implements AdventureFreeTermsService 
             }
         }
 
-        List<User> users = userRepository.findAllByType("Client");
+
+        List<AdventureSubscriptions> subscribedUsers = adventureSubscriptionsRepository.findAllByClientTypeAndIsSubscribed("Client", true);
         AdventureProfile adventureProfile = adventureProfileRepository.findById(adventureFreeTermsDTO.getAdventureId()).get();
 
-        for(User user: users) {
-            emailService.sendEmailForAdventureAction(user, adventureProfile);
+        for(AdventureSubscriptions subscription: subscribedUsers) {
+            emailService.sendEmailForAdventureAction(subscription.getClient(), adventureProfile);
         }
 
         AdventureFreeTerms adventureFreeTerms = new AdventureFreeTerms();

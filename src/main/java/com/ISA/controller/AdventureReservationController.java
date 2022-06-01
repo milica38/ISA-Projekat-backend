@@ -128,4 +128,11 @@ public class AdventureReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @PostMapping(path = "/allAdventureReservationsForCharts")
+    public ResponseEntity<?> getAllAdventureReservationsForCharts(@RequestBody AdventureHistoryReservationsDTO dto)
+    {
+        List<AdventureReservation> reservations = reservationService.getAllAdventureReservationsForCharts(dto);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
 }

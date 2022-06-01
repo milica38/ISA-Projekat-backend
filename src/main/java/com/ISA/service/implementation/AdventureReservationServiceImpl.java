@@ -316,4 +316,19 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         return results;
     }
 
+    public List<AdventureReservation> getAllAdventureReservationsForCharts(AdventureHistoryReservationsDTO dto) {
+
+        List<AdventureReservation> all = adventureReservationRepository.findAll();
+        List<AdventureReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(AdventureReservation ar : all) {
+
+                results.add(ar);
+
+        }
+        return results;
+    }
+
 }

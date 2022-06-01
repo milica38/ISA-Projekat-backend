@@ -15,6 +15,9 @@ public class UserDTO {
     private String reasonForDelete;
     private String category;
     private String searchTerm;
+    private int numberOfPoints;
+    private String cancelReason;
+
 
 
 
@@ -86,5 +89,12 @@ public class UserDTO {
     public void setCategory(String category){this.category = category;}
     public String getReasonForDelete(){return reasonForDelete;}
     public void setReasonForDelete(String reasonForDelete){this.reasonForDelete = reasonForDelete;}
+    public int getNumberOfPoints(){return numberOfPoints;}
+    public void setNumberOfPoints(int numberOfPoints){this.numberOfPoints = numberOfPoints;}
+    public String getCancelReason() {return cancelReason;}
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
+
 
 }

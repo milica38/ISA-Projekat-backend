@@ -322,6 +322,21 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         return results;
     }
 
+    public List<HomeReservation> getAllHomeReservationsForCharts(HomeHistoryReservationDTO dto) {
+
+        List<HomeReservation> all = homeReservationRepository.findAll();
+        List<HomeReservation> results = new ArrayList<>();
+        User currentUser = userService.getCurrentUser();
+        Date today = new Date();
+
+        for(HomeReservation hr : all) {
+
+                results.add(hr);
+
+        }
+        return results;
+    }
+
     @Override
     public List<HomeReservation> getAll() {
         return homeReservationRepository.findAll();

@@ -26,4 +26,5 @@ public interface AdventureReservationService {
     List<AdventureReservation> getMyUpcomingReservations();
     List<AdventureReservation> getMyInProgressReservations();
     List<AdventureReservation> getAllReservationsForCharts(AdventureHistoryReservationsDTO dto);
+    List<AdventureReservation> getAllAdventureReservationsForCharts(AdventureHistoryReservationsDTO dto);
 }

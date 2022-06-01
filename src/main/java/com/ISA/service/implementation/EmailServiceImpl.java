@@ -283,7 +283,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForAdventureAction(User user, AdventureProfile adventureProfile)
     {
         // Sender's email ID needs to be mentioned
-        String from = "PatientServicePSWFirma1@gmail.com";
+        String from = "bookingagencyisa@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -304,7 +304,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("PatientServicePSWFirma1@gmail.com","PSW!1234");
+                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
                     }
                 });
 
@@ -385,7 +385,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForRegistrationApproved(User user)
     {
         // Sender's email ID needs to be mentioned
-        String from = "puricjelena99@gmail.com";
+        String from = "bookingagencyisa@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -406,7 +406,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
+                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
                     }
                 });
 
@@ -421,7 +421,7 @@ public class EmailServiceImpl implements EmailService {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
 
             // Set Subject: header field
-            message.setSubject("New action for registration");
+            message.setSubject("Registration update");
 
             // Now set the actual message
             message.setText("Dear " + user.getName() +  ",\n\nYour registration has been approved.");
@@ -436,7 +436,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForRegistrationDeclined(User user)
     {
         // Sender's email ID needs to be mentioned
-        String from = "puricjelena99@gmail.com";
+        String from = "bookingagencyisa@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -457,7 +457,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
+                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
                     }
                 });
 
@@ -472,7 +472,7 @@ public class EmailServiceImpl implements EmailService {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
 
             // Set Subject: header field
-            message.setSubject("New action for registration");
+            message.setSubject("Registration update");
 
             // Now set the actual message
             message.setText("Dear " + user.getName() +  ",\n\n" + user.getCancelReason());

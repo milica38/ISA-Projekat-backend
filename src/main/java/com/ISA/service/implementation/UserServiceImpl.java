@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
         user.setRegistrationToken(generateRandomToken());
         user.setCategory("Regular");
         user.setPenalty(0L);
+        user.setNumberOfPoints(0);
         user.setType("Client");
         user.setStatus(null);
 
@@ -93,7 +94,9 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setDescription(registrationDTO.getDescription());
         user.setRegistrationToken(generateRandomToken());
+        user.setCategory("Regular");
         user.setType("House owner");
+        user.setNumberOfPoints(0);
         user.setStatus(null);
 
         return userRepository.save(user);
@@ -121,7 +124,9 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setDescription(registrationDTO.getDescription());
         user.setType("Boat owner");
+        user.setCategory("Regular");
         user.setStatus(null);
+        user.setNumberOfPoints(0);
         user.setRegistrationToken(generateRandomToken());
         return userRepository.save(user);
     }
@@ -176,7 +181,9 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(registrationDTO.getPhoneNumber());
         user.setDescription(registrationDTO.getDescription());
         user.setType("Fishing instructor");
+        user.setCategory("Regular");
         user.setStatus(null);
+        user.setNumberOfPoints(0);
         user.setRegistrationToken(generateRandomToken());
         return userRepository.save(user);
     }
@@ -198,6 +205,10 @@ public class UserServiceImpl implements UserService {
     public List<User> getActiveStatusUsers()
     {
         return userRepository.findAllUsersByStatus("Active");
+    }
+    public List<User> getPendingStatusUsers()
+    {
+        return userRepository.findAllUsersByStatus("Pending");
     }
 
     public List<User> getAllUsers()
@@ -290,17 +301,43 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    public Boolean registrationDeclined(Long id)
+    public User registrationDeclined(UserDTO userDTO)
     {
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userRepository.findById(userDTO.getId());
 
-        if(user.isEmpty()){
-            return false;
-        }
+
         user.get().setStatus("Declined");
+        user.get().setCancelReason(userDTO.getCancelReason());
+
+
         emailService.sendEmailForRegistrationDeclined(user.get());
-        userRepository.save(user.get());
-        return true;
+        return userRepository.save(user.get());
+
+    }
+
+    public User requestForDeletingAccount(UserDTO userDTO)
+    {
+        Optional<User> user = userRepository.findById(userDTO.getId());
+
+
+        user.get().setStatus("Pending");
+        user.get().setReasonForDelete(userDTO.getReasonForDelete());
+
+
+        return userRepository.save(user.get());
+
+    }
+
+    public User deleteUserAccount(UserDTO userDTO)
+    {
+        Optional<User> user = userRepository.findById(userDTO.getId());
+
+
+        user.get().setStatus("Deleted");
+        user.get().setCancelReason(userDTO.getCancelReason());
+        emailService.sendEmailForRegistrationDeclined(user.get());
+        return userRepository.save(user.get());
+
     }
 
     public boolean deleteThisUser(Long id)

@@ -19,9 +19,12 @@ public interface UserService {
     User getCurrentUser();
     Boolean findUserByToken(String token);
     Boolean registrationApproved(Long id);
-    Boolean registrationDeclined(Long id);
+    User registrationDeclined(UserDTO userDTO);
+    User requestForDeletingAccount(UserDTO userDTO);
+    User deleteUserAccount(UserDTO userDTO);
     User edit(UserDTO userDTO);
     List<User> getNullStatusUsers();
+    List<User> getPendingStatusUsers();
     List<User> getAllUsers();
     Boolean deleteUser(Long id);
     User changePassword(ChangePasswordDTO changePasswordDTO);

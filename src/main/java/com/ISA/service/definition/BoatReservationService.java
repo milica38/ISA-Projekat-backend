@@ -26,4 +26,5 @@ public interface BoatReservationService {
     List<BoatReservation> getMyInProgressReservations();
     List<BoatReservation> getAllReservations(Long ownerId, Long boatId);
     List<BoatReservation> getAllReservationsForCharts(BoatHistoryReservationDTO dto);
+    List<BoatReservation> getAllBoatReservationsForCharts(BoatHistoryReservationDTO dto);
 }

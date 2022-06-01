@@ -22,6 +22,7 @@ public interface HomeReservationService {
     List<HomeReservation> getAllTodayReservationsForMyHouses(HomeHistoryReservationDTO dto);
     List<HomeReservation> getAllHistoryReservationsForMyHouses(HomeHistoryReservationDTO dto);
     List<HomeReservation> getAllReservationsForCharts(HomeHistoryReservationDTO dto);
+    List<HomeReservation> getAllHomeReservationsForCharts(HomeHistoryReservationDTO dto);
     List<HomeReservation> getAll();
     List<HomeReservation> getAllReservations(Long ownerId, Long houseId);
     HomeReservation get(Long id);

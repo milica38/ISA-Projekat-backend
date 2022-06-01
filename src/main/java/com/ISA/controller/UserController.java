@@ -87,6 +87,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+
     @RequestMapping(path = "/admin/register", method = RequestMethod.POST)
     public ResponseEntity<?> registerAdmin(@RequestBody RegistrationDTO registrationDTO) {
 
@@ -132,6 +133,12 @@ public class UserController {
         return new ResponseEntity<>(userService.getActiveStatusUsers(), HttpStatus.OK);
     }
 
+
+    @GetMapping(path = "/userStatusPending")
+    public ResponseEntity<?> getPendingStatusUsers() {
+        return new ResponseEntity<>(userService.getPendingStatusUsers(), HttpStatus.OK);
+    }
+
     @GetMapping(path = "/allUsers")
     public ResponseEntity<?> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
@@ -150,7 +157,7 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner')")
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin')")
     @PutMapping()
     public ResponseEntity<?> edit(@RequestBody UserDTO dto) {
         User user = userService.edit(dto);
@@ -170,19 +177,38 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
     @PostMapping(path = "/approve/{id}")
     public ResponseEntity<?> approveUser(@PathVariable Long id){
         userService.registrationApproved(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(path = "/decline/{id}")
-    public ResponseEntity<?> declineUser(@PathVariable Long id){
-        userService.registrationDeclined(id);
+    @PutMapping(path = "/declineRegistration")
+    public ResponseEntity<?> declineUser( @RequestBody UserDTO userDTO) {
+        User user = userService.registrationDeclined(userDTO);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-   @DeleteMapping(path = "/deleteUser/{id}")
+    @PutMapping(path = "/requestForDeleting")
+    public ResponseEntity<?> requestForDeletingAccount( @RequestBody UserDTO userDTO) {
+        User user = userService.requestForDeletingAccount(userDTO);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/deleteAccount")
+    public ResponseEntity<?> deleteUserAccount( @RequestBody UserDTO userDTO) {
+        User user = userService.deleteUserAccount(userDTO);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
+
+    @DeleteMapping(path = "/deleteUser/{id}")
    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         userService.delete(id);
 
@@ -191,7 +217,7 @@ public class UserController {
 
 
 
-    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner')")
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin')")
 
     @PostMapping(path = "/password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
@@ -204,14 +230,14 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner')")
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean delete = userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Boat owner')")
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor')")
     @PostMapping(path = "/filterUsers")
     public ResponseEntity<?> filterUsers(@RequestBody UserDTO dto){
         List<User> users = userService.filterUsers(dto);

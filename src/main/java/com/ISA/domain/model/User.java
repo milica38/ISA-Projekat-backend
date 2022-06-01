@@ -26,9 +26,11 @@ public class User {
 
     private String cancelReason;
 
+
     private Long penalty;
     private String category;
     private String reasonForDelete;
+    private int numberOfPoints;
 
     @Version
     private Integer version;
@@ -122,5 +124,7 @@ public class User {
     public void setCategory(String category){this.category = category;}
     public String getReasonForDelete(){return reasonForDelete;}
     public void setReasonForDelete(String reasonForDelete){this.reasonForDelete = reasonForDelete;}
+    public int getNumberOfPoints(){return numberOfPoints;}
+    public void setNumberOfPoints(int numberOfPoints){this.numberOfPoints = numberOfPoints;}
 
 }
