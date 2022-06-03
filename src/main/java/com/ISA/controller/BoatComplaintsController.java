@@ -39,8 +39,8 @@ public class BoatComplaintsController {
         return new ResponseEntity<>(boatComplaintsService.getAllComplaintsByComplaintResponse(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/responseToComplaint/{id}")
-    public ResponseEntity<?> responseToComplaint(@PathVariable Long id, @RequestBody BoatComplaintsDTO dto) {
+    @PutMapping(path = "/responseToBoatComplaint")
+    public ResponseEntity<?> responseToComplaint( @RequestBody BoatComplaintsDTO dto) {
         BoatComplaints bc = boatComplaintsService.responseToComplaint(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

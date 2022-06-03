@@ -1,8 +1,10 @@
 package com.ISA.controller;
 
 import com.ISA.domain.dto.AdventureComplaintsDTO;
+import com.ISA.domain.dto.BoatComplaintsDTO;
 import com.ISA.domain.dto.HomeComplaintsDTO;
 import com.ISA.domain.model.AdventureComplaints;
+import com.ISA.domain.model.BoatComplaints;
 import com.ISA.domain.model.HomeComplaints;
 import com.ISA.service.definition.HomeComplaintsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,8 @@ public class HomeComplaintsController {
         return new ResponseEntity<>(homeComplaintsService.getAllComplaintsByComplaintResponse(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/responseToComplaint/{id}")
-    public ResponseEntity<?> responseToComplaint(@PathVariable Long id, @RequestBody HomeComplaintsDTO dto) {
+    @PutMapping(path = "/responseToHomeComplaint")
+    public ResponseEntity<?> responseToComplaint( @RequestBody HomeComplaintsDTO dto) {
         HomeComplaints hc = homeComplaintsService.responseToComplaint(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

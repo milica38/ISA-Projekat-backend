@@ -17,6 +17,7 @@ public class LoyaltyProgramme {
     private double action;
     private long loyaltyId;
     private boolean deleted;
+    private String name;
 
     @Version
     private Integer version;
@@ -39,6 +40,10 @@ public class LoyaltyProgramme {
     public boolean getDeleted() { return deleted; }
     public void setDeleted(boolean deleted){
         this.deleted = deleted;
+    }
+    public String getName() { return name; }
+    public void setName(String name){
+        this.name = name;
     }
 }
 

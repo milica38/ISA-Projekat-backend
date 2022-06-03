@@ -157,7 +157,7 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin') or hasAuthority('PredefinedAdmin')")
     @PutMapping()
     public ResponseEntity<?> edit(@RequestBody UserDTO dto) {
         User user = userService.edit(dto);
@@ -217,7 +217,7 @@ public class UserController {
 
 
 
-    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin') or hasAuthority('PredefinedAdmin')")
 
     @PostMapping(path = "/password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
@@ -230,7 +230,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin') or hasAuthority('PredefinedAdmin')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean delete = userService.delete(id);

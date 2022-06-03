@@ -34,5 +34,6 @@ public interface UserService {
     List<User> filterUsers(UserDTO dto);
     List<User> getActiveStatusUsers();
     boolean deleteThisUser(Long id);
+    User getUserById(Long id);
 
 }

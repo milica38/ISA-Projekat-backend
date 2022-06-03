@@ -195,6 +195,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findOneByEmail(email).get();
     }
 
+    public User getUserById(Long id)
+    {
+        return userRepository.getById(id);
+    }
+
     @Override
 
     public List<User> getNullStatusUsers()

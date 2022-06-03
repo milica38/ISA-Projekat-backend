@@ -109,7 +109,7 @@ public class HomeReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('PredefinedAdmin')")
     @PostMapping(path = "/homeReservationsForCharts")
     public ResponseEntity<?> getAllHomeReservationsForCharts(@RequestBody HomeHistoryReservationDTO dto)
     {

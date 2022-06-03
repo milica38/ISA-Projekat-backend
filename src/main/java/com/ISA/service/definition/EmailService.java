@@ -16,5 +16,11 @@ public interface EmailService {
      void sendEmailForAdventureAction(User user, AdventureProfile adventureProfile);
      void sendEmailForRegistrationApproved(User user);
      void sendEmailForRegistrationDeclined(User user);
+     void sendEmailForEvaluationApproved(User user);
+     void sendEmailForComplaintResponse(User user, AdventureComplaints ac);
+     void sendEmailForHomeComplaintResponse(User user, HomeComplaints hc);
+     void sendEmailForBoatComplaintResponse(User user, BoatComplaints bc);
+     void sendEmailForPenaltyOwnerOrInstructor(User user);
+     void sendEmailForPenaltyClient(User user);
 
 }

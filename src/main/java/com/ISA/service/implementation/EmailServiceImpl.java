@@ -382,6 +382,314 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+
+    public void sendEmailForEvaluationApproved(User user)
+    {
+        // Sender's email ID needs to be mentioned
+        String from = "bookingagencyisa@gmail.com";
+
+        // Assuming you are sending email from localhost
+        String host = "smtp.gmail.com";
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
+
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+
+            // Set Subject: header field
+            message.setSubject("Evaluation of your services");
+
+            // Now set the actual message
+            message.setText("Dear " + user.getName() +  ",\n\n You have been evaluated by your client.");
+
+            // Send message
+            Transport.send(message);
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
+
+    public void sendEmailForPenaltyOwnerOrInstructor(User user)
+    {
+        // Sender's email ID needs to be mentioned
+        String from = "bookingagencyisa@gmail.com";
+
+        // Assuming you are sending email from localhost
+        String host = "smtp.gmail.com";
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
+
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+
+            // Set Subject: header field
+            message.setSubject("Penalty response");
+
+            // Now set the actual message
+            message.setText("Dear " + user.getName() +  ",\n\n We striked your client one penalty.");
+
+            // Send message
+            Transport.send(message);
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
+    public void sendEmailForPenaltyClient(User user)
+    {
+        // Sender's email ID needs to be mentioned
+        String from = "bookingagencyisa@gmail.com";
+
+        // Assuming you are sending email from localhost
+        String host = "smtp.gmail.com";
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
+
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+
+            // Set Subject: header field
+            message.setSubject("Penalty");
+
+            // Now set the actual message
+            message.setText("Dear " + user.getName() +  ",\n\n You have been striked one penalty.");
+
+            // Send message
+            Transport.send(message);
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
+    public void sendEmailForComplaintResponse(User user, AdventureComplaints ac)
+    {
+        // Sender's email ID needs to be mentioned
+        String from = "bookingagencyisa@gmail.com";
+
+        // Assuming you are sending email from localhost
+        String host = "smtp.gmail.com";
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
+
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+
+            // Set Subject: header field
+            message.setSubject("Complaint response");
+
+            // Now set the actual message
+            message.setText("Dear " + user.getName() +  ",\n\n" + ac.getComplaintResponse());
+
+            // Send message
+            Transport.send(message);
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
+    public void sendEmailForHomeComplaintResponse(User user,HomeComplaints hc)
+    {
+        // Sender's email ID needs to be mentioned
+        String from = "bookingagencyisa@gmail.com";
+
+        // Assuming you are sending email from localhost
+        String host = "smtp.gmail.com";
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
+
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+
+            // Set Subject: header field
+            message.setSubject("Complaint response");
+
+            // Now set the actual message
+            message.setText("Dear " + user.getName() +  ",\n\n" + hc.getComplaintResponse());
+
+            // Send message
+            Transport.send(message);
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
+    public void sendEmailForBoatComplaintResponse(User user, BoatComplaints bc)
+    {
+        // Sender's email ID needs to be mentioned
+        String from = "bookingagencyisa@gmail.com";
+
+        // Assuming you are sending email from localhost
+        String host = "smtp.gmail.com";
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
+
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+
+            // Set Subject: header field
+            message.setSubject("Complaint response");
+
+            // Now set the actual message
+            message.setText("Dear " + user.getName() +  ",\n\n" + bc.getComplaintResponse());
+
+            // Send message
+            Transport.send(message);
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
     public void sendEmailForRegistrationApproved(User user)
     {
         // Sender's email ID needs to be mentioned

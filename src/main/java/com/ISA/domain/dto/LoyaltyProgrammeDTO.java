@@ -10,6 +10,7 @@ public class LoyaltyProgrammeDTO {
     private double action;
     private long loyaltyId;
     private boolean deleted;
+    private String name;
 
     public int getNumberOfAllReservations(){ return numberOfAllReservations; }
     public void setNumberOfAllReservations(int numberOfAllReservations){ this.numberOfAllReservations = numberOfAllReservations; }
@@ -26,5 +27,9 @@ public class LoyaltyProgrammeDTO {
     public boolean getDeleted() { return deleted; }
     public void setDeleted(boolean deleted){
         this.deleted = deleted;
+    }
+    public String getName() { return name; }
+    public void setName(String name){
+        this.name = name;
     }
 }

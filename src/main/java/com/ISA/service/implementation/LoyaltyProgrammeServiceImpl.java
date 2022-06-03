@@ -31,6 +31,7 @@ public class LoyaltyProgrammeServiceImpl implements LoyaltyProgrammeService {
         lp.setNumberOfHouseReservations(loyaltyProgrammeDTO.getNumberOfHouseReservations());
         lp.setNumberOfInstructorReservations(loyaltyProgrammeDTO.getNumberOfInstructorReservations());
         lp.setAction(loyaltyProgrammeDTO.getAction());
+        lp.setName(loyaltyProgrammeDTO.getName());
 
         return loyaltyProgrammeRepository.save(lp);
     }
@@ -46,6 +47,7 @@ public class LoyaltyProgrammeServiceImpl implements LoyaltyProgrammeService {
         optionalLoyaltyProgramme.get().setNumberOfHouseReservations(loyaltyProgrammeDTO.getNumberOfHouseReservations());
         optionalLoyaltyProgramme.get().setNumberOfInstructorReservations(loyaltyProgrammeDTO.getNumberOfInstructorReservations());
         optionalLoyaltyProgramme.get().setAction(loyaltyProgrammeDTO.getAction());
+        optionalLoyaltyProgramme.get().setName(loyaltyProgrammeDTO.getName());
 
         return loyaltyProgrammeRepository.save(optionalLoyaltyProgramme.get());
     }

@@ -44,8 +44,8 @@ public class AdventureComplaintsController {
         return new ResponseEntity<>(adventureComplaintsService.getAllComplaintsByComplaintResponse(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/responseToComplaint/{id}")
-    public ResponseEntity<?> responseToComplaint(@PathVariable Long id, @RequestBody AdventureComplaintsDTO dto) {
+    @PutMapping(path = "/responseToComplaint")
+    public ResponseEntity<?> responseToComplaint( @RequestBody AdventureComplaintsDTO dto) {
         AdventureComplaints ac = adventureComplaintsService.responseToComplaint(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

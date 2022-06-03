@@ -1,5 +1,6 @@
 package com.ISA.service.implementation;
 
+import com.ISA.config.SecurityUtils;
 import com.ISA.domain.dto.AdventureHistoryReservationsDTO;
 import com.ISA.domain.dto.AdventureProfileDTO;
 import com.ISA.domain.dto.AdventureReservationDTO;
@@ -8,6 +9,7 @@ import com.ISA.domain.model.*;
 import com.ISA.repository.AdventureFreeTermsRepository;
 import com.ISA.repository.AdventureProfileRepository;
 import com.ISA.repository.AdventureReservationRepository;
+import com.ISA.repository.LoyalProgrammeRepository;
 import com.ISA.service.definition.AdventureReservationService;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
@@ -31,6 +33,9 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     private AdventureProfileRepository profileRepository;
 
     @Autowired
+    private LoyalProgrammeRepository loyalProgrammeRepository;
+
+    @Autowired
     private AdventureFreeTermsRepository freeTermsRepository;
 
     @Autowired
@@ -44,7 +49,9 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     public AdventureReservation add(AdventureReservationDTO dto) {
 
         AdventureProfile adventureProfile = profileRepository.findById(dto.getAdventureId()).get();
+        Optional<LoyalProgramme> lp = loyalProgrammeRepository.findById(1);
         User currentUser = userService.getCurrentUser();
+        User instructorUser = userService.getUserById(adventureProfile.getInstructorId());
 
         if(isOverlapping(adventureProfile.getId(), dto.getStartDate(), dto.getEndDate())){
             return null;
@@ -70,8 +77,8 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         reservation.setExtraServices(dto.getExtraServices());
         reservation.setNumberOfPeople(adventureProfile.getMaxNumberOfPeople());
         AdventureFreeTerms freeTerm = getDates(reservation.getAdventureProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
-
-        if(freeTerm != null && freeTerm.isAction()){
+     if(currentUser.getNumberOfPoints()<lp.get().getSilverPoints()){
+        if(freeTerm != null && freeTerm.isAction() ){
             reservation.setPrice(freeTerm.getActionPrice() * days );
         }
         else {
@@ -81,9 +88,83 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
             reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
         }
+        currentUser.setCategory("Regular");
+     }
+
+        if(currentUser.getNumberOfPoints()>=lp.get().getSilverPoints() && currentUser.getNumberOfPoints()<lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice(freeTerm.getActionPrice() * days );
+            }
+            else {
+                reservation.setPrice((adventureProfile.getPriceList()-(adventureProfile.getPriceList()*(lp.get().getSilverAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
+            }
+            currentUser.setCategory("Silver");
+        }
+
+        if(currentUser.getNumberOfPoints()>=lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice(freeTerm.getActionPrice() * days );
+            }
+            else {
+                reservation.setPrice((adventureProfile.getPriceList()-(adventureProfile.getPriceList()*(lp.get().getGoldAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
+            }
+            currentUser.setCategory("Gold");
+        }
+
+        if(instructorUser.getNumberOfPoints()<lp.get().getSilverPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice(freeTerm.getActionPrice() * days );
+            }
+            else {
+                reservation.setPrice(adventureProfile.getPriceList() * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
+            }
+            instructorUser.setCategory("Regular");
+        }
+
+        if(instructorUser.getNumberOfPoints()>=lp.get().getSilverPoints() && instructorUser.getNumberOfPoints()<lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice(freeTerm.getActionPrice() * days );
+            }
+            else {
+                reservation.setPrice((adventureProfile.getPriceList()+(adventureProfile.getPriceList()*(lp.get().getSilverAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
+            }
+            instructorUser.setCategory("Silver");
+        }
+
+        if(instructorUser.getNumberOfPoints()>=lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice(freeTerm.getActionPrice() * days );
+            }
+            else {
+                reservation.setPrice((adventureProfile.getPriceList()+(adventureProfile.getPriceList()*(lp.get().getGoldAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
+            }
+            instructorUser.setCategory("Gold");
+        }
+
 
         emailService.sendEmailForAdventureReservation(currentUser, reservation);
-
+        currentUser.setNumberOfPoints(currentUser.getNumberOfPoints()+ 10);
+        instructorUser.setNumberOfPoints(instructorUser.getNumberOfPoints()+ 10);
         return adventureReservationRepository.save(reservation);
     }
 
@@ -98,6 +179,8 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         }
         return result;
     }
+
+
 
     @Override
     public List<AdventureProfile> findAll() {
@@ -330,5 +413,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         }
         return results;
     }
+
+
 
 }

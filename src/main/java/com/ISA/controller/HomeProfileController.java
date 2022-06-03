@@ -54,7 +54,7 @@ public class HomeProfileController {
         return new ResponseEntity<>(hp, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('House owner')")
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Admin') or hasAuthority('PredefinedAdmin')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean delete = homeProfileService.delete(id);

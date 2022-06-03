@@ -5,6 +5,7 @@ import com.ISA.domain.model.*;
 import com.ISA.repository.AdventureReservationRepository;
 import com.ISA.repository.AdventureReviewsRepository;
 import com.ISA.service.definition.AdventureReviewsService;
+import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class AdventureReviewsServiceImpl implements AdventureReviewsService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EmailService emailService;
 
     @Autowired
     AdventureReservationRepository adventureReservationRepository;
@@ -58,7 +62,6 @@ public class AdventureReviewsServiceImpl implements AdventureReviewsService {
             return false;
         }
         review.get().setPenalty(true);
-        //emailService.sendEmailForRegistrationApproved(user.get());
         adventureReviewsRepository.save(review.get());
         return true;
     }

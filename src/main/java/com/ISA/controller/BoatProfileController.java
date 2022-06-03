@@ -56,7 +56,7 @@ public class BoatProfileController {
         return new ResponseEntity<>(BoatProfileConverters.modelToDTO(bp), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('Boat owner')")
+    @PreAuthorize("hasAuthority('Boat owner') or hasAuthority('Admin') or hasAuthority('PredefinedAdmin')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean delete = boatProfileService.delete(id);
