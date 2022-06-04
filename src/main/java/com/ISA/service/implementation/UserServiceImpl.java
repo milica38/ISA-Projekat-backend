@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService {
         user.setType("Client");
         user.setStatus(null);
 
+
         emailService.sendEmailForRegistration(user);
 
         return userRepository.save(user);
@@ -99,6 +100,7 @@ public class UserServiceImpl implements UserService {
         user.setNumberOfPoints(0);
         user.setStatus(null);
 
+
         return userRepository.save(user);
     }
 
@@ -127,6 +129,7 @@ public class UserServiceImpl implements UserService {
         user.setCategory("Regular");
         user.setStatus(null);
         user.setNumberOfPoints(0);
+
         user.setRegistrationToken(generateRandomToken());
         return userRepository.save(user);
     }
@@ -154,7 +157,8 @@ public class UserServiceImpl implements UserService {
         user.setDescription(registrationDTO.getDescription());
         user.setPassword(registrationDTO.getPassword());
         user.setRegistrationToken(generateRandomToken());
-        user.setType("Admin");
+        user.setType("NewAdmin");
+
 
         return userRepository.save(user);
     }
@@ -184,6 +188,7 @@ public class UserServiceImpl implements UserService {
         user.setCategory("Regular");
         user.setStatus(null);
         user.setNumberOfPoints(0);
+
         user.setRegistrationToken(generateRandomToken());
         return userRepository.save(user);
     }
@@ -272,7 +277,9 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setPassword(encoder.encode(changePasswordDTO.getNewPassword()));
-
+        if(user.getType().equals("NewAdmin")){
+            user.setType("Admin");
+        }
         return userRepository.save(user);
     }
 
@@ -291,6 +298,8 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user.get());
         return true;
     }
+
+
 
 
 
@@ -407,6 +416,21 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllByType() {
         return userRepository.findAllByType("Client");
     }
+
+
+    public List<User> findAllByInstructor() {
+        return userRepository.findAllByType("Fishing instructor");
+    }
+
+
+    public List<User> findAllByHomeOwner() {
+        return userRepository.findAllByType("Home owner");
+    }
+
+    public List<User> findAllByBoatOwner() {
+        return userRepository.findAllByType("Boat owner");
+    }
+
 
     @Override
     public List<User> filterUsers(UserDTO dto) {

@@ -7,6 +7,7 @@ import com.ISA.repository.AdventureEvaluationsRepository;
 import com.ISA.repository.AdventureProfileRepository;
 import com.ISA.repository.AdventureReservationRepository;
 import com.ISA.service.definition.AdventureEvaluationsService;
+import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class AdventureEvaluationsServiceImpl implements AdventureEvaluationsServ
    private AdventureProfileRepository adventureProfileRepository;
    @Autowired
    private UserService userService;
+
+   @Autowired
+   private EmailService emailService;
 
    @Override
     public boolean canUserSendEvaluations(Long currentClientId, Long adventureReservationId) {
@@ -85,12 +89,12 @@ public class AdventureEvaluationsServiceImpl implements AdventureEvaluationsServ
 
     public Boolean evaluationApproved(Long id){
         Optional<AdventureEvaluations> evaluation = adventureEvaluationsRepository.findById(id);
-
+        User user = userService.getUserById(evaluation.get().getAdventureReservation().getAdventureProfile().getInstructorId());
         if(evaluation.isEmpty()){
             return false;
         }
         evaluation.get().setApproved(true);
-        //emailService.sendEmailForRegistrationApproved(user.get());
+        emailService.sendEmailForEvaluationApproved(user);
         adventureEvaluationsRepository.save(evaluation.get());
         return true;
     }

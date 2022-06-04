@@ -31,6 +31,9 @@ public interface UserService {
     boolean delete(Long id);
     User findById(Long id);
     List<User> findAllByType();
+    List<User> findAllByInstructor();
+    List<User> findAllByHomeOwner();
+    List<User> findAllByBoatOwner();
     List<User> filterUsers(UserDTO dto);
     List<User> getActiveStatusUsers();
     boolean deleteThisUser(Long id);

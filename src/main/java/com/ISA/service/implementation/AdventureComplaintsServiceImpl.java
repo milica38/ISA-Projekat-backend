@@ -7,6 +7,7 @@ import com.ISA.domain.model.*;
 import com.ISA.repository.AdventureComplaintsRepository;
 import com.ISA.repository.AdventureReservationRepository;
 import com.ISA.service.definition.AdventureComplaintsService;
+import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class AdventureComplaintsServiceImpl implements AdventureComplaintsServic
 
     @Autowired
     private AdventureReservationRepository reservationRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public boolean canUserSendComplaints(Long currentClientId, Long adventureReservationId) {
@@ -74,6 +78,8 @@ public class AdventureComplaintsServiceImpl implements AdventureComplaintsServic
         Optional<AdventureComplaints> optionalAdventureComplaints = complaintsRepository.findById(dto.getId());
 
         optionalAdventureComplaints.get().setComplaintResponse(dto.getComplaintResponse());
+        User user = userService.getUserById(optionalAdventureComplaints.get().getClientId());
+        emailService.sendEmailForComplaintResponse(user,optionalAdventureComplaints );
         return complaintsRepository.save(optionalAdventureComplaints.get());
 
     }

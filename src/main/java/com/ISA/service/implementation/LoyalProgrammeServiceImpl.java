@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,4 +66,9 @@ public class LoyalProgrammeServiceImpl implements LoyalProgrammeService {
     public LoyalProgramme get(int id) {
         return loyalProgrammeRepository.findById(id).get();
     }
+
+    public List<LoyalProgramme> getAll() {
+        return loyalProgrammeRepository.findAll();
+    }
+
 }

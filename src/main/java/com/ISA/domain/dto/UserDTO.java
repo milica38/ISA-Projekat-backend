@@ -21,6 +21,7 @@ public class UserDTO {
 
 
 
+
     public String getSearchTerm(){return searchTerm;}
     public void setSearchTerm(String searchTerm){this.searchTerm = searchTerm;}
     public  String getPassword() { return password; }
@@ -95,6 +96,7 @@ public class UserDTO {
     public void setCancelReason(String cancelReason) {
         this.cancelReason = cancelReason;
     }
+
 
 
 }

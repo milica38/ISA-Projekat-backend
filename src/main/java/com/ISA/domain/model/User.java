@@ -32,6 +32,7 @@ public class User {
     private String reasonForDelete;
     private int numberOfPoints;
 
+
     @Version
     private Integer version;
 
@@ -126,5 +127,6 @@ public class User {
     public void setReasonForDelete(String reasonForDelete){this.reasonForDelete = reasonForDelete;}
     public int getNumberOfPoints(){return numberOfPoints;}
     public void setNumberOfPoints(int numberOfPoints){this.numberOfPoints = numberOfPoints;}
+
 
 }

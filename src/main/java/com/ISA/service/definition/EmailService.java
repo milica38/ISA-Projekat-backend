@@ -5,6 +5,8 @@ import com.ISA.domain.model.BoatProfile;
 import com.ISA.domain.model.HomeProfile;
 import com.ISA.domain.model.User;
 
+import java.util.Optional;
+
 
 public interface EmailService {
      void sendEmailForRegistration(User user);
@@ -17,7 +19,7 @@ public interface EmailService {
      void sendEmailForRegistrationApproved(User user);
      void sendEmailForRegistrationDeclined(User user);
      void sendEmailForEvaluationApproved(User user);
-     void sendEmailForComplaintResponse(User user, AdventureComplaints ac);
+     void sendEmailForComplaintResponse(User user, Optional<AdventureComplaints> ac);
      void sendEmailForHomeComplaintResponse(User user, HomeComplaints hc);
      void sendEmailForBoatComplaintResponse(User user, BoatComplaints bc);
      void sendEmailForPenaltyOwnerOrInstructor(User user);

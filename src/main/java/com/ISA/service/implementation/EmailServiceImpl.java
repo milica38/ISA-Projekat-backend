@@ -537,7 +537,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    public void sendEmailForComplaintResponse(User user, AdventureComplaints ac)
+    public void sendEmailForComplaintResponse(User user, Optional<AdventureComplaints> ac)
     {
         // Sender's email ID needs to be mentioned
         String from = "bookingagencyisa@gmail.com";
@@ -579,7 +579,7 @@ public class EmailServiceImpl implements EmailService {
             message.setSubject("Complaint response");
 
             // Now set the actual message
-            message.setText("Dear " + user.getName() +  ",\n\n" + ac.getComplaintResponse());
+            message.setText("Dear " + user.getName() +  ",\n\n" + ac.get().getComplaintResponse());
 
             // Send message
             Transport.send(message);

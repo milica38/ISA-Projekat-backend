@@ -150,6 +150,24 @@ public class UserController {
 
     }
 
+    @GetMapping(path = "/instructors")
+    public ResponseEntity<?> findAllByTypeInstructor() {
+        return new ResponseEntity<>(userService.findAllByInstructor()  , HttpStatus.OK);
+
+    }
+
+    @GetMapping(path = "/homeOwneres")
+    public ResponseEntity<?> findAllByTypeHomeOwner() {
+        return new ResponseEntity<>(userService.findAllByHomeOwner(), HttpStatus.OK);
+
+    }
+
+    @GetMapping(path = "/boatOwners")
+    public ResponseEntity<?> findAllByTypeBoatOwners() {
+        return new ResponseEntity<>(userService.findAllByBoatOwner(), HttpStatus.OK);
+
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getUserInfo(@PathVariable Long id){
         User user = userService.findById(id);
@@ -217,7 +235,7 @@ public class UserController {
 
 
 
-    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin') or hasAuthority('PredefinedAdmin')")
+    @PreAuthorize("hasAuthority('House owner') or hasAuthority('Client') or hasAuthority('Boat owner') or hasAuthority('Fishing instructor') or hasAuthority('Admin') or hasAuthority('PredefinedAdmin') or hasAuthority('NewAdmin')")
 
     @PostMapping(path = "/password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
