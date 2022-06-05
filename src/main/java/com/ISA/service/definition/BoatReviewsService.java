@@ -11,4 +11,5 @@ public interface BoatReviewsService {
     List<BoatReviews> getAllBoatReviews();
     List<BoatReviews> getAllReviewsByOnePenalty();
     Boolean strikeOnePenalty(Long id);
+    List<BoatReviews> getAllReviewsByOnePenaltyAndBadComment();
 }

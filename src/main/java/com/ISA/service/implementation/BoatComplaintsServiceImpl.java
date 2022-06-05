@@ -6,6 +6,7 @@ import com.ISA.domain.model.*;
 import com.ISA.repository.BoatComplaintsRepository;
 import com.ISA.repository.BoatReservationRepository;
 import com.ISA.service.definition.BoatComplaintsService;
+import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class BoatComplaintsServiceImpl implements BoatComplaintsService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
 
     @Override
@@ -70,8 +74,9 @@ public class BoatComplaintsServiceImpl implements BoatComplaintsService {
 
     public BoatComplaints responseToComplaint(BoatComplaintsDTO dto){
         Optional<BoatComplaints> optionalBoatComplaints = boatComplaintsRepository.findById(dto.getId());
-
+        User user = userService.getUserById(optionalBoatComplaints.get().getClientId());
         optionalBoatComplaints.get().setComplaintResponse(dto.getComplaintResponse());
+        emailService.sendEmailForBoatComplaintResponse(user,optionalBoatComplaints );
         return boatComplaintsRepository.save(optionalBoatComplaints.get());
 
     }

@@ -6,6 +6,7 @@ import com.ISA.repository.BoatEvaluationsRepository;
 import com.ISA.repository.BoatProfileRepository;
 import com.ISA.repository.BoatReservationRepository;
 import com.ISA.service.definition.BoatEvaluationsService;
+import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class BoatEvaluationsServiceImpl implements BoatEvaluationsService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public boolean canUserSendEvaluations(Long currentClientId, Long boatReservationId) {
@@ -85,12 +89,12 @@ public class BoatEvaluationsServiceImpl implements BoatEvaluationsService {
 
     public Boolean evaluationApproved(Long id){
         Optional<BoatEvaluations> evaluation = boatEvaluationsRepository.findById(id);
-
+        User user = userService.getUserById(evaluation.get().getBoatReservation().getBoatProfile().getownerId() );
         if(evaluation.isEmpty()){
             return false;
         }
         evaluation.get().setApproved(true);
-        //emailService.sendEmailForRegistrationApproved(user.get());
+        emailService.sendEmailForEvaluationApproved(user);
         boatEvaluationsRepository.save(evaluation.get());
         return true;
     }

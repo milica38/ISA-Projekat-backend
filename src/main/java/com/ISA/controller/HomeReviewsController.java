@@ -39,6 +39,11 @@ public class HomeReviewsController {
         return new ResponseEntity<>(homeReviewsService.getAllReviewsByOnePenalty() , HttpStatus.OK);
     }
 
+    @GetMapping(path = "/withoutOnePenaltyAndBadComment")
+    public ResponseEntity<?> getAllReviewsByOnePenaltyAndBadComment() {
+        return new ResponseEntity<>(homeReviewsService.getAllReviewsByOnePenaltyAndBadComment() , HttpStatus.OK);
+    }
+
     @PostMapping(path = "/strike/{id}")
     public ResponseEntity<?> strikeClient(@PathVariable Long id){
         homeReviewsService.strikeOnePenalty(id);

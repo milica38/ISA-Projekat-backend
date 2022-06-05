@@ -84,4 +84,5 @@ public class BoatProfileController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
 }

@@ -5,6 +5,7 @@ import com.ISA.domain.dto.HomeComplaintsDTO;
 import com.ISA.domain.model.*;
 import com.ISA.repository.HomeComplaintsRepository;
 import com.ISA.repository.HomeReservationRepository;
+import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeComplaintsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class HomeComplaintsServiceImpl implements HomeComplaintsService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
 
     @Override
@@ -70,8 +74,10 @@ public class HomeComplaintsServiceImpl implements HomeComplaintsService {
 
     public HomeComplaints responseToComplaint(HomeComplaintsDTO dto){
         Optional<HomeComplaints> optionalHomeComplaints = homeComplaintsRepository.findById(dto.getId());
+        User user = userService.getUserById(optionalHomeComplaints.get().getClientId());
 
         optionalHomeComplaints.get().setComplaintResponse(dto.getComplaintResponse());
+        emailService.sendEmailForHomeComplaintResponse(user,optionalHomeComplaints );
         return homeComplaintsRepository.save(optionalHomeComplaints.get());
 
     }

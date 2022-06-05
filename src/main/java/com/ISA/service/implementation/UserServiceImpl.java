@@ -349,7 +349,7 @@ public class UserServiceImpl implements UserService {
 
         user.get().setStatus("Deleted");
         user.get().setCancelReason(userDTO.getCancelReason());
-        emailService.sendEmailForRegistrationDeclined(user.get());
+        emailService.sendEmailForDeletingAccount(user.get());
         return userRepository.save(user.get());
 
     }

@@ -8,6 +8,8 @@ import com.ISA.service.definition.AdventureFreeTermsService;
 import com.ISA.service.definition.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,7 +35,8 @@ public class AdventureFreeTermsServiceImpl implements AdventureFreeTermsService 
         return freeTermsRepository.findAllByAdventureProfileId(adventureId);
     }
 
-
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public AdventureFreeTerms add(AdventureFreeTermsDTO adventureFreeTermsDTO) {
 
         List<AdventureFreeTerms> freeTerms = freeTermsRepository.findAllByAdventureProfileId(adventureFreeTermsDTO.getAdventureId());

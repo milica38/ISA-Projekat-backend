@@ -99,6 +99,7 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public boolean delete(Long id) {
         Optional<AdventureProfile> optionalAdventureProfile = adventureProfileRepository.findById(id);
         optionalAdventureProfile.get().setDeleted(true);

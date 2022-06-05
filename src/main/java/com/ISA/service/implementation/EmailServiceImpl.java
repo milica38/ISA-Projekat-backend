@@ -283,7 +283,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForAdventureAction(User user, AdventureProfile adventureProfile)
     {
         // Sender's email ID needs to be mentioned
-        String from = "bookingagencyisa@gmail.com";
+        String from = "puricjelena99@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -304,7 +304,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
                     }
                 });
 
@@ -386,7 +386,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForEvaluationApproved(User user)
     {
         // Sender's email ID needs to be mentioned
-        String from = "bookingagencyisa@gmail.com";
+        String from = "puricjelena99@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -407,7 +407,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
                     }
                 });
 
@@ -438,7 +438,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForPenaltyOwnerOrInstructor(User user)
     {
         // Sender's email ID needs to be mentioned
-        String from = "bookingagencyisa@gmail.com";
+        String from = "puricjelena99@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -459,7 +459,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
                     }
                 });
 
@@ -489,7 +489,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForPenaltyClient(User user)
     {
         // Sender's email ID needs to be mentioned
-        String from = "bookingagencyisa@gmail.com";
+        String from = "puricjelena99@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -510,7 +510,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
                     }
                 });
 
@@ -540,7 +540,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForComplaintResponse(User user, Optional<AdventureComplaints> ac)
     {
         // Sender's email ID needs to be mentioned
-        String from = "bookingagencyisa@gmail.com";
+        String from = "puricjelena99@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -561,7 +561,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
                     }
                 });
 
@@ -588,10 +588,10 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    public void sendEmailForHomeComplaintResponse(User user,HomeComplaints hc)
+    public void sendEmailForHomeComplaintResponse(User user,Optional<HomeComplaints> hc)
     {
         // Sender's email ID needs to be mentioned
-        String from = "bookingagencyisa@gmail.com";
+        String from = "puricjelena99@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -612,7 +612,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
                     }
                 });
 
@@ -630,7 +630,7 @@ public class EmailServiceImpl implements EmailService {
             message.setSubject("Complaint response");
 
             // Now set the actual message
-            message.setText("Dear " + user.getName() +  ",\n\n" + hc.getComplaintResponse());
+            message.setText("Dear " + user.getName() +  ",\n\n" + hc.get().getComplaintResponse());
 
             // Send message
             Transport.send(message);
@@ -639,10 +639,10 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    public void sendEmailForBoatComplaintResponse(User user, BoatComplaints bc)
+    public void sendEmailForBoatComplaintResponse(User user, Optional<BoatComplaints> bc)
     {
         // Sender's email ID needs to be mentioned
-        String from = "bookingagencyisa@gmail.com";
+        String from = "puricjelena99@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -663,7 +663,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
                     }
                 });
 
@@ -681,7 +681,7 @@ public class EmailServiceImpl implements EmailService {
             message.setSubject("Complaint response");
 
             // Now set the actual message
-            message.setText("Dear " + user.getName() +  ",\n\n" + bc.getComplaintResponse());
+            message.setText("Dear " + user.getName() +  ",\n\n" + bc.get().getComplaintResponse() );
 
             // Send message
             Transport.send(message);
@@ -693,7 +693,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForRegistrationApproved(User user)
     {
         // Sender's email ID needs to be mentioned
-        String from = "bookingagencyisa@gmail.com";
+        String from = "puricjelena99@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -714,7 +714,7 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
                     }
                 });
 
@@ -744,7 +744,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailForRegistrationDeclined(User user)
     {
         // Sender's email ID needs to be mentioned
-        String from = "bookingagencyisa@gmail.com";
+        String from = "puricjelena99@gmail.com";
 
         // Assuming you are sending email from localhost
         String host = "smtp.gmail.com";
@@ -765,7 +765,59 @@ public class EmailServiceImpl implements EmailService {
         Session session = Session.getDefaultInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("bookingagencyisa@gmail.com","lozinkazaraj99");
+                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
+                    }
+                });
+
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+
+            // Set Subject: header field
+            message.setSubject("Registration update");
+
+            // Now set the actual message
+            message.setText("Dear " + user.getName() +  ",\n\n" + user.getCancelReason());
+
+            // Send message
+            Transport.send(message);
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
+
+    public void sendEmailForDeletingAccount(User user)
+    {
+        // Sender's email ID needs to be mentioned
+        String from = "puricjelena99@gmail.com";
+
+        // Assuming you are sending email from localhost
+        String host = "smtp.gmail.com";
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
+
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("puricjelena99@gmail.com","lozinkazaraj");
                     }
                 });
 
@@ -792,3 +844,47 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

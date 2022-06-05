@@ -93,28 +93,28 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
 
         if(currentUser.getNumberOfPoints()>=lp.get().getSilverPoints() && currentUser.getNumberOfPoints()<lp.get().getGoldPoints()){
             if(freeTerm != null && freeTerm.isAction() ){
-                reservation.setPrice(freeTerm.getActionPrice() * days );
+                reservation.setPrice((freeTerm.getActionPrice()-(freeTerm.getActionPrice()*(lp.get().getSilverAction())/100)) * days );
             }
             else {
                 reservation.setPrice((adventureProfile.getPriceList()-(adventureProfile.getPriceList()*(lp.get().getSilverAction())/100)) * days);
             }
 
             if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
-                reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
+                reservation.setPrice(reservation.getPrice() +  (adventureProfile.getExtraPrice()-(adventureProfile.getExtraPrice()*(lp.get().getSilverAction())/100)) * days);
             }
             currentUser.setCategory("Silver");
         }
 
         if(currentUser.getNumberOfPoints()>=lp.get().getGoldPoints()){
             if(freeTerm != null && freeTerm.isAction() ){
-                reservation.setPrice(freeTerm.getActionPrice() * days );
+                reservation.setPrice((freeTerm.getActionPrice()-(freeTerm.getActionPrice()*(lp.get().getGoldAction())/100)) * days );
             }
             else {
                 reservation.setPrice((adventureProfile.getPriceList()-(adventureProfile.getPriceList()*(lp.get().getGoldAction())/100)) * days);
             }
 
             if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
-                reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
+                reservation.setPrice(reservation.getPrice() +  (adventureProfile.getExtraPrice()-(adventureProfile.getExtraPrice()*(lp.get().getGoldAction())/100)) * days);
             }
             currentUser.setCategory("Gold");
         }
@@ -135,36 +135,36 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
 
         if(instructorUser.getNumberOfPoints()>=lp.get().getSilverPoints() && instructorUser.getNumberOfPoints()<lp.get().getGoldPoints()){
             if(freeTerm != null && freeTerm.isAction() ){
-                reservation.setPrice(freeTerm.getActionPrice() * days );
+                reservation.setPrice((freeTerm.getActionPrice()+(freeTerm.getActionPrice()*(lp.get().getSilverAction())/100)) * days );
             }
             else {
                 reservation.setPrice((adventureProfile.getPriceList()+(adventureProfile.getPriceList()*(lp.get().getSilverAction())/100)) * days);
             }
 
             if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
-                reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
+                reservation.setPrice(reservation.getPrice() +   (adventureProfile.getExtraPrice()+(adventureProfile.getExtraPrice()*(lp.get().getSilverAction())/100)) * days);
             }
             instructorUser.setCategory("Silver");
         }
 
         if(instructorUser.getNumberOfPoints()>=lp.get().getGoldPoints()){
             if(freeTerm != null && freeTerm.isAction() ){
-                reservation.setPrice(freeTerm.getActionPrice() * days );
+                reservation.setPrice((freeTerm.getActionPrice()+(freeTerm.getActionPrice()*(lp.get().getGoldAction())/100)) * days );
             }
             else {
                 reservation.setPrice((adventureProfile.getPriceList()+(adventureProfile.getPriceList()*(lp.get().getGoldAction())/100)) * days);
             }
 
             if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
-                reservation.setPrice(reservation.getPrice() +  adventureProfile.getExtraPrice() * days);
+                reservation.setPrice(reservation.getPrice() +   (adventureProfile.getExtraPrice()+(adventureProfile.getExtraPrice()*(lp.get().getGoldAction())/100)) * days);
             }
             instructorUser.setCategory("Gold");
         }
 
 
         emailService.sendEmailForAdventureReservation(currentUser, reservation);
-        currentUser.setNumberOfPoints(currentUser.getNumberOfPoints()+ 10);
-        instructorUser.setNumberOfPoints(instructorUser.getNumberOfPoints()+ 10);
+        currentUser.setNumberOfPoints(currentUser.getNumberOfPoints()+ lp.get().getReservationPoints());
+        instructorUser.setNumberOfPoints(instructorUser.getNumberOfPoints()+ lp.get().getReservedPoints());
         return adventureReservationRepository.save(reservation);
     }
 

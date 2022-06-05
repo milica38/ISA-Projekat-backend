@@ -5,6 +5,7 @@ import com.ISA.domain.model.*;
 import com.ISA.repository.HomeEvaluationsRepository;
 import com.ISA.repository.HomeProfileRepository;
 import com.ISA.repository.HomeReservationRepository;
+import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeEvaluationsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class HomeEvaluationsServiceImpl implements HomeEvaluationsService {
 
     @Autowired
     HomeProfileRepository homeProfileRepository;
+
+    @Autowired
+    EmailService emailService;
 
 
     @Override
@@ -87,12 +91,12 @@ public class HomeEvaluationsServiceImpl implements HomeEvaluationsService {
 
     public Boolean evaluationApproved(Long id){
         Optional<HomeEvaluations> evaluation = homeEvaluationsRepository.findById(id);
-
+        User user = userService.getUserById(evaluation.get().getHomeReservation().getHomeProfile().getownerId());
         if(evaluation.isEmpty()){
             return false;
         }
         evaluation.get().setApproved(true);
-        //emailService.sendEmailForRegistrationApproved(user.get());
+        emailService.sendEmailForEvaluationApproved(user);
         homeEvaluationsRepository.save(evaluation.get());
         return true;
     }

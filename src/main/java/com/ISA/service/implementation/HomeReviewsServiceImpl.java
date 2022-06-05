@@ -8,6 +8,7 @@ import com.ISA.domain.model.User;
 import com.ISA.repository.HomeReservationRepository;
 import com.ISA.repository.HomeReviewsRepository;
 import com.ISA.repository.UserRepository;
+import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeReviewsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class HomeReviewsServiceImpl implements HomeReviewsService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @Override
     public HomeReviews add(HomeReviewsDTO dto) {
@@ -81,14 +85,22 @@ public class HomeReviewsServiceImpl implements HomeReviewsService {
         return homeReviewsRepository.findAllReviewsByOnePenalty(false);
     }
 
+    public List<HomeReviews> getAllReviewsByOnePenaltyAndBadComment()
+    {
+        return homeReviewsRepository.findAllReviewsByOnePenaltyAndIsBadComment(false,true);
+    }
+
     public Boolean strikeOnePenalty(Long id){
         Optional<HomeReviews> review = homeReviewsRepository.findById(id);
-
+        User user = userService.getUserById(review.get().getHomeReservation().getClientId() );
+        User owner = userService.getUserById(review.get().getOwnerId() );
         if(review.isEmpty()){
             return false;
         }
         review.get().setPenalty(true);
-        //emailService.sendEmailForRegistrationApproved(user.get());
+        user.setPenalty(user.getPenalty()+1);
+        emailService.sendEmailForPenaltyClient(user);
+        emailService.sendEmailForPenaltyOwnerOrInstructor(owner);
         homeReviewsRepository.save(review.get());
         return true;
     }

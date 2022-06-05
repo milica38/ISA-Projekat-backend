@@ -11,4 +11,5 @@ public interface HomeReviewsService {
     List<HomeReviews> getAllHomeReviews();
     List<HomeReviews> getAllReviewsByOnePenalty();
     Boolean strikeOnePenalty(Long id);
+    List<HomeReviews> getAllReviewsByOnePenaltyAndBadComment();
 }

@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface BoatReviewsRepository extends JpaRepository<BoatReviews, Long> {
     List<BoatReviews> findAllReviewsByOnePenalty(boolean onePenalty);
+    List<BoatReviews> findAllReviewsByOnePenaltyAndIsBadComment(boolean onePenalty, boolean isBadComment);
 }

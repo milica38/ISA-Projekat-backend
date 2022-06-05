@@ -33,6 +33,7 @@ public class AdventureReviewsServiceImpl implements AdventureReviewsService {
 
         AdventureReservation reservation = adventureReservationRepository.findById(dto.getAdventureReservationId()).get();
         User currentUser = userService.getCurrentUser();
+         User client = userService.getUserById(reservation.getClientId() );
 
         AdventureReviews reviews = new AdventureReviews();
         reviews.setContent(dto.getContent());
@@ -41,6 +42,10 @@ public class AdventureReviewsServiceImpl implements AdventureReviewsService {
         reviews.setBadComment(dto.isBadComment());
         reviews.setAdventureReservation(reservation);
 
+        if(reviews.isAppear()==true){
+            reviews.setPenalty(true);
+            client.setPenalty(+1L);
+        }
         return adventureReviewsRepository.save(reviews);
     }
 
@@ -55,13 +60,23 @@ public class AdventureReviewsServiceImpl implements AdventureReviewsService {
         return adventureReviewsRepository.findAllReviewsByOnePenalty(false);
     }
 
+    public List<AdventureReviews> getAllReviewsByOnePenaltyAndBadComment()
+    {
+        return adventureReviewsRepository.findAllReviewsByOnePenaltyAndIsBadComment(false,true);
+    }
+
     public Boolean strikeOnePenalty(Long id){
         Optional<AdventureReviews> review = adventureReviewsRepository.findById(id);
-
+        User user = userService.getUserById(review.get().getAdventureReservation().getClientId() );
+        User instructor = userService.getUserById(review.get().getInstructorId() );
         if(review.isEmpty()){
             return false;
         }
         review.get().setPenalty(true);
+        user.setPenalty(user.getPenalty()+1);
+
+        emailService.sendEmailForPenaltyClient(user);
+        emailService.sendEmailForPenaltyOwnerOrInstructor(instructor);
         adventureReviewsRepository.save(review.get());
         return true;
     }

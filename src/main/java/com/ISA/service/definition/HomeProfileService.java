@@ -19,6 +19,7 @@ public interface HomeProfileService {
     boolean homeExists(HomeProfile home, List<HomeProfile> homes);
     boolean canOwnerDelete(Long houseId);
     boolean canOwnerEdit(Long houseId);
+    Boolean deleteHouse(Long id);
 
 
 }

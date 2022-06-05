@@ -3,10 +3,7 @@ package com.ISA.service.implementation;
 import com.ISA.domain.dto.BoatHistoryReservationDTO;
 import com.ISA.domain.dto.BoatReservationDTO;
 import com.ISA.domain.model.*;
-import com.ISA.repository.BoatFreeTermsRepository;
-import com.ISA.repository.BoatProfileRepository;
-import com.ISA.repository.BoatReservationRepository;
-import com.ISA.repository.UserRepository;
+import com.ISA.repository.*;
 import com.ISA.service.definition.BoatReservationService;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
@@ -29,6 +26,9 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     private BoatReservationRepository reservationRepository;
 
     @Autowired
+    LoyalProgrammeRepository loyalProgrammeRepository;
+
+    @Autowired
     private  BoatProfileRepository profileRepository;
 
     @Autowired
@@ -49,6 +49,8 @@ public class BoatReservationServiceImpl implements BoatReservationService {
 
         BoatProfile boatProfile = profileRepository.findById(dto.getBoatId()).get();
         User currentUser = userService.getCurrentUser();
+        User boatOwner = userService.getUserById(boatProfile.getownerId());
+        Optional<LoyalProgramme> lp = loyalProgrammeRepository.findById(1);
 
         if(isOverlapping(boatProfile.getId(), dto.getStartDate(), dto.getEndDate())){
             return null;
@@ -77,17 +79,94 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         reservation.setNumberOfDays((int) days);
         BoatFreeTerms freeTerm = getDates(reservation.getBoatProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
 
-        if(freeTerm != null && freeTerm.isAction()){
-            reservation.setPrice(freeTerm.getActionPrice() * days );
-        }
-        else {
-            reservation.setPrice(boatProfile.getPricelist() * days);
+        if(currentUser.getNumberOfPoints()<lp.get().getSilverPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice(freeTerm.getActionPrice() * days );
+            }
+            else {
+                reservation.setPrice(boatProfile.getPricelist() * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  boatProfile.getExtraPrice() * days);
+            }
+            currentUser.setCategory("Regular");
         }
 
-        if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
-            reservation.setPrice(reservation.getPrice() +  boatProfile.getExtraPrice() * days);
+        if(currentUser.getNumberOfPoints()>=lp.get().getSilverPoints() && currentUser.getNumberOfPoints()<lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice((freeTerm.getActionPrice()-(freeTerm.getActionPrice()*(lp.get().getSilverAction())/100)) * days );
+            }
+            else {
+                reservation.setPrice((boatProfile.getPricelist()-(boatProfile.getPricelist()*(lp.get().getSilverAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  (boatProfile.getExtraPrice()-(boatProfile.getExtraPrice()*(lp.get().getSilverAction())/100)) * days);
+            }
+            currentUser.setCategory("Silver");
         }
+
+        if(currentUser.getNumberOfPoints()>=lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice((freeTerm.getActionPrice()-(freeTerm.getActionPrice()*(lp.get().getGoldAction())/100)) * days );
+            }
+            else {
+                reservation.setPrice((boatProfile.getPricelist()-(boatProfile.getPricelist()*(lp.get().getGoldAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  (boatProfile.getExtraPrice()-(boatProfile.getExtraPrice()*(lp.get().getGoldAction())/100))* days);
+            }
+            currentUser.setCategory("Gold");
+        }
+
+        if(boatOwner.getNumberOfPoints()<lp.get().getSilverPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice(freeTerm.getActionPrice() * days );
+            }
+            else {
+                reservation.setPrice(boatProfile.getPricelist() * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  boatProfile.getExtraPrice() * days);
+            }
+            boatOwner.setCategory("Regular");
+        }
+
+        if(boatOwner.getNumberOfPoints()>=lp.get().getSilverPoints() && boatOwner.getNumberOfPoints()<lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice((freeTerm.getActionPrice() + (freeTerm.getActionPrice()*(lp.get().getSilverAction())/100)) * days );
+            }
+            else {
+                reservation.setPrice((boatProfile.getPricelist()+(boatProfile.getPricelist()*(lp.get().getSilverAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  (boatProfile.getExtraPrice()+(boatProfile.getExtraPrice()*(lp.get().getSilverAction())/100)) * days);
+            }
+            boatOwner.setCategory("Silver");
+        }
+
+        if(boatOwner.getNumberOfPoints()>=lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice((freeTerm.getActionPrice() + (freeTerm.getActionPrice()*(lp.get().getGoldAction())/100)) * days );
+            }
+            else {
+                reservation.setPrice((boatProfile.getPricelist()+(boatProfile.getPricelist()*(lp.get().getGoldAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  (boatProfile.getExtraPrice()-(boatProfile.getExtraPrice()*(lp.get().getGoldAction())/100)) * days);
+            }
+            boatOwner.setCategory("Gold");
+        }
+
+
         emailService.sendEmailForBoatReservation(currentUser, reservation);
+        currentUser.setNumberOfPoints(currentUser.getNumberOfPoints()+ lp.get().getReservationPoints());
+        boatOwner.setNumberOfPoints(boatOwner.getNumberOfPoints()+ lp.get().getReservedPoints());
 
         return reservationRepository.save(reservation);
     }

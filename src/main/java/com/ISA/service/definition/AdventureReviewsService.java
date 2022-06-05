@@ -13,4 +13,5 @@ public interface AdventureReviewsService {
     List<AdventureReviews> getAllAdventureReviews();
     List<AdventureReviews> getAllReviewsByOnePenalty();
     Boolean strikeOnePenalty(Long id);
+    List<AdventureReviews> getAllReviewsByOnePenaltyAndBadComment();
 }

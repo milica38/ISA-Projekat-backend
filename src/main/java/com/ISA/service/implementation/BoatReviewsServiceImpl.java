@@ -10,6 +10,7 @@ import com.ISA.repository.BoatReservationRepository;
 import com.ISA.repository.BoatReviewsRepository;
 import com.ISA.repository.UserRepository;
 import com.ISA.service.definition.BoatReviewsService;
+import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class BoatReviewsServiceImpl implements BoatReviewsService {
 
     @Autowired
     BoatReservationRepository boatReservationRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @Override
     public BoatReviews add(BoatReviewsDTO dto) {
@@ -78,14 +82,22 @@ public class BoatReviewsServiceImpl implements BoatReviewsService {
         return boatReviewsRepository.findAllReviewsByOnePenalty(false);
     }
 
+    public List<BoatReviews> getAllReviewsByOnePenaltyAndBadComment()
+    {
+        return boatReviewsRepository.findAllReviewsByOnePenaltyAndIsBadComment(false,true);
+    }
+
     public Boolean strikeOnePenalty(Long id){
         Optional<BoatReviews> review = boatReviewsRepository.findById(id);
-
+        User user = userService.getUserById(review.get().getBoatReservation().getClientId() );
+        User owner = userService.getUserById(review.get().getOwnerId() );
         if(review.isEmpty()){
             return false;
         }
         review.get().setPenalty(true);
-        //emailService.sendEmailForRegistrationApproved(user.get());
+        user.setPenalty(user.getPenalty()+1);
+        emailService.sendEmailForPenaltyClient(user);
+        emailService.sendEmailForPenaltyOwnerOrInstructor(owner);
         boatReviewsRepository.save(review.get());
         return true;
     }

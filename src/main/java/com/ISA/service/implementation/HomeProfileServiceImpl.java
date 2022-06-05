@@ -198,6 +198,17 @@ public class HomeProfileServiceImpl implements HomeProfileService {
         return true;
     }
 
+    public Boolean deleteHouse(Long id){
+        Optional<HomeProfile> hp = homeProfileRepository.findById(id);
+
+        if(hp.isEmpty()){
+            return false;
+        }
+        hp.get().setDeleted(true);
+        homeProfileRepository.save(hp.get());
+        return true;
+    }
+
     public boolean isDateEqual(Date date1, Date date2) {
 
         return date1.getDay() == date2.getDay() && date1.getYear() == date2.getYear() && date1.getMonth() == date2.getMonth();

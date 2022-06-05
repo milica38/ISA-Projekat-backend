@@ -15,6 +15,8 @@ import com.ISA.service.definition.AdventureNotFreeTermsService;
 import com.ISA.service.definition.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,7 +40,6 @@ public class AdventureNotFreeTermsServiceImpl implements AdventureNotFreeTermsSe
     public List<AdventureNotFreeTerms> getAll(Long adventureId) {
         return notFreeTermsRepository.findAllByAdventureProfileId(adventureId);
     }
-
 
     public AdventureNotFreeTerms add(AdventureNotFreeTermsDTO adventureNotFreeTermsDTO) {
 

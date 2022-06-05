@@ -20,9 +20,10 @@ public interface EmailService {
      void sendEmailForRegistrationDeclined(User user);
      void sendEmailForEvaluationApproved(User user);
      void sendEmailForComplaintResponse(User user, Optional<AdventureComplaints> ac);
-     void sendEmailForHomeComplaintResponse(User user, HomeComplaints hc);
-     void sendEmailForBoatComplaintResponse(User user, BoatComplaints bc);
+     void sendEmailForHomeComplaintResponse(User user, Optional<HomeComplaints> hc);
+     void sendEmailForBoatComplaintResponse(User user, Optional<BoatComplaints> bc);
      void sendEmailForPenaltyOwnerOrInstructor(User user);
      void sendEmailForPenaltyClient(User user);
+     void sendEmailForDeletingAccount(User user);
 
 }

@@ -2,14 +2,8 @@ package com.ISA.service.implementation;
 
 import com.ISA.domain.dto.HomeHistoryReservationDTO;
 import com.ISA.domain.dto.HomeReservationDTO;
-import com.ISA.domain.model.HomeFreeTerms;
-import com.ISA.domain.model.HomeProfile;
-import com.ISA.domain.model.HomeReservation;
-import com.ISA.domain.model.User;
-import com.ISA.repository.HomeFreeTermsRepository;
-import com.ISA.repository.HomeProfileRepository;
-import com.ISA.repository.HomeReservationRepository;
-import com.ISA.repository.UserRepository;
+import com.ISA.domain.model.*;
+import com.ISA.repository.*;
 import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.HomeReservationService;
 import com.ISA.service.definition.UserService;
@@ -26,6 +20,9 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
     @Autowired
     private HomeReservationRepository homeReservationRepository;
+
+    @Autowired
+    LoyalProgrammeRepository loyalProgrammeRepository;
 
     @Autowired
     private HomeProfileRepository homeProfileRepository;
@@ -49,6 +46,8 @@ public class HomeReservationServiceImpl implements HomeReservationService {
 
         HomeProfile homeProfile = homeProfileRepository.findById(dto.getHouseId()).get();
         User currentUser = userService.getCurrentUser();
+        User homeOwner = userService.getUserById(homeProfile.getownerId());
+        Optional<LoyalProgramme> lp = loyalProgrammeRepository.findById(1);
 
         if(isOverlapping(homeProfile.getId(), dto.getStartDate(), dto.getEndDate())){
           return null;
@@ -76,19 +75,94 @@ public class HomeReservationServiceImpl implements HomeReservationService {
         reservation.setExtraServices(dto.getExtraServices());
         HomeFreeTerms freeTerm = getDates(reservation.getHomeProfile().getId(), reservation.getStartDate(), reservation.getEndDate());
 
-        if(freeTerm != null && freeTerm.isAction()){
-            reservation.setPrice(freeTerm.getActionPrice() * days );
-        }
-        else {
-            reservation.setPrice(homeProfile.getPricelist() * days);
+
+        if(currentUser.getNumberOfPoints()<lp.get().getSilverPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice(freeTerm.getActionPrice() * days );
+            }
+            else {
+                reservation.setPrice(homeProfile.getPricelist() * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  homeProfile.getExtraPrice() * days);
+            }
+            currentUser.setCategory("Regular");
         }
 
-        if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
-            reservation.setPrice(reservation.getPrice() +  homeProfile.getExtraPrice() * days);
+        if(currentUser.getNumberOfPoints()>=lp.get().getSilverPoints() && currentUser.getNumberOfPoints()<lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice((freeTerm.getActionPrice() - (freeTerm.getActionPrice()*(lp.get().getSilverAction())/100)) * days );
+            }
+            else {
+                reservation.setPrice((homeProfile.getPricelist()-(homeProfile.getPricelist()*(lp.get().getSilverAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  (homeProfile.getExtraPrice()-(homeProfile.getExtraPrice()*(lp.get().getSilverAction())/100)) * days);
+            }
+            currentUser.setCategory("Silver");
+        }
+
+        if(currentUser.getNumberOfPoints()>=lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice((freeTerm.getActionPrice() - (freeTerm.getActionPrice()*(lp.get().getGoldAction())/100)) * days );
+            }
+            else {
+                reservation.setPrice((homeProfile.getPricelist()-(homeProfile.getPricelist()*(lp.get().getGoldAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  (homeProfile.getExtraPrice()-(homeProfile.getExtraPrice()*(lp.get().getGoldAction())/100)) * days);
+            }
+            currentUser.setCategory("Gold");
+        }
+
+        if(homeOwner.getNumberOfPoints()<lp.get().getSilverPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice(freeTerm.getActionPrice() * days );
+            }
+            else {
+                reservation.setPrice(homeProfile.getPricelist() * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  homeProfile.getExtraPrice() * days);
+            }
+            homeOwner.setCategory("Regular");
+        }
+
+        if(homeOwner.getNumberOfPoints()>=lp.get().getSilverPoints() && homeOwner.getNumberOfPoints()<lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice((freeTerm.getActionPrice() + (freeTerm.getActionPrice()*(lp.get().getSilverAction())/100)) * days );
+            }
+            else {
+                reservation.setPrice((homeProfile.getPricelist()+(homeProfile.getPricelist()*(lp.get().getSilverAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() +  (homeProfile.getExtraPrice()+(homeProfile.getExtraPrice()*(lp.get().getSilverAction())/100)) * days);
+            }
+            homeOwner.setCategory("Silver");
+        }
+
+        if(homeOwner.getNumberOfPoints()>=lp.get().getGoldPoints()){
+            if(freeTerm != null && freeTerm.isAction() ){
+                reservation.setPrice((freeTerm.getActionPrice() + (freeTerm.getActionPrice()*(lp.get().getGoldAction())/100)) * days );
+            }
+            else {
+                reservation.setPrice((homeProfile.getPricelist()+(homeProfile.getPricelist()*(lp.get().getGoldAction())/100)) * days);
+            }
+
+            if(reservation.getExtraServices() != null && !reservation.getExtraServices().equals("No extra service")) {
+                reservation.setPrice(reservation.getPrice() + (homeProfile.getExtraPrice()+(homeProfile.getExtraPrice()*(lp.get().getGoldAction())/100)) * days);
+            }
+            homeOwner.setCategory("Gold");
         }
 
         emailService.sendEmailForHouseReservation(currentUser, reservation);
-
+        currentUser.setNumberOfPoints(currentUser.getNumberOfPoints()+ lp.get().getReservationPoints());
+        homeOwner.setNumberOfPoints(homeOwner.getNumberOfPoints()+ lp.get().getReservedPoints());
         return homeReservationRepository.save(reservation);
     }
 

@@ -44,4 +44,9 @@ public class BoatReviewsController {
         boatReviewsService.strikeOnePenalty(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping(path = "/withoutOnePenaltyAndBadComment")
+    public ResponseEntity<?> getAllReviewsByOnePenaltyAndBadComment() {
+        return new ResponseEntity<>(boatReviewsService.getAllReviewsByOnePenaltyAndBadComment() , HttpStatus.OK);
+    }
 }

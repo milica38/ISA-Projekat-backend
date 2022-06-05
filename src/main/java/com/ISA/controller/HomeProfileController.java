@@ -82,4 +82,11 @@ public class HomeProfileController {
     }
 
 
+    @PostMapping(path = "/deleteHouse/{id}")
+    public ResponseEntity<?> deleteHouse(@PathVariable Long id){
+        homeProfileService.deleteHouse(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }
