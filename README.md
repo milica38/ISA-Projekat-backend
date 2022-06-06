@@ -20,13 +20,18 @@ Project made for Faculty of Technical Sciences' in Novi Sad, course Internet Sof
 - Angular CLI 12.2.12
 - Node JS
 <br><br>
-##Login data
+Login data
+<br><br>
 Clients: Email: jovana99@gmail.com Password: jovana
          Email: igorklijent99@gmail.com Password: igor
+<br><br>        
 Admin: Email: masa99@gmail.com Password: masa1
+<br><br>
 Fishing instructors: Email: marko99@gmail.com Password: marko
                      Email: puric99@jelena.com Password: jelena
+<br><br>                     
 Boat owner: Email: filip99@gmail.com Password: filip
+<br><br>
 Home owner: Email: ljiljana99@gmail.com Password: ljiljana
 ## Running the Application
 ###### Credentials for database
