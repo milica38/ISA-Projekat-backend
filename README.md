@@ -20,6 +20,14 @@ Project made for Faculty of Technical Sciences' in Novi Sad, course Internet Sof
 - Angular CLI 12.2.12
 - Node JS
 <br><br>
+##Login data
+Clients: Email: jovana99@gmail.com Password: jovana
+         Email: igorklijent99@gmail.com Password: igor
+Admin: Email: masa99@gmail.com Password: masa1
+Fishing instructors: Email: marko99@gmail.com Password: marko
+                     Email: puric99@jelena.com Password: jelena
+Boat owner: Email: filip99@gmail.com Password: filip
+Home owner: Email: ljiljana99@gmail.com Password: ljiljana
 ## Running the Application
 ###### Credentials for database
 To start the Spring Boot application, make sure you have a Postgres database isa ready. Default postgres user name is postgres, password is ftn.
