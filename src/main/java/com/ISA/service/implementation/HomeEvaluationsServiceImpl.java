@@ -10,6 +10,8 @@ import com.ISA.service.definition.HomeEvaluationsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -89,7 +91,9 @@ public class HomeEvaluationsServiceImpl implements HomeEvaluationsService {
         return homeEvaluationsRepository.findAllEvaluationsByIsApprovedAndIsDeclined(false, false);
     }
 
-    public Boolean evaluationApproved(Long id){
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public Boolean evaluationApproved(Long id) {
         Optional<HomeEvaluations> evaluation = homeEvaluationsRepository.findById(id);
         User user = userService.getUserById(evaluation.get().getHomeReservation().getHomeProfile().getownerId());
         if(evaluation.isEmpty()){
@@ -101,6 +105,8 @@ public class HomeEvaluationsServiceImpl implements HomeEvaluationsService {
         return true;
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean evaluationDeclined(Long id)
     {
         Optional<HomeEvaluations> evaluation = homeEvaluationsRepository.findById(id);

@@ -10,6 +10,8 @@ import com.ISA.service.definition.HomeComplaintsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -72,7 +74,10 @@ public class HomeComplaintsServiceImpl implements HomeComplaintsService {
         return homeComplaintsRepository.findAllByComplaintResponse("");
     }
 
-    public HomeComplaints responseToComplaint(HomeComplaintsDTO dto){
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public HomeComplaints responseToComplaint(HomeComplaintsDTO dto) throws Exception{
+
         Optional<HomeComplaints> optionalHomeComplaints = homeComplaintsRepository.findById(dto.getId());
         User user = userService.getUserById(optionalHomeComplaints.get().getClientId());
 

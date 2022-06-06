@@ -41,6 +41,7 @@ public class AdventureEvaluationsController {
 
     @PostMapping(path = "/approve/{id}")
     public ResponseEntity<?> approveEvaluation(@PathVariable Long id){
+
         adventureEvaluationsService.evaluationApproved(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

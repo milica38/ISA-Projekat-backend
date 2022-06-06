@@ -11,6 +11,8 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,7 +76,11 @@ public class AdventureComplaintsServiceImpl implements AdventureComplaintsServic
         return complaintsRepository.findAllByComplaintResponse(null);
     }
 
-    public AdventureComplaints responseToComplaint(AdventureComplaintsDTO dto){
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public AdventureComplaints responseToComplaint(AdventureComplaintsDTO dto) throws Exception{
+
         Optional<AdventureComplaints> optionalAdventureComplaints = complaintsRepository.findById(dto.getId());
 
         optionalAdventureComplaints.get().setComplaintResponse(dto.getComplaintResponse());

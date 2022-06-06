@@ -13,5 +13,5 @@ public interface HomeComplaintsService {
     HomeComplaints add(HomeComplaintsDTO dto);
     List<HomeComplaints> getAllHomeComplaints();
     List<HomeComplaints>  getAllComplaintsByComplaintResponse();
-    HomeComplaints responseToComplaint(HomeComplaintsDTO dto);
+    HomeComplaints responseToComplaint(HomeComplaintsDTO dto) throws Exception;
 }

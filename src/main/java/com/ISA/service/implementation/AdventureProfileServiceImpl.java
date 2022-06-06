@@ -59,7 +59,10 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
         ap.setFishingEquipment(adventureProfileDTO.getFishingEquipment());
         ap.setPriceList(adventureProfileDTO.getPricelist());
         ap.setExtraService(adventureProfileDTO.getExtraService());
+        ap.setExtraPrice(adventureProfileDTO.getExtraPrice());
         ap.setCancelConditions(adventureProfileDTO.getCancelConditions());
+        ap.setAvgRate(0L);
+        ap.setRateCounter(0);
 
 
         return adventureProfileRepository.save(ap);
@@ -85,10 +88,10 @@ public class AdventureProfileServiceImpl implements AdventureProfileService {
         optionalAdventureProfile.get().setFishingEquipment(adventureProfileDTO.getFishingEquipment());
         optionalAdventureProfile.get().setPriceList(adventureProfileDTO.getPricelist());
         optionalAdventureProfile.get().setExtraService(adventureProfileDTO.getExtraService());
+        optionalAdventureProfile.get().setExtraPrice(adventureProfileDTO.getExtraPrice());
         optionalAdventureProfile.get().setCancelConditions(adventureProfileDTO.getCancelConditions());
-        if(adventureProfileDTO.getInstructorId() != null) {
-            optionalAdventureProfile.get().setInstructorId(adventureProfileDTO.getInstructorId());
-        }
+        optionalAdventureProfile.get().setInstructorId(userService.getCurrentUser().getId());
+
 
         if(adventureProfileDTO.getAmbientImage() != null && !adventureProfileDTO.getAmbientImage().equals("")) {
             optionalAdventureProfile.get().setAmbientImage(adventureProfileDTO.getAmbientImage());

@@ -315,7 +315,9 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    public User registrationDeclined(UserDTO userDTO)
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public User registrationDeclined(UserDTO userDTO) throws Exception
     {
         Optional<User> user = userRepository.findById(userDTO.getId());
 
@@ -342,7 +344,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public User deleteUserAccount(UserDTO userDTO)
+
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public User deleteUserAccount(UserDTO userDTO) throws Exception
     {
         Optional<User> user = userRepository.findById(userDTO.getId());
 

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
@@ -202,11 +203,17 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('PredefinedAdmin')")
     @PutMapping(path = "/declineRegistration")
-    public ResponseEntity<?> declineUser( @RequestBody UserDTO userDTO) {
-        User user = userService.registrationDeclined(userDTO);
+    public ResponseEntity<?> declineUser( @RequestBody UserDTO userDTO) throws Exception{
+        User user = null;
+        try {
+             user = userService.registrationDeclined(userDTO);
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
     @PutMapping(path = "/requestForDeleting")
@@ -216,11 +223,17 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('PredefinedAdmin')")
     @PutMapping(path = "/deleteAccount")
-    public ResponseEntity<?> deleteUserAccount( @RequestBody UserDTO userDTO) {
-        User user = userService.deleteUserAccount(userDTO);
+    public ResponseEntity<?> deleteUserAccount( @RequestBody UserDTO userDTO) throws Exception{
+        User user = null;
+        try {
+            user = userService.deleteUserAccount(userDTO);
+        } catch(Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
 

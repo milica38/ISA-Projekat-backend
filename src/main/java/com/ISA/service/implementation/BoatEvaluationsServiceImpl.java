@@ -10,6 +10,8 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -87,6 +89,8 @@ public class BoatEvaluationsServiceImpl implements BoatEvaluationsService {
         return boatEvaluationsRepository.findAllEvaluationsByIsApprovedAndIsDeclined(false, false);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean evaluationApproved(Long id){
         Optional<BoatEvaluations> evaluation = boatEvaluationsRepository.findById(id);
         User user = userService.getUserById(evaluation.get().getBoatReservation().getBoatProfile().getownerId() );
@@ -99,6 +103,8 @@ public class BoatEvaluationsServiceImpl implements BoatEvaluationsService {
         return true;
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean evaluationDeclined(Long id)
     {
         Optional<BoatEvaluations> evaluation = boatEvaluationsRepository.findById(id);

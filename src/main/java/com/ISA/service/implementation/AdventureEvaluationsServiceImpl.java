@@ -11,6 +11,8 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -87,7 +89,9 @@ public class AdventureEvaluationsServiceImpl implements AdventureEvaluationsServ
         return adventureEvaluationsRepository.findAllEvaluationsByIsApprovedAndIsDeclined(false, false);
     }
 
-    public Boolean evaluationApproved(Long id){
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public Boolean evaluationApproved(Long id) {
         Optional<AdventureEvaluations> evaluation = adventureEvaluationsRepository.findById(id);
         User user = userService.getUserById(evaluation.get().getAdventureReservation().getAdventureProfile().getInstructorId());
         if(evaluation.isEmpty()){
@@ -99,6 +103,8 @@ public class AdventureEvaluationsServiceImpl implements AdventureEvaluationsServ
         return true;
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean evaluationDeclined(Long id)
     {
         Optional<AdventureEvaluations> evaluation = adventureEvaluationsRepository.findById(id);

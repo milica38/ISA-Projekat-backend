@@ -13,6 +13,8 @@ import com.ISA.service.definition.HomeReviewsService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -90,6 +92,8 @@ public class HomeReviewsServiceImpl implements HomeReviewsService {
         return homeReviewsRepository.findAllReviewsByOnePenaltyAndIsBadComment(false,true);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean strikeOnePenalty(Long id){
         Optional<HomeReviews> review = homeReviewsRepository.findById(id);
         User user = userService.getUserById(review.get().getHomeReservation().getClientId() );

@@ -12,5 +12,5 @@ public interface BoatComplaintsService {
     BoatComplaints add(BoatComplaintsDTO dto);
     List<BoatComplaints> getAllBoatComplaints();
     List<BoatComplaints>  getAllComplaintsByComplaintResponse();
-    BoatComplaints responseToComplaint(BoatComplaintsDTO dto);
+    BoatComplaints responseToComplaint(BoatComplaintsDTO dto) throws Exception;
 }

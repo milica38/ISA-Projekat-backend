@@ -10,6 +10,8 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -72,7 +74,10 @@ public class BoatComplaintsServiceImpl implements BoatComplaintsService {
         return boatComplaintsRepository.findAllByComplaintResponse("");
     }
 
-    public BoatComplaints responseToComplaint(BoatComplaintsDTO dto){
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public BoatComplaints responseToComplaint(BoatComplaintsDTO dto) throws Exception{
+
         Optional<BoatComplaints> optionalBoatComplaints = boatComplaintsRepository.findById(dto.getId());
         User user = userService.getUserById(optionalBoatComplaints.get().getClientId());
         optionalBoatComplaints.get().setComplaintResponse(dto.getComplaintResponse());

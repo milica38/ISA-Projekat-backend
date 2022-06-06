@@ -19,9 +19,9 @@ public interface UserService {
     User getCurrentUser();
     Boolean findUserByToken(String token);
     Boolean registrationApproved(Long id);
-    User registrationDeclined(UserDTO userDTO);
+    User registrationDeclined(UserDTO userDTO) throws Exception;
     User requestForDeletingAccount(UserDTO userDTO);
-    User deleteUserAccount(UserDTO userDTO);
+    User deleteUserAccount(UserDTO userDTO) throws Exception;
     User edit(UserDTO userDTO);
     List<User> getNullStatusUsers();
     List<User> getPendingStatusUsers();

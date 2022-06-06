@@ -14,6 +14,8 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -87,6 +89,8 @@ public class BoatReviewsServiceImpl implements BoatReviewsService {
         return boatReviewsRepository.findAllReviewsByOnePenaltyAndIsBadComment(false,true);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean strikeOnePenalty(Long id){
         Optional<BoatReviews> review = boatReviewsRepository.findById(id);
         User user = userService.getUserById(review.get().getBoatReservation().getClientId() );

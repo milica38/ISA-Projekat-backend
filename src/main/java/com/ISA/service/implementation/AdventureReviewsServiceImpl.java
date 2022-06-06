@@ -9,6 +9,8 @@ import com.ISA.service.definition.EmailService;
 import com.ISA.service.definition.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +67,10 @@ public class AdventureReviewsServiceImpl implements AdventureReviewsService {
         return adventureReviewsRepository.findAllReviewsByOnePenaltyAndIsBadComment(false,true);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean strikeOnePenalty(Long id){
+
         Optional<AdventureReviews> review = adventureReviewsRepository.findById(id);
         User user = userService.getUserById(review.get().getAdventureReservation().getClientId() );
         User instructor = userService.getUserById(review.get().getInstructorId() );

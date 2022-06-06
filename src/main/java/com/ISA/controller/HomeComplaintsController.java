@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -40,10 +41,16 @@ public class HomeComplaintsController {
         return new ResponseEntity<>(homeComplaintsService.getAllComplaintsByComplaintResponse(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('PredefinedAdmin')")
     @PutMapping(path = "/responseToHomeComplaint")
-    public ResponseEntity<?> responseToComplaint( @RequestBody HomeComplaintsDTO dto) {
-        HomeComplaints hc = homeComplaintsService.responseToComplaint(dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> responseToComplaint( @RequestBody HomeComplaintsDTO dto) throws Exception{
+        HomeComplaints hc = null;
+        try {
+            hc = homeComplaintsService.responseToComplaint(dto);
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(hc,HttpStatus.OK);
     }
 
 }

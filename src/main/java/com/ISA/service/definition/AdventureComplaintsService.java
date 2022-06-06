@@ -12,5 +12,5 @@ public interface AdventureComplaintsService {
     AdventureComplaints add(AdventureComplaintsDTO dto);
     List<AdventureComplaints>  getAllAdventureComplaints();
     List<AdventureComplaints>  getAllComplaintsByComplaintResponse();
-    AdventureComplaints responseToComplaint(AdventureComplaintsDTO dto);
+    AdventureComplaints responseToComplaint(AdventureComplaintsDTO dto) throws Exception;
 }
