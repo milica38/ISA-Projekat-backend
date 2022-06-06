@@ -24,7 +24,7 @@ Login data
 <br><br>
 Clients: Email: jovana99@gmail.com Password: jovana 
 <br>
-         Email: igorklijent99@gmail.com Password: igor
+         Email: igorklijent@gmail.com Password: igor
 <br><br>        
 Admin: Email: masa99@gmail.com Password: masa1
 <br><br>
