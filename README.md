@@ -22,12 +22,14 @@ Project made for Faculty of Technical Sciences' in Novi Sad, course Internet Sof
 <br><br>
 Login data
 <br><br>
-Clients: Email: jovana99@gmail.com Password: jovana
+Clients: Email: jovana99@gmail.com Password: jovana 
+<br>
          Email: igorklijent99@gmail.com Password: igor
 <br><br>        
 Admin: Email: masa99@gmail.com Password: masa1
 <br><br>
 Fishing instructors: Email: marko99@gmail.com Password: marko
+<br>
                      Email: puric99@jelena.com Password: jelena
 <br><br>                     
 Boat owner: Email: filip99@gmail.com Password: filip
